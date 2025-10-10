@@ -340,12 +340,19 @@ body {
     text-align: center;
 }
 
-.stat-total {
-    display: block;
-    font-size: var(--font-size-xs);
-    font-weight: 500;
-    color: var(--text-secondary);
+.stat-number-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: flex-start;
     margin-bottom: var(--space-1);
+}
+
+.stat-total {
+    display: inline-block;
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    color: var(--text-secondary);
+    margin-right: var(--space-2);
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
