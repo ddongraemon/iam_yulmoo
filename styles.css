@@ -422,7 +422,7 @@ body {
 .video-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: var(--space-3);
+    gap: var(--space-4);
 }
 
 .video-card {
@@ -432,11 +432,11 @@ body {
     overflow: hidden;
     transition: var(--transition-normal);
     backdrop-filter: blur(10px);
-    transform: scale(0.9);
+    transform: scale(0.95);
 }
 
 .video-card:hover {
-    transform: scale(0.9) translateY(-8px);
+    transform: scale(0.95) translateY(-8px);
     box-shadow: var(--shadow-lg);
     border-color: var(--primary);
 }
@@ -489,7 +489,7 @@ body {
 }
 
 .video-info {
-    padding: var(--space-1);
+    padding: var(--space-2);
 }
 
 .video-title {
@@ -501,7 +501,7 @@ body {
 
 .video-description {
     color: var(--text-secondary);
-    margin-bottom: var(--space-2);
+    margin-bottom: var(--space-3);
     line-height: 1.5;
     font-size: var(--font-size-sm);
 }
