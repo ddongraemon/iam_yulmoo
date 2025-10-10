@@ -836,6 +836,35 @@ body {
         text-align: center;
     }
     
+    .hero-content {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-4);
+    }
+    
+    .hero-stats {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--space-4);
+    }
+    
+    .hero-visual {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .hero-stats-and-visual {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--space-4);
+        margin-top: var(--space-4);
+    }
+    
     .hero-title-main {
         font-size: var(--font-size-3xl);
     }
