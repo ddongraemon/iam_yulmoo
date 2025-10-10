@@ -235,7 +235,7 @@ body {
     padding: 0 var(--space-4);
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: var(--space-8);
+    gap: var(--space-16);
     align-items: center;
 }
 
