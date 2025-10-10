@@ -432,11 +432,11 @@ body {
     overflow: hidden;
     transition: var(--transition-normal);
     backdrop-filter: blur(10px);
-    transform: scale(0.76);
+    transform: scale(0.855);
 }
 
 .video-card:hover {
-    transform: scale(0.76) translateY(-8px);
+    transform: scale(0.855) translateY(-8px);
     box-shadow: var(--shadow-lg);
     border-color: var(--primary);
 }
