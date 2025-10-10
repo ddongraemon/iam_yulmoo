@@ -840,7 +840,7 @@ body {
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: var(--space-4);
-        align-items: center;
+        align-items: start;
     }
     
     .hero-title {
@@ -868,7 +868,7 @@ body {
         grid-column: 2;
         display: flex;
         justify-content: center;
-        align-items: center;
+        align-items: start;
     }
     
     .hero-title-main {
