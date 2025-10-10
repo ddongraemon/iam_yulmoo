@@ -235,7 +235,7 @@ body {
     padding: 0 var(--space-4);
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: var(--space-3);
+    gap: var(--space-8);
     align-items: center;
 }
 
@@ -288,7 +288,10 @@ body {
 }
 
 .pink-subscribe {
-    color: var(--primary);
+    background: linear-gradient(135deg, var(--text-primary), var(--primary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     font-weight: 700;
     text-shadow: 0 0 10px rgba(255, 107, 157, 0.5);
 }
