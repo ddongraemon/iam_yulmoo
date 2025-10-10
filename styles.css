@@ -395,7 +395,7 @@ body {
 
 .video-section.recent-videos {
     background: var(--background);
-    padding-top: var(--space-18);
+    padding-top: var(--space-16);
 }
 
 .section-header {
@@ -582,7 +582,7 @@ body {
 
 /* Contact Section */
 .contact-section {
-    padding: var(--space-18) 0 var(--space-14) 0;
+    padding: var(--space-16) 0 var(--space-14) 0;
     background: var(--surface);
 }
 
