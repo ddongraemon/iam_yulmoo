@@ -287,6 +287,12 @@ body {
     line-height: 1.6;
 }
 
+.pink-subscribe {
+    color: var(--primary);
+    font-weight: 700;
+    text-shadow: 0 0 10px rgba(255, 107, 157, 0.5);
+}
+
 .hero-actions {
     display: flex;
     gap: var(--space-3);
