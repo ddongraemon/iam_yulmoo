@@ -421,7 +421,7 @@ body {
 
 .video-grid {
     display: grid;
-    grid-template-columns: repeat(3, 0.64fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: var(--space-4);
     justify-content: center;
 }
@@ -433,8 +433,6 @@ body {
     overflow: hidden;
     transition: var(--transition-normal);
     backdrop-filter: blur(10px);
-    max-width: 64%;
-    margin: 0 auto;
 }
 
 .video-card:hover {
@@ -774,7 +772,7 @@ body {
 /* Tablet Responsive */
 @media (max-width: 1024px) and (min-width: 769px) {
     .video-grid {
-        grid-template-columns: repeat(2, 0.64fr);
+        grid-template-columns: repeat(2, 1fr);
         gap: var(--space-4);
     }
 }
@@ -816,7 +814,7 @@ body {
     }
     
     .video-grid {
-        grid-template-columns: 0.64fr;
+        grid-template-columns: 1fr;
         gap: var(--space-4);
     }
     
