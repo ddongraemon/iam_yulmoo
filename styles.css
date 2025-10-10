@@ -422,7 +422,7 @@ body {
 .video-grid {
     display: grid;
     grid-template-columns: repeat(3, 0.9fr);
-    gap: var(--space-2);
+    gap: var(--space-1);
     justify-content: center;
 }
 
