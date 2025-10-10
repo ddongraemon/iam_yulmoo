@@ -174,12 +174,12 @@ body {
 
 /* Hero Section */
 .hero {
-    min-height: 100vh;
+    min-height: 70vh;
     display: flex;
     align-items: center;
     position: relative;
     overflow: hidden;
-    padding-top: 70px;
+    padding: 100px 0 60px 0;
 }
 
 .hero-background {
@@ -234,7 +234,7 @@ body {
     padding: 0 var(--space-6);
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: var(--space-16);
+    gap: var(--space-8);
     align-items: center;
 }
 
@@ -262,7 +262,7 @@ body {
 
 .hero-title-main {
     display: block;
-    font-size: var(--font-size-5xl);
+    font-size: var(--font-size-4xl);
     font-weight: 800;
     line-height: 1.1;
     margin-bottom: var(--space-2);
@@ -280,16 +280,16 @@ body {
 }
 
 .hero-description {
-    font-size: var(--font-size-lg);
+    font-size: var(--font-size-base);
     color: var(--text-secondary);
-    margin-bottom: var(--space-8);
-    line-height: 1.7;
+    margin-bottom: var(--space-6);
+    line-height: 1.6;
 }
 
 .hero-actions {
     display: flex;
     gap: var(--space-4);
-    margin-bottom: var(--space-12);
+    margin-bottom: var(--space-8);
 }
 
 .btn {
@@ -360,8 +360,8 @@ body {
 
 .hero-image-container {
     position: relative;
-    width: 400px;
-    height: 400px;
+    width: 300px;
+    height: 300px;
 }
 
 .hero-image {
@@ -389,19 +389,19 @@ body {
 
 /* Video Section */
 .video-section {
-    padding: var(--space-24) 0;
+    padding: var(--space-16) 0;
     background: var(--surface);
 }
 
 .section-header {
     text-align: center;
-    margin-bottom: var(--space-16);
+    margin-bottom: var(--space-12);
 }
 
 .section-title {
-    font-size: var(--font-size-4xl);
+    font-size: var(--font-size-3xl);
     font-weight: 700;
-    margin-bottom: var(--space-4);
+    margin-bottom: var(--space-3);
     background: linear-gradient(135deg, var(--text-primary), var(--primary));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -415,8 +415,8 @@ body {
 
 .video-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: var(--space-8);
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--space-6);
 }
 
 .video-card {
@@ -482,7 +482,7 @@ body {
 }
 
 .video-info {
-    padding: var(--space-6);
+    padding: var(--space-4);
 }
 
 .video-title {
@@ -575,7 +575,7 @@ body {
 
 /* Contact Section */
 .contact-section {
-    padding: var(--space-24) 0;
+    padding: var(--space-16) 0;
     background: var(--surface);
 }
 
@@ -586,9 +586,9 @@ body {
 }
 
 .contact-title {
-    font-size: var(--font-size-4xl);
+    font-size: var(--font-size-3xl);
     font-weight: 700;
-    margin-bottom: var(--space-4);
+    margin-bottom: var(--space-3);
     background: linear-gradient(135deg, var(--text-primary), var(--primary));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -596,16 +596,16 @@ body {
 }
 
 .contact-description {
-    font-size: var(--font-size-lg);
+    font-size: var(--font-size-base);
     color: var(--text-secondary);
-    margin-bottom: var(--space-12);
-    line-height: 1.7;
+    margin-bottom: var(--space-8);
+    line-height: 1.6;
 }
 
 .contact-actions {
     display: flex;
     flex-direction: column;
-    gap: var(--space-8);
+    gap: var(--space-6);
     align-items: center;
 }
 
@@ -690,7 +690,7 @@ body {
 
 /* Footer */
 .footer {
-    padding: var(--space-16) 0;
+    padding: var(--space-12) 0;
     border-top: 1px solid var(--border);
     background: var(--surface);
 }
@@ -704,7 +704,7 @@ body {
     align-items: center;
     justify-content: center;
     gap: var(--space-3);
-    margin-bottom: var(--space-6);
+    margin-bottom: var(--space-4);
 }
 
 .footer-logo-img {
@@ -771,12 +771,12 @@ body {
     
     .hero-container {
         grid-template-columns: 1fr;
-        gap: var(--space-12);
+        gap: var(--space-8);
         text-align: center;
     }
     
     .hero-title-main {
-        font-size: var(--font-size-4xl);
+        font-size: var(--font-size-3xl);
     }
     
     .hero-actions {
@@ -788,8 +788,8 @@ body {
     }
     
     .hero-image-container {
-        width: 300px;
-        height: 300px;
+        width: 250px;
+        height: 250px;
     }
     
     .video-card.featured {
@@ -798,6 +798,7 @@ body {
     
     .video-grid {
         grid-template-columns: 1fr;
+        gap: var(--space-4);
     }
     
     .about-content {
@@ -845,11 +846,11 @@ body {
     }
     
     .section-title {
-        font-size: var(--font-size-3xl);
+        font-size: var(--font-size-2xl);
     }
     
     .about-title,
     .contact-title {
-        font-size: var(--font-size-3xl);
+        font-size: var(--font-size-2xl);
     }
 }
