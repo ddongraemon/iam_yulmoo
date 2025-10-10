@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="반려견 채널 - 귀여운 강아지들의 일상을 공유하는 유튜브 및 틱톡 채널">
-    <meta name="keywords" content="반려견, 강아지, 유튜브, 틱톡, 펫채널">
-    <title>반려견 채널 - 귀여운 강아지들의 일상</title>
+    <meta name="description" content="율무인데요 - 귀여운 강아지 율무의 일상을 공유하는 유튜브 및 틱톡 채널">
+    <meta name="keywords" content="율무, 강아지, 유튜브, 틱톡, 펫채널, 반려견">
+    <title>율무인데요 - 귀여운 강아지의 일상</title>
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -19,86 +19,314 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Header Section -->
-    <header class="header">
-        <div class="container">
-            <div class="header-content">
-                <!-- Logo and Channel Name -->
-                <div class="logo-section">
-                    <div class="logo-circle">
-                        <img src="yulmoo-dog.png" alt="율무 강아지" class="logo-image">
-                    </div>
-                    <h1 class="channel-name">율무인데요</h1>
-                </div>
-                
-                <!-- Contact Button -->
-                <div class="contact-section">
-                    <a href="mailto:iamyulmoo@naver.com" class="contact-btn">
-                        <i class="fas fa-envelope"></i>
-                        <div class="btn-text">문의 및 제안</div>
-                    </a>
-                </div>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <img src="yulmoo-dog.png" alt="율무" class="nav-logo-img">
+                <span class="nav-logo-text">율무인데요</span>
+            </div>
+            <div class="nav-menu">
+                <a href="#home" class="nav-link active">홈</a>
+                <a href="#videos" class="nav-link">영상</a>
+                <a href="#about" class="nav-link">소개</a>
+                <a href="#contact" class="nav-link">연락</a>
+            </div>
+            <div class="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
             </div>
         </div>
-    </header>
+    </nav>
 
-    <!-- Social Media Links -->
-    <section class="social-section">
-        <div class="container">
-            <div class="social-buttons">
-                <a href="#" class="social-btn youtube-btn">
-                    <div class="btn-text">유튜브</div>
-                    <div class="btn-subtext">(채널 주소 연결)</div>
-                </a>
-                <a href="#" class="social-btn tiktok-btn">
-                    <div class="btn-text">틱톡</div>
-                    <div class="btn-subtext">(채널 주소 연결)</div>
-                </a>
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-background">
+            <div class="floating-element element-1"></div>
+            <div class="floating-element element-2"></div>
+            <div class="floating-element element-3"></div>
+        </div>
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <i class="fas fa-heart"></i>
+                    <span>사랑받는 강아지</span>
+                </div>
+                <h1 class="hero-title">
+                    <span class="hero-title-main">율무인데요</span>
+                    <span class="hero-title-sub">귀여운 강아지의 일상</span>
+                </h1>
+                <p class="hero-description">
+                    매일매일 행복한 율무의 모습을 유튜브와 틱톡에서 만나보세요.<br>
+                    사랑스러운 순간들이 가득한 채널입니다.
+                </p>
+                <div class="hero-actions">
+                    <a href="#videos" class="btn btn-primary">
+                        <i class="fab fa-youtube"></i>
+                        <span>유튜브 구독</span>
+                    </a>
+                    <a href="#videos" class="btn btn-secondary">
+                        <i class="fab fa-tiktok"></i>
+                        <span>틱톡 팔로우</span>
+                    </a>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">10K+</span>
+                        <span class="stat-label">구독자</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">50+</span>
+                        <span class="stat-label">영상</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">1M+</span>
+                        <span class="stat-label">조회수</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="hero-image-container">
+                    <img src="yulmoo-dog.png" alt="율무" class="hero-image">
+                    <div class="hero-image-glow"></div>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Main Content -->
-    <main class="main-content">
+    <!-- Video Section -->
+    <section class="video-section" id="videos">
         <div class="container">
-            <!-- Popular Videos Section -->
-            <section class="video-section">
-                <h2 class="section-title">인기 동영상</h2>
-                <div class="video-grid" id="popular-videos">
-                    <div class="video-card">
-                        <div class="video-placeholder">인기동영상1</div>
+            <div class="section-header">
+                <h2 class="section-title">인기 영상</h2>
+                <p class="section-subtitle">가장 사랑받는 율무의 모습들</p>
+            </div>
+            
+            <div class="video-grid">
+                <div class="video-card featured">
+                    <div class="video-thumbnail">
+                        <div class="video-placeholder">
+                            <i class="fas fa-play"></i>
+                            <span>인기영상 1</span>
+                        </div>
+                        <div class="video-overlay">
+                            <div class="video-duration">3:24</div>
+                            <div class="video-views">1.2M 조회</div>
+                        </div>
                     </div>
-                    <div class="video-card">
-                        <div class="video-placeholder">인기동영상2</div>
-                    </div>
-                    <div class="video-card">
-                        <div class="video-placeholder">인기동영상3</div>
+                    <div class="video-info">
+                        <h3 class="video-title">율무의 첫 산책</h3>
+                        <p class="video-description">처음으로 산책을 나간 율무의 설레는 모습</p>
+                        <div class="video-meta">
+                            <span class="video-date">2일 전</span>
+                            <span class="video-likes">
+                                <i class="fas fa-heart"></i>
+                                12.5K
+                            </span>
+                        </div>
                     </div>
                 </div>
-            </section>
 
-            <!-- Recent Videos Section -->
-            <section class="video-section">
-                <h2 class="section-title">최근 업데이트 된 영상</h2>
-                <div class="video-grid" id="recent-videos">
-                    <div class="video-card">
-                        <div class="video-placeholder">최근영상1</div>
+                <div class="video-card">
+                    <div class="video-thumbnail">
+                        <div class="video-placeholder">
+                            <i class="fas fa-play"></i>
+                            <span>인기영상 2</span>
+                        </div>
+                        <div class="video-overlay">
+                            <div class="video-duration">2:15</div>
+                            <div class="video-views">890K 조회</div>
+                        </div>
                     </div>
-                    <div class="video-card">
-                        <div class="video-placeholder">최근영상2</div>
-                    </div>
-                    <div class="video-card">
-                        <div class="video-placeholder">최근영상3</div>
+                    <div class="video-info">
+                        <h3 class="video-title">율무의 점심시간</h3>
+                        <p class="video-description">맛있게 밥을 먹는 귀여운 모습</p>
+                        <div class="video-meta">
+                            <span class="video-date">5일 전</span>
+                            <span class="video-likes">
+                                <i class="fas fa-heart"></i>
+                                8.9K
+                            </span>
+                        </div>
                     </div>
                 </div>
-            </section>
+
+                <div class="video-card">
+                    <div class="video-thumbnail">
+                        <div class="video-placeholder">
+                            <i class="fas fa-play"></i>
+                            <span>인기영상 3</span>
+                        </div>
+                        <div class="video-overlay">
+                            <div class="video-duration">4:12</div>
+                            <div class="video-views">756K 조회</div>
+                        </div>
+                    </div>
+                    <div class="video-info">
+                        <h3 class="video-title">율무의 놀이시간</h3>
+                        <p class="video-description">장난감과 함께하는 즐거운 시간</p>
+                        <div class="video-meta">
+                            <span class="video-date">1주 전</span>
+                            <span class="video-likes">
+                                <i class="fas fa-heart"></i>
+                                7.2K
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="video-card">
+                    <div class="video-thumbnail">
+                        <div class="video-placeholder">
+                            <i class="fas fa-play"></i>
+                            <span>최근영상 1</span>
+                        </div>
+                        <div class="video-overlay">
+                            <div class="video-duration">1:45</div>
+                            <div class="video-views">234K 조회</div>
+                        </div>
+                    </div>
+                    <div class="video-info">
+                        <h3 class="video-title">율무의 아침 인사</h3>
+                        <p class="video-description">상쾌한 아침을 맞은 율무</p>
+                        <div class="video-meta">
+                            <span class="video-date">1일 전</span>
+                            <span class="video-likes">
+                                <i class="fas fa-heart"></i>
+                                3.1K
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="video-card">
+                    <div class="video-thumbnail">
+                        <div class="video-placeholder">
+                            <i class="fas fa-play"></i>
+                            <span>최근영상 2</span>
+                        </div>
+                        <div class="video-overlay">
+                            <div class="video-duration">2:33</div>
+                            <div class="video-views">189K 조회</div>
+                        </div>
+                    </div>
+                    <div class="video-info">
+                        <h3 class="video-title">율무의 저녁 산책</h3>
+                        <p class="video-description">저녁 공원에서의 즐거운 시간</p>
+                        <div class="video-meta">
+                            <span class="video-date">3일 전</span>
+                            <span class="video-likes">
+                                <i class="fas fa-heart"></i>
+                                2.8K
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="video-card">
+                    <div class="video-thumbnail">
+                        <div class="video-placeholder">
+                            <i class="fas fa-play"></i>
+                            <span>최근영상 3</span>
+                        </div>
+                        <div class="video-overlay">
+                            <div class="video-duration">1:58</div>
+                            <div class="video-views">156K 조회</div>
+                        </div>
+                    </div>
+                    <div class="video-info">
+                        <h3 class="video-title">율무의 잠자리</h3>
+                        <p class="video-description">편안하게 잠들어가는 모습</p>
+                        <div class="video-meta">
+                            <span class="video-date">4일 전</span>
+                            <span class="video-likes">
+                                <i class="fas fa-heart"></i>
+                                2.3K
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </main>
+    </section>
+
+    <!-- About Section -->
+    <section class="about-section" id="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2 class="about-title">율무에 대해</h2>
+                    <p class="about-description">
+                        율무는 2살 된 골든 리트리버입니다. 매일매일 새로운 모험을 즐기며, 
+                        사랑스러운 모습으로 많은 사람들에게 웃음을 선사하고 있습니다.
+                    </p>
+                    <div class="about-features">
+                        <div class="feature-item">
+                            <i class="fas fa-heart"></i>
+                            <span>사랑스러운 성격</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-paw"></i>
+                            <span>활발한 활동</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-smile"></i>
+                            <span>항상 웃는 얼굴</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-image">
+                    <img src="yulmoo-dog.png" alt="율무" class="about-img">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact-section" id="contact">
+        <div class="container">
+            <div class="contact-content">
+                <h2 class="contact-title">연락하기</h2>
+                <p class="contact-description">
+                    율무에 대한 문의나 제안이 있으시면 언제든 연락해주세요!
+                </p>
+                <div class="contact-actions">
+                    <a href="mailto:iamyulmoo@naver.com" class="contact-btn">
+                        <i class="fas fa-envelope"></i>
+                        <div class="btn-content">
+                            <span class="btn-text">이메일 보내기</span>
+                            <span class="btn-subtext">iamyulmoo@naver.com</span>
+                        </div>
+                    </a>
+                    <div class="social-links">
+                        <a href="#" class="social-link youtube">
+                            <i class="fab fa-youtube"></i>
+                            <span>유튜브</span>
+                        </a>
+                        <a href="#" class="social-link tiktok">
+                            <i class="fab fa-tiktok"></i>
+                            <span>틱톡</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
-            <p>&copy; 2024 반려견 채널. 모든 권리 보유.</p>
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="yulmoo-dog.png" alt="율무" class="footer-logo-img">
+                    <span class="footer-logo-text">율무인데요</span>
+                </div>
+                <p class="footer-text">
+                    &copy; 2024 율무인데요. 모든 권리 보유.<br>
+                    사랑스러운 율무와 함께하는 즐거운 시간을 만들어가요.
+                </p>
+            </div>
         </div>
     </footer>
 
