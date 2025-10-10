@@ -6,10 +6,34 @@
 }
 
 body {
-    font-family: 'Noto Sans KR', sans-serif;
+    font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     line-height: 1.6;
-    color: #333;
-    background-color: #f8f9fa;
+    color: #e5e7eb;
+    background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Animated Background */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.2) 0%, transparent 50%);
+    z-index: -1;
+    animation: backgroundShift 20s ease-in-out infinite;
+}
+
+@keyframes backgroundShift {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.8; }
 }
 
 .container {
@@ -20,9 +44,21 @@ body {
 
 /* Header Section */
 .header {
-    background-color: #fff;
+    background: rgba(45, 45, 45, 0.8);
+    backdrop-filter: blur(20px);
     padding: 30px 0;
-    border-bottom: 1px solid #e9ecef;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+}
+
+.header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
 }
 
 .header-content {
@@ -41,25 +77,51 @@ body {
     width: 80px;
     height: 80px;
     border-radius: 50%;
-    background-color: #e9ecef;
+    background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 2px solid #dee2e6;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 
+        0 0 20px rgba(255, 107, 107, 0.3),
+        inset 0 0 20px rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.logo-circle::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    animation: logoShine 3s ease-in-out infinite;
+}
+
+@keyframes logoShine {
+    0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+    50% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+    100% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
 }
 
 .logo-text {
     font-size: 12px;
-    color: #6c757d;
+    color: #ffffff;
     text-align: center;
     line-height: 1.2;
+    font-weight: 500;
+    z-index: 1;
+    position: relative;
 }
 
 .channel-name {
     font-size: 32px;
     font-weight: 700;
-    color: #333;
+    color: #ffffff;
     margin: 0;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
 }
 
 .contact-section {
@@ -68,24 +130,31 @@ body {
 }
 
 .contact-btn {
-    background-color: #1e3a8a;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
     padding: 12px 20px;
-    border-radius: 8px;
+    border-radius: 12px;
     text-decoration: none;
     display: flex;
     flex-direction: column;
     align-items: center;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
+    box-shadow: 
+        0 4px 15px rgba(102, 126, 234, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .contact-btn:hover {
-    background-color: #1e40af;
+    transform: translateY(-2px);
+    box-shadow: 
+        0 8px 25px rgba(102, 126, 234, 0.6),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
 .btn-text {
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 600;
     margin-bottom: 2px;
 }
 
@@ -96,9 +165,10 @@ body {
 
 /* Social Media Section */
 .social-section {
-    background-color: #fff;
+    background: rgba(45, 45, 45, 0.6);
+    backdrop-filter: blur(20px);
     padding: 20px 0;
-    border-bottom: 1px solid #e9ecef;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .social-buttons {
@@ -115,7 +185,7 @@ body {
     top: 50%;
     width: 100px;
     height: 1px;
-    background-color: #dee2e6;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
 }
 
 .social-buttons::before {
@@ -127,20 +197,27 @@ body {
 }
 
 .social-btn {
-    background-color: #1e3a8a;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
     padding: 12px 20px;
-    border-radius: 8px;
+    border-radius: 12px;
     text-decoration: none;
     display: flex;
     flex-direction: column;
     align-items: center;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
     min-width: 120px;
+    box-shadow: 
+        0 4px 15px rgba(102, 126, 234, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .social-btn:hover {
-    background-color: #1e40af;
+    transform: translateY(-2px);
+    box-shadow: 
+        0 8px 25px rgba(102, 126, 234, 0.6),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
 /* Main Content */
@@ -157,9 +234,10 @@ body {
     text-align: center;
     font-size: 28px;
     font-weight: 700;
-    color: #333;
+    color: #ffffff;
     margin-bottom: 30px;
     position: relative;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
 }
 
 .section-title::after {
@@ -170,7 +248,7 @@ body {
     transform: translateX(-50%);
     width: 100%;
     height: 1px;
-    background-color: #dee2e6;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
 }
 
 .video-grid {
@@ -181,40 +259,67 @@ body {
 }
 
 .video-card {
-    background-color: #fff;
-    border-radius: 12px;
+    background: rgba(45, 45, 45, 0.8);
+    backdrop-filter: blur(20px);
+    border-radius: 16px;
     padding: 20px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
     cursor: pointer;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.video-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
 }
 
 .video-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    transform: translateY(-8px);
+    box-shadow: 
+        0 16px 48px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.2);
 }
 
 .video-placeholder {
-    background-color: #e9ecef;
-    border: 2px solid #dee2e6;
-    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
     padding: 40px 20px;
     text-align: center;
     font-size: 16px;
-    color: #6c757d;
+    color: #e5e7eb;
     font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.video-card:hover .video-placeholder {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
 }
 
 /* Footer */
 .footer {
-    background-color: #fff;
+    background: rgba(45, 45, 45, 0.8);
+    backdrop-filter: blur(20px);
     padding: 30px 0;
-    border-top: 1px solid #e9ecef;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
     text-align: center;
 }
 
 .footer p {
-    color: #6c757d;
+    color: #9ca3af;
     font-size: 14px;
 }
 
@@ -223,7 +328,7 @@ body {
     position: fixed;
     bottom: 30px;
     right: 30px;
-    background-color: #1e3a8a;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
     border: none;
     border-radius: 50%;
@@ -235,6 +340,10 @@ body {
     visibility: hidden;
     transition: all 0.3s ease;
     z-index: 1000;
+    box-shadow: 
+        0 4px 15px rgba(102, 126, 234, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .back-to-top.visible {
@@ -243,8 +352,10 @@ body {
 }
 
 .back-to-top:hover {
-    background-color: #1e40af;
     transform: translateY(-2px);
+    box-shadow: 
+        0 8px 25px rgba(102, 126, 234, 0.6),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
 /* Responsive Design */
