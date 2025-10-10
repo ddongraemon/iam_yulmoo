@@ -582,7 +582,7 @@ body {
 
 /* Contact Section */
 .contact-section {
-    padding: var(--space-8) 0 var(--space-14) 0;
+    padding: var(--space-12) 0 var(--space-14) 0;
     background: var(--surface);
 }
 
