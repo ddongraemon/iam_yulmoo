@@ -910,61 +910,52 @@ body {
 
 /* Visitor Counter */
 .visitor-counter {
-    position: fixed;
-    bottom: 20px;
-    left: 20px;
-    z-index: 1000;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    padding: var(--space-3);
-    backdrop-filter: blur(10px);
-    box-shadow: var(--shadow);
+    margin-top: var(--space-4);
+    display: flex;
+    justify-content: flex-start;
 }
 
 .visitor-stats {
     display: flex;
-    gap: var(--space-4);
+    gap: var(--space-3);
 }
 
 .visitor-stat {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: var(--space-1);
+    gap: 2px;
 }
 
 .visitor-label {
-    font-size: var(--font-size-xs);
+    font-size: 0.6rem;
     color: var(--text-muted);
-    font-weight: 600;
+    font-weight: 500;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.3px;
 }
 
 .visitor-number {
-    font-size: var(--font-size-sm);
-    color: var(--text-primary);
-    font-weight: 700;
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    font-weight: 600;
 }
 
 /* Mobile responsive for visitor counter */
 @media (max-width: 768px) {
     .visitor-counter {
-        bottom: 10px;
-        left: 10px;
-        padding: var(--space-2);
+        margin-top: var(--space-3);
     }
     
     .visitor-stats {
-        gap: var(--space-3);
+        gap: var(--space-2);
     }
     
     .visitor-label {
-        font-size: 0.6rem;
+        font-size: 0.5rem;
     }
     
     .visitor-number {
-        font-size: var(--font-size-xs);
+        font-size: 0.6rem;
     }
 }
