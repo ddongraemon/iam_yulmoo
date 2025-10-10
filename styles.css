@@ -734,7 +734,7 @@ body {
 
 /* Footer */
 .footer {
-    padding: var(--space-10) 0;
+    padding: var(--space-6) 0;
     border-top: 1px solid var(--border);
     background: var(--surface);
 }
@@ -910,9 +910,9 @@ body {
 
 /* Visitor Counter */
 .visitor-counter {
-    margin-top: var(--space-4);
+    margin-top: var(--space-2);
     display: flex;
-    justify-content: flex-start;
+    justify-content: center;
 }
 
 .visitor-stats {
@@ -944,7 +944,7 @@ body {
 /* Mobile responsive for visitor counter */
 @media (max-width: 768px) {
     .visitor-counter {
-        margin-top: var(--space-3);
+        margin-top: var(--space-1);
     }
     
     .visitor-stats {
