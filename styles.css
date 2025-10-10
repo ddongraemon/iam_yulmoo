@@ -337,6 +337,19 @@ body {
     box-shadow: var(--shadow);
 }
 
+.btn-inquiry {
+    background: #282828;
+    color: white;
+    border: 1px solid #ff0000;
+}
+
+.btn-inquiry:hover {
+    background: #282828;
+    color: white;
+    border: 1px solid #ff0000;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+}
+
 .hero-stats {
     display: flex;
     flex-direction: column;
