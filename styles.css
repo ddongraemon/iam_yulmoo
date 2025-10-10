@@ -776,7 +776,7 @@ body {
 @media (max-width: 1024px) and (min-width: 769px) {
     .video-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: var(--space-4);
+        gap: var(--space-1);
     }
 }
 
@@ -818,7 +818,7 @@ body {
     
     .video-grid {
         grid-template-columns: 1fr;
-        gap: var(--space-4);
+        gap: var(--space-1);
     }
     
     .about-content {
