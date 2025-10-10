@@ -175,12 +175,12 @@ body {
 
 /* Hero Section */
 .hero {
-    min-height: 50vh;
+    min-height: 35vh;
     display: flex;
     align-items: center;
     position: relative;
     overflow: hidden;
-    padding: 20px 0 50px 0;
+    padding: 10px 0 20px 0;
 }
 
 .hero-background {
@@ -232,10 +232,10 @@ body {
 .hero-container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 var(--space-6);
+    padding: 0 var(--space-4);
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: var(--space-4);
+    gap: var(--space-3);
     align-items: center;
 }
 
@@ -258,7 +258,7 @@ body {
 }
 
 .hero-title {
-    margin-bottom: var(--space-4);
+    margin-bottom: var(--space-2);
 }
 
 .hero-title-main {
@@ -266,7 +266,7 @@ body {
     font-size: var(--font-size-4xl);
     font-weight: 800;
     line-height: 1.1;
-    margin-bottom: var(--space-2);
+    margin-bottom: var(--space-1);
     background: linear-gradient(135deg, var(--text-primary), var(--primary));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -283,14 +283,14 @@ body {
 .hero-description {
     font-size: var(--font-size-base);
     color: var(--text-secondary);
-    margin-bottom: var(--space-3);
+    margin-bottom: var(--space-2);
     line-height: 1.6;
 }
 
 .hero-actions {
     display: flex;
-    gap: var(--space-4);
-    margin-bottom: var(--space-4);
+    gap: var(--space-3);
+    margin-bottom: var(--space-3);
 }
 
 .btn {
