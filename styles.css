@@ -433,6 +433,8 @@ body {
     overflow: hidden;
     transition: var(--transition-normal);
     backdrop-filter: blur(10px);
+    max-width: 64%;
+    margin: 0 auto;
 }
 
 .video-card:hover {
