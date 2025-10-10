@@ -235,7 +235,7 @@ body {
     padding: 0 var(--space-4);
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: var(--space-16);
+    gap: 51px;
     align-items: center;
 }
 
@@ -347,7 +347,8 @@ body {
     background: #282828;
     color: white;
     border: 1px solid #ff0000;
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
 }
 
 .hero-stats {
