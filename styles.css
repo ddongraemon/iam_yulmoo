@@ -340,13 +340,13 @@ body {
 .btn-inquiry {
     background: #282828;
     color: white;
-    border: 1px solid #ff0000;
+    border: 1px solid var(--border);
 }
 
 .btn-inquiry:hover {
     background: #282828;
     color: white;
-    border: 1px solid #ff0000;
+    border: 1px solid var(--border);
     transform: translateY(-2px);
     box-shadow: var(--shadow);
 }
