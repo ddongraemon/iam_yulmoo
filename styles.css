@@ -831,10 +831,22 @@ body {
     }
     
     .hero-container {
-        grid-template-columns: 1fr 1fr;
-        gap: var(--space-4);
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: var(--space-3);
         text-align: center;
         align-items: center;
+    }
+    
+    .hero-content {
+        grid-column: 1 / -1;
+    }
+    
+    .hero-stats {
+        grid-column: 1;
+    }
+    
+    .hero-visual {
+        grid-column: 2 / -1;
     }
     
     .hero-title-main {
