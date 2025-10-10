@@ -407,7 +407,7 @@ body {
 .section-title {
     font-size: var(--font-size-3xl);
     font-weight: 700;
-    margin-bottom: var(--space-2);
+    margin-bottom: var(--space-1);
     background: linear-gradient(135deg, var(--text-primary), var(--primary));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -583,7 +583,7 @@ body {
 
 /* Contact Section */
 .contact-section {
-    padding: 20px 0 var(--space-14) 0 !important;
+    padding: 20px 0 !important;
     background: var(--surface);
 }
 
