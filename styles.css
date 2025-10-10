@@ -240,7 +240,16 @@ body {
     align-items: center;
 }
 
+.hero-visual {
+    grid-column: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+}
+
 .hero-content {
+    grid-column: 2;
     z-index: 1;
 }
 
@@ -258,27 +267,18 @@ body {
     backdrop-filter: blur(10px);
 }
 
-.hero-title {
-    margin-bottom: var(--space-2);
+
+.hero-image-container {
+    position: relative;
+    display: inline-block;
 }
 
-.hero-title-main {
-    display: block;
-    font-size: var(--font-size-4xl);
-    font-weight: 800;
-    line-height: 1.1;
-    margin-bottom: var(--space-1);
-    background: linear-gradient(135deg, var(--text-primary), var(--primary));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-.hero-title-sub {
-    display: block;
-    font-size: var(--font-size-2xl);
-    font-weight: 400;
-    color: var(--text-secondary);
+.hero-image {
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    border-radius: var(--radius-lg);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
 }
 
 .hero-description {
@@ -777,6 +777,11 @@ body {
     line-height: 1.6;
 }
 
+.copyright-text {
+    color: #ff0000;
+    font-weight: bold;
+}
+
 /* Back to Top Button */
 .back-to-top {
     position: fixed;
@@ -818,61 +823,94 @@ body {
     }
 }
 
-@media (max-width: 768px) {
+@media screen and (max-width: 768px) {
     .nav-menu {
-        display: none;
+        display: none !important;
     }
     
     .nav-toggle {
-        display: flex;
+        display: flex !important;
     }
     
     .hero {
-        padding: 80px 0 5px 0;
+        padding: 80px 0 5px 0 !important;
     }
     
-    /* Mobile Layout - Completely Separated */
+    /* Mobile Layout - Image First, Then Content */
     .hero-container {
-        grid-template-columns: 1fr;
-        gap: var(--space-5);
-        text-align: center;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 20px !important;
+        text-align: center !important;
     }
     
     .hero-content {
-        display: flex;
-        flex-direction: column;
-        gap: var(--space-4);
-    }
-    
-    .hero-stats {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-        gap: var(--space-4);
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 20px !important;
+        align-items: center !important;
     }
     
     .hero-visual {
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        width: 100% !important;
+        margin-bottom: 10px !important;
     }
     
-    .hero-stats-and-visual {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-        gap: var(--space-4);
-        margin-top: var(--space-4);
+    .hero-image-container {
+        transform: none !important;
+        max-width: 200px !important;
+        max-height: 200px !important;
+    }
+    
+    .hero-description {
+        text-align: center !important;
+        line-height: 1.4 !important;
+        width: 100% !important;
+    }
+    
+    .hero-actions {
+        display: flex !important;
+        justify-content: center !important;
+        gap: 15px !important;
+        width: 100% !important;
+    }
+    
+    .hero-stats {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 5px !important;
+        width: 100% !important;
+    }
+    
+    .stats-total {
+        font-size: 0.75rem !important;
+        margin-bottom: 5px !important;
+    }
+    
+    .stats-row {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 20px !important;
+        width: 100% !important;
+    }
+    
+    .stat-number {
+        font-size: 1.25rem !important;
+    }
+    
+    .stat-label {
+        font-size: 0.75rem !important;
     }
     
     .hero-title-main {
         font-size: var(--font-size-3xl);
-    }
-    
-    .hero-description {
-        line-height: 1.4;
     }
     
     .hero-description .mobile-break {
