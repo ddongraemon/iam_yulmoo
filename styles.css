@@ -340,6 +340,16 @@ body {
     text-align: center;
 }
 
+.stat-total {
+    display: block;
+    font-size: var(--font-size-xs);
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-bottom: var(--space-1);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
 .stat-number {
     display: block;
     font-size: var(--font-size-2xl);
