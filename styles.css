@@ -421,8 +421,8 @@ body {
 
 .video-grid {
     display: grid;
-    grid-template-columns: repeat(3, 0.8fr);
-    gap: var(--space-3);
+    grid-template-columns: repeat(3, 0.64fr);
+    gap: var(--space-4);
     justify-content: center;
 }
 
@@ -773,8 +773,8 @@ body {
 /* Tablet Responsive */
 @media (max-width: 1024px) and (min-width: 769px) {
     .video-grid {
-        grid-template-columns: repeat(2, 0.8fr);
-        gap: var(--space-3);
+        grid-template-columns: repeat(2, 0.64fr);
+        gap: var(--space-4);
     }
 }
 
@@ -815,8 +815,8 @@ body {
     }
     
     .video-grid {
-        grid-template-columns: 0.8fr;
-        gap: var(--space-3);
+        grid-template-columns: 0.64fr;
+        gap: var(--space-4);
     }
     
     .about-content {
