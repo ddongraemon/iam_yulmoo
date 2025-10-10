@@ -393,6 +393,10 @@ body {
     background: var(--surface);
 }
 
+.video-section.recent-videos {
+    background: var(--background);
+}
+
 .section-header {
     text-align: center;
     margin-bottom: var(--space-12);
@@ -415,7 +419,7 @@ body {
 
 .video-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: var(--space-6);
 }
 
@@ -760,6 +764,15 @@ body {
 }
 
 /* Responsive Design */
+
+/* Tablet Responsive */
+@media (max-width: 1024px) and (min-width: 769px) {
+    .video-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-4);
+    }
+}
+
 @media (max-width: 768px) {
     .nav-menu {
         display: none;
