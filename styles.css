@@ -288,12 +288,9 @@ body {
 }
 
 .pink-subscribe {
-    background: linear-gradient(135deg, var(--text-primary), var(--primary));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: #ffb5ce;
     font-weight: 700;
-    text-shadow: 0 0 10px rgba(255, 107, 157, 0.5);
+    text-shadow: 0 0 10px rgba(255, 181, 206, 0.5);
 }
 
 .hero-actions {
