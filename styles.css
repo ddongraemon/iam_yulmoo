@@ -287,6 +287,10 @@ body {
     line-height: 1.6;
 }
 
+.hero-description .mobile-break {
+    display: none;
+}
+
 .pink-subscribe {
     color: #ffb5ce;
     font-weight: 700;
@@ -835,6 +839,14 @@ body {
     
     .hero-title-main {
         font-size: var(--font-size-3xl);
+    }
+    
+    .hero-description {
+        line-height: 1.4;
+    }
+    
+    .hero-description .mobile-break {
+        display: block;
     }
     
     .hero-actions {
