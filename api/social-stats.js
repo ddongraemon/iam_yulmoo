@@ -2,6 +2,10 @@ const axios = require('axios');
 
 // YouTube API
 async function getChannelIdFromHandle(handle, apiKey) {
+    if (!handle || !apiKey) {
+        throw new Error('YouTube API 설정이 없습니다.');
+    }
+    
     const cleanHandle = handle.replace('@', '');
     const searchResponse = await axios.get('https://www.googleapis.com/youtube/v3/search', {
         params: {
@@ -21,22 +25,31 @@ async function getChannelIdFromHandle(handle, apiKey) {
 }
 
 async function fetchYouTubeStats(apiKey, channelHandle) {
-    const channelId = await getChannelIdFromHandle(channelHandle, apiKey);
-    
-    const channelResponse = await axios.get('https://www.googleapis.com/youtube/v3/channels', {
-        params: {
-            part: 'statistics',
-            id: channelId,
-            key: apiKey
+    try {
+        if (!apiKey || !channelHandle) {
+            return { subscribers: 0, videos: 0, views: 0 };
         }
-    });
+        
+        const channelId = await getChannelIdFromHandle(channelHandle, apiKey);
+        
+        const channelResponse = await axios.get('https://www.googleapis.com/youtube/v3/channels', {
+            params: {
+                part: 'statistics',
+                id: channelId,
+                key: apiKey
+            }
+        });
 
-    const stats = channelResponse.data.items[0].statistics;
-    return {
-        subscribers: parseInt(stats.subscriberCount),
-        videos: parseInt(stats.videoCount),
-        views: parseInt(stats.viewCount)
-    };
+        const stats = channelResponse.data.items[0].statistics;
+        return {
+            subscribers: parseInt(stats.subscriberCount),
+            videos: parseInt(stats.videoCount),
+            views: parseInt(stats.viewCount)
+        };
+    } catch (error) {
+        console.error('YouTube API 오류:', error.message);
+        return { subscribers: 0, videos: 0, views: 0 };
+    }
 }
 
 // Instagram API
