@@ -1070,8 +1070,8 @@ body {
     }
 }
 
-/* Medium Desktop (769px-1199px) */
-@media (min-width: 769px) and (max-width: 1199px) {
+/* Medium Desktop (700px-1199px) */
+@media (min-width: 700px) and (max-width: 1199px) {
     .video-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: var(--space-8);
@@ -1136,7 +1136,7 @@ body {
 }
 
 /* Tablet Responsive */
-@media (max-width: 1024px) and (min-width: 769px) {
+@media (max-width: 1024px) and (min-width: 700px) {
     /* 일반 컨테이너는 가운데 정렬 */
     .container {
         padding: 0 var(--space-4) !important;
@@ -1460,7 +1460,7 @@ body {
     }
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 700px) {
     /* 일반 컨테이너는 가운데 정렬 */
     .container {
         padding: 0 var(--space-4) !important;
@@ -1765,6 +1765,7 @@ body {
     
     .hero-title-main {
         font-size: var(--font-size-2xl) !important;
+        margin-bottom: 0 !important;
     }
     
     .hero-description {
@@ -2067,13 +2068,15 @@ body {
         margin-bottom: var(--space-1);
     }
     
-    /* 히어로 제목/부제목 더 작게 */
+    /* 히어로 제목/부제목 */
     .hero-title-main {
-        font-size: 1.4rem !important;
+        font-size: 1.55rem !important;
+        margin-bottom: 0 !important;
     }
     
     .hero-description {
-        font-size: 0.8rem !important;
+        font-size: 0.9rem !important;
+        line-height: 1.5 !important;
     }
     
     /* 푸터 더 작게 - 작은 모바일 화면 전용 여백 */
@@ -2115,42 +2118,143 @@ body {
         padding: 0 var(--space-4);
     }
     
+    /* 히어로 섹션 상하 공백 조정 */
     .hero {
-        padding: 48px 0 5px 0;
+        padding: 40px 0 var(--space-6) 0 !important;
+        min-height: auto !important;
+        display: block !important;
     }
     
+    .hero-container {
+        gap: var(--space-5) !important;
+        align-items: center !important;
+    }
+    
+    .hero-content {
+        gap: var(--space-3) !important;
+        text-align: center !important;
+    }
+    
+    .hero-title-main {
+        font-size: 1.55rem !important;
+        margin-bottom: var(--space-2) !important;
+    }
+    
+    .hero-description {
+        font-size: 0.9rem !important;
+        line-height: 1.5 !important;
+        margin-bottom: var(--space-2) !important;
+    }
     
     .hero-actions {
-        flex-direction: row;
-        flex-wrap: nowrap;
-        gap: var(--space-1);
+        gap: var(--space-3) !important;
+        margin-bottom: var(--space-3) !important;
+        justify-content: center !important;
+    }
+    
+    .hero-actions .btn {
+        padding: var(--space-2) var(--space-3) !important;
+        font-size: 0.7rem !important;
+        min-height: 36px !important;
+        flex: 1 !important;
+        max-width: 120px !important;
+    }
+    
+    .hero-stats {
+        gap: var(--space-3) !important;
+        margin-top: var(--space-3) !important;
+        margin-bottom: var(--space-6) !important;
+        justify-content: center !important;
+    }
+    
+    .stats-total {
+        margin-bottom: var(--space-1) !important;
+    }
+    
+    .stats-row {
+        gap: var(--space-4) !important;
+        justify-content: center !important;
+    }
+    
+    .hero-container {
+        gap: var(--space-4) !important;
+        padding: 0 !important;
+    }
+    
+    .hero-content {
+        gap: var(--space-2) !important;
+        padding: 0 !important;
+    }
+    
+    .hero-visual {
+        margin-bottom: var(--space-5) !important;
+    }
+    
+    .hero .hero-title {
+        margin-bottom: 1px !important;
+    }
+    
+    .hero .hero-title-main {
+        margin-bottom: 1px !important;
+    }
+    
+    .hero .hero-actions {
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+        gap: var(--space-3) !important;
+        margin-bottom: var(--space-3) !important;
+        margin-top: 0 !important;
     }
     
     .hero-actions .btn {
         flex: 1;
         min-width: 0;
-        padding: 3px 6px;
-        font-size: 0.55rem;
-        min-height: 28px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        padding: 5px 7px !important;
+        font-size: 0.65rem !important;
+        min-height: 32px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 100% !important;
     }
     
     .hero-actions .btn i {
-        font-size: 0.55rem;
-        margin-right: 2px;
+        font-size: 0.65rem !important;
+        margin-right: 2px !important;
+        width: auto !important;
+        height: auto !important;
     }
     
     .hero-actions .btn span {
-        font-size: 0.55rem;
-        white-space: nowrap;
-        line-height: 1;
+        font-size: 0.65rem !important;
+        white-space: nowrap !important;
+        line-height: 1.3 !important;
+        width: auto !important;
+        height: auto !important;
+    }
+    
+    /* 모든 버튼 타입에 동일한 스타일 강제 적용 */
+    .hero-actions .btn-primary,
+    .hero-actions .btn-secondary,
+    .hero-actions .btn-inquiry {
+        padding: 5px 7px !important;
+        font-size: 0.65rem !important;
+        min-height: 32px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        flex: 1 !important;
+        min-width: 0 !important;
     }
     
     .hero-stats {
         flex-direction: column;
-        gap: var(--space-2);
+        gap: var(--space-3);
+        margin-top: var(--space-2) !important;
+    }
+    
+    .stats-total {
+        margin-bottom: 2px !important;
     }
     
     .stats-row {
@@ -2158,7 +2262,7 @@ body {
         flex-direction: row !important;
         align-items: center !important;
         justify-content: center !important;
-        gap: 8px !important;
+        gap: var(--space-4) !important;
         width: 100% !important;
     }
     
@@ -2169,10 +2273,11 @@ body {
         justify-content: center !important;
         flex: 1 !important;
         min-width: 0 !important;
+        gap: var(--space-1) !important;
     }
     
     .stat-number {
-        font-size: 0.75rem !important;
+        font-size: 0.85rem !important;
         white-space: nowrap !important;
         line-height: 1 !important;
         overflow: hidden !important;
@@ -2180,16 +2285,25 @@ body {
     }
     
     .stat-label {
-        font-size: 0.6rem !important;
+        font-size: 0.68rem !important;
         white-space: nowrap !important;
         line-height: 1 !important;
         overflow: hidden !important;
         text-overflow: ellipsis !important;
     }
     
+    .stats-total {
+        font-size: 0.82rem !important;
+    }
+    
+    .mobile-hero-img {
+        width: 68px !important;
+        height: 68px !important;
+    }
+    
     .hero-image-container {
-        width: 120px;
-        height: 120px;
+        width: 135px;
+        height: 135px;
     }
     
     .section-title {
@@ -2336,7 +2450,7 @@ body {
     
     /* 히어로 섹션 상단 여백 추가 (네비게이션 바 높이만큼) */
     .hero {
-        padding-top: 80px !important; /* 네비게이션 바 높이 + 여백 */
+        padding-top: 50px !important; /* 네비게이션 바 높이 + 최소 여백 */
         margin-top: 0 !important;
     }
 }
@@ -2375,7 +2489,7 @@ body {
 }
 
 /* Mobile responsive for visitor counter */
-@media (max-width: 768px) {
+@media (max-width: 700px) {
     .visitor-counter {
         margin-top: var(--space-1);
     }
@@ -2394,7 +2508,7 @@ body {
 }
 
 /* 강제 네비게이션 바 크기 적용 */
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 700px) {
     html body .navbar {
         height: 42px !important;
         min-height: 42px !important;
@@ -2428,18 +2542,26 @@ body {
     .youtube-text {
         font-size: 0 !important;
         white-space: normal !important;
+        line-height: 1.3 !important;
     }
     
     .youtube-text::before {
         content: "유튜브";
         display: block;
-        font-size: 0.55rem !important;
+        font-size: 0.67rem !important;
+        line-height: 1.3 !important;
     }
     
     .youtube-text::after {
         content: "구독";
         display: block;
-        font-size: 0.55rem !important;
+        font-size: 0.67rem !important;
+        line-height: 1.3 !important;
+    }
+    
+    .tiktok-text::before,
+    .tiktok-text::after {
+        line-height: 1.3 !important;
     }
 }
 
@@ -2521,5 +2643,107 @@ body {
         padding: 1px 3px !important;
         text-align: right !important;
         width: fit-content !important;
+    }
+}
+
+/* 강제 히어로 간격 조정 - 480px 이하 */
+@media (max-width: 480px) {
+    html body .hero .hero-title,
+    html body .hero .hero-title-main {
+        margin-bottom: 1px !important;
+    }
+    
+    html body .hero .hero-actions {
+        margin-top: 0 !important;
+    }
+}
+
+/* 최고 특이성으로 강제 적용 */
+@media (max-width: 480px) {
+    html body section.hero div.hero-container div.hero-content h1.hero-title {
+        margin-bottom: 1px !important;
+    }
+    
+    html body section.hero div.hero-container div.hero-content h1.hero-title span.hero-title-main {
+        margin-bottom: 1px !important;
+    }
+    
+    html body section.hero div.hero-container div.hero-content div.hero-actions {
+        margin-top: 0 !important;
+    }
+    
+    /* 버튼 스타일 강제 적용 */
+    html body section.hero div.hero-container div.hero-content div.hero-actions a.btn,
+    html body section.hero div.hero-container div.hero-content div.hero-actions a.btn-primary,
+    html body section.hero div.hero-container div.hero-content div.hero-actions a.btn-secondary,
+    html body section.hero div.hero-container div.hero-content div.hero-actions a.btn-inquiry {
+        padding: 5px 7px !important;
+        font-size: 0.65rem !important;
+        min-height: 32px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        flex: 1 !important;
+        min-width: 0 !important;
+        width: 100% !important;
+    }
+    
+    html body section.hero div.hero-container div.hero-content div.hero-actions a.btn i {
+        font-size: 0.65rem !important;
+        margin-right: 2px !important;
+    }
+    
+    html body section.hero div.hero-container div.hero-content div.hero-actions a.btn span {
+        font-size: 0.65rem !important;
+        white-space: nowrap !important;
+        line-height: 1.3 !important;
+    }
+    
+    /* TOTAL과 통계 사이 공백 및 보라색 칸 완전 제거 */
+    html body section.hero div.hero-container div.hero-content div.hero-stats div.stats-total {
+        margin-bottom: 0 !important;
+        margin-top: 0 !important;
+        padding-bottom: 0 !important;
+        padding-top: 0 !important;
+        border-bottom: none !important;
+        border-top: none !important;
+        background: transparent !important;
+        background-color: transparent !important;
+        height: auto !important;
+        min-height: auto !important;
+        max-height: auto !important;
+    }
+    
+    /* 통계 관련 모든 요소에서 보라색 칸 제거 */
+    html body section.hero div.hero-container div.hero-content div.hero-stats div.stats-row {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+        border-top: none !important;
+        background: transparent !important;
+        background-color: transparent !important;
+    }
+    
+    html body section.hero div.hero-container div.hero-content div.hero-stats {
+        gap: 0 !important;
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+        border-top: none !important;
+        background: transparent !important;
+        background-color: transparent !important;
+    }
+    
+    /* 문의 버튼 크기 조정 */
+    html body section.hero div.hero-container div.hero-content div.hero-actions a.btn-inquiry {
+        width: 61.83px !important;
+        height: 38.35px !important;
+        min-width: 61.83px !important;
+        min-height: 38.35px !important;
+        max-width: 61.83px !important;
+        max-height: 38.35px !important;
+        padding: 0 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        flex: none !important;
     }
 }
