@@ -749,16 +749,16 @@ function renderRecentVideos(videos) {
         videoGrid.appendChild(videoCard);
     });
     
-    // 모바일과 태블릿에서 슬라이드 인디케이터 추가
+    // 모바일과 태블릿에서 슬라이드 인디케이터 추가 (인기영상과 동일)
     if (window.innerWidth <= 1198) {
         setTimeout(() => {
             addSlideIndicators(videoSection, videoGrid, videos.length);
-            // 드래그 기능 추가
+            // 드래그 및 터치 스크롤 기능 추가 (인기영상과 동일한 민감도)
             enableDragScroll(videoGrid);
         }, 100);
     }
     
-    console.log('최신 영상 렌더링 완료:', videos.length, '개');
+    console.log('최신 영상 렌더링 완료 (인기영상과 동일한 설정):', videos.length, '개');
 }
 
 // 슬라이드 인디케이터 추가 (모바일/태블릿용)
