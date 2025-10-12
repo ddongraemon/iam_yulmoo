@@ -1,0 +1,28 @@
+{
+  "total": {
+    "subscribers": "8.0K",
+    "subscribersRaw": 7971,
+    "videos": "433",
+    "videosRaw": 433,
+    "views": "5.4M",
+    "viewsRaw": 5369284
+  },
+  "platforms": {
+    "youtube": {
+      "subscribers": 4850,
+      "videos": 250,
+      "views": 5369284
+    },
+    "instagram": {
+      "followers": 3121,
+      "posts": 183,
+      "views": 0
+    },
+    "tiktok": {
+      "followers": 0,
+      "videos": 0,
+      "views": 0
+    }
+  },
+  "lastUpdate": "2025-10-11T17:39:17.815Z"
+}

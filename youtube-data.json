@@ -1,0 +1,81 @@
+{
+  "channelInfo": {
+    "subscriberCount": "4.8K",
+    "subscriberCountRaw": 4850,
+    "videoCount": "250",
+    "videoCountRaw": 250,
+    "viewCount": "5.4M",
+    "viewCountRaw": 5369284,
+    "lastUpdate": "2025-10-11T17:39:17.814Z"
+  },
+  "popularVideos": [
+    {
+      "videoId": "zhJULr5dGQ4",
+      "title": "술주정부리는 엄마를 대하는 강아지 반응",
+      "thumbnail": "https://i.ytimg.com/vi/zhJULr5dGQ4/hqdefault.jpg",
+      "duration": "0:32",
+      "viewCount": "700.4K",
+      "likeCount": "7.2K",
+      "commentCount": "1.1K",
+      "publishedAt": "2025-09-11T10:04:22Z",
+      "url": "https://www.youtube.com/watch?v=zhJULr5dGQ4"
+    },
+    {
+      "videoId": "BHsL5YKglxo",
+      "title": "할머니를 세상 격하게 반기는 강아지",
+      "thumbnail": "https://i.ytimg.com/vi/BHsL5YKglxo/hqdefault.jpg",
+      "duration": "0:26",
+      "viewCount": "364.7K",
+      "likeCount": "4.6K",
+      "commentCount": "93",
+      "publishedAt": "2025-02-01T10:00:08Z",
+      "url": "https://www.youtube.com/watch?v=BHsL5YKglxo"
+    },
+    {
+      "videoId": "WUYk1D5QgKQ",
+      "title": "세상에서 제일 수상한 강아지",
+      "thumbnail": "https://i.ytimg.com/vi/WUYk1D5QgKQ/hqdefault.jpg",
+      "duration": "0:25",
+      "viewCount": "211.1K",
+      "likeCount": "3.0K",
+      "commentCount": "103",
+      "publishedAt": "2025-08-14T10:09:31Z",
+      "url": "https://www.youtube.com/watch?v=WUYk1D5QgKQ"
+    }
+  ],
+  "recentVideos": [
+    {
+      "videoId": "oABHKLdpE28",
+      "title": "강아지 앞에서 말조심해야하는 이유",
+      "thumbnail": "https://i.ytimg.com/vi/oABHKLdpE28/hqdefault.jpg",
+      "duration": "0:28",
+      "viewCount": "1.7K",
+      "likeCount": "67",
+      "commentCount": "15",
+      "publishedAt": "2025-10-11T10:07:01Z",
+      "url": "https://www.youtube.com/watch?v=oABHKLdpE28"
+    },
+    {
+      "videoId": "iROfNbY7FUQ",
+      "title": "15KG 강아지가 무릎에서 잠드는 과정",
+      "thumbnail": "https://i.ytimg.com/vi/iROfNbY7FUQ/hqdefault.jpg",
+      "duration": "0:18",
+      "viewCount": "23.2K",
+      "likeCount": "328",
+      "commentCount": "48",
+      "publishedAt": "2025-10-10T10:09:01Z",
+      "url": "https://www.youtube.com/watch?v=iROfNbY7FUQ"
+    },
+    {
+      "videoId": "pBJzR1F4rU8",
+      "title": "아빠만 빼고 화목한 집안",
+      "thumbnail": "https://i.ytimg.com/vi/pBJzR1F4rU8/hqdefault.jpg",
+      "duration": "0:22",
+      "viewCount": "24.3K",
+      "likeCount": "209",
+      "commentCount": "21",
+      "publishedAt": "2025-10-09T10:08:43Z",
+      "url": "https://www.youtube.com/watch?v=pBJzR1F4rU8"
+    }
+  ]
+}
