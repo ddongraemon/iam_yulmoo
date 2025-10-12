@@ -915,31 +915,36 @@ function enableDragScroll(container) {
         const scrollDiff = currentScrollLeft - touchStartScrollLeft;
         const containerWidth = container.offsetWidth;
         
-        // 정확한 현재 인덱스 계산 (반올림으로 가장 가까운 카드)
-        const currentIndex = Math.round(touchStartScrollLeft / containerWidth);
+        // 현재 인덱스를 정확히 계산 (소수점 포함)
+        const exactCurrentIndex = touchStartScrollLeft / containerWidth;
+        const currentIndex = Math.floor(exactCurrentIndex);
         
         // 15px 이상 움직였으면 다음/이전 영상으로
         if (Math.abs(scrollDiff) >= MIN_SWIPE_DISTANCE) {
             let targetIndex;
             
             if (scrollDiff > 0) {
+                // 오른쪽 스와이프: 항상 다음 영상으로
                 targetIndex = currentIndex + 1;
             } else {
+                // 왼쪽 스와이프: 항상 이전 영상으로
                 targetIndex = currentIndex - 1;
             }
             
             const maxIndex = Math.floor(container.scrollWidth / containerWidth) - 1;
             targetIndex = Math.max(0, Math.min(targetIndex, maxIndex));
             
-            // 즉시 이동
+            // 타겟 위치로 즉시 이동
+            const targetScrollLeft = targetIndex * containerWidth;
             container.scrollTo({
-                left: targetIndex * containerWidth,
+                left: targetScrollLeft,
                 behavior: 'smooth'
             });
         } else {
-            // 15px 미만이면 원래 위치로 정확히 스냅
+            // 15px 미만이면 가장 가까운 위치로 스냅
+            const nearestIndex = Math.round(exactCurrentIndex);
             container.scrollTo({
-                left: currentIndex * containerWidth,
+                left: nearestIndex * containerWidth,
                 behavior: 'smooth'
             });
         }
