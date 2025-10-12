@@ -648,12 +648,28 @@ async function loadYouTubeData() {
     try {
         console.log('📺 YouTube 데이터 로딩 중...');
         
-        // YouTube 영상 데이터 로드
-        const youtubeResponse = await fetch('/api/youtube-data');
-        if (youtubeResponse.ok) {
-            const youtubeData = await youtubeResponse.json();
-            console.log('✅ YouTube 데이터 로드 완료');
-            
+        let youtubeData = null;
+        
+        // YouTube 영상 데이터 로드 (API 우선, 실패 시 정적 파일)
+        try {
+            const youtubeResponse = await fetch('/api/youtube-data');
+            if (youtubeResponse.ok) {
+                youtubeData = await youtubeResponse.json();
+                console.log('✅ YouTube API 데이터 로드 완료');
+            } else {
+                throw new Error('API 응답 실패');
+            }
+        } catch (apiError) {
+            console.warn('⚠️ API 호출 실패, 캐시된 데이터 사용:', apiError.message);
+            // API 실패 시 정적 JSON 파일 사용
+            const fallbackResponse = await fetch('/youtube-data.json');
+            if (fallbackResponse.ok) {
+                youtubeData = await fallbackResponse.json();
+                console.log('✅ 캐시된 YouTube 데이터 로드 완료');
+            }
+        }
+        
+        if (youtubeData) {
             // 영상 섹션 렌더링
             renderPopularVideos(youtubeData.popularVideos);
             renderRecentVideos(youtubeData.recentVideos);
@@ -664,11 +680,27 @@ async function loadYouTubeData() {
         
         // 통합 소셜 미디어 통계 로드
         console.log('📊 통합 통계 데이터 로딩 중...');
-        const statsResponse = await fetch('/api/social-stats');
-        if (statsResponse.ok) {
-            const statsData = await statsResponse.json();
-            console.log('✅ 통합 통계 로드 완료:', statsData);
-            
+        let statsData = null;
+        
+        try {
+            const statsResponse = await fetch('/api/social-stats');
+            if (statsResponse.ok) {
+                statsData = await statsResponse.json();
+                console.log('✅ 통합 통계 API 데이터 로드 완료:', statsData);
+            } else {
+                throw new Error('API 응답 실패');
+            }
+        } catch (apiError) {
+            console.warn('⚠️ 통계 API 호출 실패, 캐시된 데이터 사용:', apiError.message);
+            // API 실패 시 정적 JSON 파일 사용
+            const fallbackResponse = await fetch('/social-stats.json');
+            if (fallbackResponse.ok) {
+                statsData = await fallbackResponse.json();
+                console.log('✅ 캐시된 통계 데이터 로드 완료:', statsData);
+            }
+        }
+        
+        if (statsData && statsData.total) {
             // 히어로 섹션 통계 업데이트
             updateHeroStats(statsData.total);
         }
