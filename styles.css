@@ -1426,7 +1426,7 @@ body {
         flex-wrap: nowrap !important;
         overflow-x: auto !important;
         overflow-y: visible !important;
-        scroll-snap-type: x proximity !important;
+        scroll-snap-type: none !important;
         scroll-behavior: auto !important;
         -webkit-overflow-scrolling: touch !important;
         scrollbar-width: none !important;
@@ -1457,7 +1457,7 @@ body {
         min-width: 60% !important;
         max-width: 60% !important;
         width: 60% !important;
-        scroll-snap-align: center !important;
+        scroll-snap-align: none !important;
         scroll-snap-stop: normal !important;
         padding: var(--space-3) !important;
         box-sizing: border-box !important;
@@ -1976,7 +1976,7 @@ body {
         flex-wrap: nowrap !important;
         overflow-x: auto !important;
         overflow-y: visible !important;
-        scroll-snap-type: x proximity !important;
+        scroll-snap-type: none !important;
         scroll-behavior: auto !important;
         -webkit-overflow-scrolling: touch !important;
         scrollbar-width: none !important;
@@ -2007,7 +2007,7 @@ body {
         min-width: 100% !important;
         max-width: 100% !important;
         width: 100% !important;
-        scroll-snap-align: center !important;
+        scroll-snap-align: none !important;
         scroll-snap-stop: normal !important;
         margin: 0 !important;
         padding: 0 !important;

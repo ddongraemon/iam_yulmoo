@@ -830,7 +830,7 @@ function addSlideIndicators(videoSection, videoGrid, videoCount) {
     videoGrid.addEventListener('scroll', updateIndicator, { passive: true });
 }
 
-// 드래그 스크롤 기능 (마우스 및 터치)
+// 드래그 스크롤 기능 (마우스 및 초민감 터치)
 function enableDragScroll(container) {
     let isDown = false;
     let startX;
@@ -863,47 +863,59 @@ function enableDragScroll(container) {
         container.scrollLeft = scrollLeft - walk;
     });
     
-    // 터치 이벤트 - 스냅 보조
+    // 초민감 터치 이벤트 - 조금만 슬라이드해도 바로 다음 영상으로
     let touchStartX = 0;
-    let touchStartTime = 0;
+    let touchStartScrollLeft = 0;
+    const MIN_SWIPE_DISTANCE = 30; // 30px만 움직여도 다음 영상으로
     
     container.addEventListener('touchstart', (e) => {
         touchStartX = e.touches[0].clientX;
-        touchStartTime = Date.now();
+        touchStartScrollLeft = container.scrollLeft;
+    }, { passive: true });
+    
+    container.addEventListener('touchmove', (e) => {
+        // 스크롤 타임아웃 클리어
+        clearTimeout(scrollTimeout);
     }, { passive: true });
     
     container.addEventListener('touchend', (e) => {
-        const touchEndTime = Date.now();
-        const touchDuration = touchEndTime - touchStartTime;
+        const currentScrollLeft = container.scrollLeft;
+        const scrollDiff = currentScrollLeft - touchStartScrollLeft;
+        const containerWidth = container.offsetWidth;
         
-        // 빠른 스와이프 감지 (300ms 이내)
-        if (touchDuration < 300) {
-            clearTimeout(scrollTimeout);
-            scrollTimeout = setTimeout(() => {
-                snapToNearestCard(container);
-            }, 100);
+        // 조금이라도 움직였으면 다음/이전 카드로 스냅
+        if (Math.abs(scrollDiff) > MIN_SWIPE_DISTANCE) {
+            const currentIndex = Math.round(touchStartScrollLeft / containerWidth);
+            let targetIndex;
+            
+            if (scrollDiff > 0) {
+                // 오른쪽으로 스와이프 (다음 영상)
+                targetIndex = currentIndex + 1;
+            } else {
+                // 왼쪽으로 스와이프 (이전 영상)
+                targetIndex = currentIndex - 1;
+            }
+            
+            // 경계값 처리
+            const maxIndex = Math.ceil(container.scrollWidth / containerWidth) - 1;
+            targetIndex = Math.max(0, Math.min(targetIndex, maxIndex));
+            
+            // 즉시 타겟 카드로 이동
+            container.scrollTo({
+                left: targetIndex * containerWidth,
+                behavior: 'smooth'
+            });
         } else {
-            // 일반 스크롤 종료 시
-            clearTimeout(scrollTimeout);
-            scrollTimeout = setTimeout(() => {
-                snapToNearestCard(container);
-            }, 150);
-        }
-    }, { passive: true });
-    
-    // 스크롤 종료 시 자동 스냅
-    container.addEventListener('scroll', () => {
-        clearTimeout(scrollTimeout);
-        scrollTimeout = setTimeout(() => {
+            // 움직임이 미미하면 원래 위치로
             snapToNearestCard(container);
-        }, 150);
+        }
     }, { passive: true });
     
     // 기본 커서 스타일
     container.style.cursor = 'grab';
 }
 
-// 가장 가까운 카드로 스냅
+// 가장 가까운 카드로 스냅 (보조 함수)
 function snapToNearestCard(container) {
     const containerWidth = container.offsetWidth;
     const scrollPosition = container.scrollLeft;
