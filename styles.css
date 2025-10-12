@@ -144,8 +144,9 @@ body {
     background: rgba(10, 10, 15, 0.8);
     backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--border);
-    z-index: 1000;
+    z-index: 999999;
     transition: var(--transition-normal);
+    overflow: visible;
 }
 
 .nav-container {
@@ -156,6 +157,7 @@ body {
     align-items: center;
     justify-content: space-between;
     min-height: 70px;
+    position: relative;
 }
 
 .nav-logo {
@@ -230,6 +232,115 @@ body {
     transition: var(--transition-normal);
 }
 
+/* 701px 이상에서는 일반 메뉴 유지 */
+@media (min-width: 701px) {
+    .nav-toggle {
+        display: none !important;
+    }
+    
+    .nav-menu {
+        display: flex !important;
+        flex-direction: row !important;
+        position: static !important;
+        background: transparent !important;
+        backdrop-filter: none !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        gap: var(--space-8) !important;
+    }
+    
+    .nav-link {
+        border-bottom: none !important;
+        text-align: left !important;
+        position: relative !important;
+    }
+    
+    .nav-link::after {
+        content: '' !important;
+        position: absolute !important;
+        bottom: -8px !important;
+        left: 0 !important;
+        width: 0 !important;
+        height: 2px !important;
+        background: var(--primary) !important;
+        transition: var(--transition-normal) !important;
+        display: block !important;
+    }
+    
+    .nav-link.active::after,
+    .nav-link:hover::after {
+        width: 100% !important;
+    }
+}
+
+/* 700px 이하에서 모바일 메뉴 활성화 */
+@media (max-width: 700px) {
+    /* 햄버거 메뉴 표시 */
+    .nav-toggle {
+        display: flex !important;
+        cursor: pointer;
+    }
+    
+    /* 기본 nav-menu 숨김 */
+    .nav-menu {
+        display: none !important;
+        position: fixed !important;
+        top: 42px !important;
+        right: 1rem !important;
+        width: 250px !important;
+        min-width: 200px !important;
+        max-width: 300px !important;
+        background: rgba(10, 10, 15, 0.98) !important;
+        backdrop-filter: blur(20px) !important;
+        flex-direction: column !important;
+        padding: var(--space-4) !important;
+        gap: var(--space-3) !important;
+        border-top: 1px solid var(--border) !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+        z-index: 999999 !important;
+        box-sizing: border-box !important;
+        margin: 0 !important;
+    }
+    
+    /* active 클래스가 있을 때만 표시 */
+    .nav-menu.active {
+        display: flex !important;
+    }
+    
+    /* 메뉴 링크 스타일 */
+    .nav-menu .nav-link {
+        padding: var(--space-3) var(--space-2) !important;
+        text-align: center !important;
+        font-size: var(--font-size-base) !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+        width: 100% !important;
+        position: static !important;
+    }
+    
+    .nav-menu .nav-link:last-child {
+        border-bottom: none !important;
+    }
+    
+    .nav-menu .nav-link::after {
+        display: none !important;
+        content: none !important;
+    }
+    
+    /* 햄버거 메뉴 애니메이션 */
+    .nav-toggle.active span:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 5px);
+    }
+    
+    .nav-toggle.active span:nth-child(2) {
+        opacity: 0;
+    }
+    
+    .nav-toggle.active span:nth-child(3) {
+        transform: rotate(-45deg) translate(7px, -6px);
+    }
+}
+
 /* Hero Section */
 .hero {
     min-height: 35vh;
@@ -238,6 +349,7 @@ body {
     position: relative;
     overflow: hidden;
     padding: 90px 0 5px 0;
+    z-index: -1;
 }
 
 .hero-background {
@@ -528,12 +640,18 @@ body {
     margin-bottom: var(--space-6);
 }
 
-/* 태블릿 및 모바일에서 section-header margin-bottom 완전 제거 */
-@media (max-width: 1023px) {
+/* 1198px 이하에서 section-header margin-bottom 완전 제거 및 인디케이터 간격 조정 */
+@media (max-width: 1198px) {
     .section-header {
         margin-bottom: 0 !important;
         padding-bottom: 0 !important;
         margin: 0 !important;
+    }
+    
+    /* 영상카드와 인디케이터 간격 줄이기 */
+    .slide-indicators {
+        margin-top: var(--space-2) !important;
+        padding: var(--space-1) 0 !important;
     }
 }
 
@@ -1136,7 +1254,7 @@ body {
 }
 
 /* Tablet Responsive */
-@media (max-width: 1024px) and (min-width: 700px) {
+@media (max-width: 1198px) and (min-width: 700px) {
     /* 일반 컨테이너는 가운데 정렬 */
     .container {
         padding: 0 var(--space-4) !important;
@@ -1306,7 +1424,7 @@ body {
         display: flex !important;
         flex-direction: row !important;
         flex-wrap: nowrap !important;
-        overflow-x: scroll !important;
+        overflow-x: auto !important;
         overflow-y: visible !important;
         scroll-snap-type: x mandatory !important;
         scroll-behavior: smooth !important;
@@ -1365,8 +1483,8 @@ body {
         justify-content: center !important;
         align-items: center !important;
         gap: 8px !important;
-        margin-top: var(--space-4) !important;
-        padding: var(--space-2) 0 !important;
+        margin-top: var(--space-2) !important;
+        padding: var(--space-1) 0 !important;
         width: 100% !important;
         visibility: visible !important;
         opacity: 1 !important;
@@ -1537,12 +1655,42 @@ body {
         background-color: var(--text-primary);
     }
     
+    /* 700px 이하에서 nav-menu 표시 설정 (중요!) */
     .nav-menu {
         display: none !important;
+        position: fixed !important;
+        top: 42px !important;
+        left: 0 !important;
+        right: 0 !important;
+        width: 100% !important;
+        background: rgba(10, 10, 15, 0.98) !important;
+        backdrop-filter: blur(20px) !important;
+        flex-direction: column !important;
+        padding: var(--space-4) !important;
+        gap: var(--space-3) !important;
+        border-top: 1px solid var(--border) !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+        z-index: 10000 !important;
     }
     
-    .nav-toggle {
+    .nav-menu.active {
         display: flex !important;
+    }
+    
+    .nav-menu .nav-link {
+        padding: var(--space-3) var(--space-2) !important;
+        text-align: center !important;
+        font-size: var(--font-size-base) !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+        width: 100% !important;
+    }
+    
+    .nav-menu .nav-link:last-child {
+        border-bottom: none !important;
+    }
+    
+    .nav-menu .nav-link::after {
+        display: none !important;
     }
     
     /* 섹션 제목/소제목 크기 */
@@ -1822,7 +1970,7 @@ body {
         display: flex !important;
         flex-direction: row !important;
         flex-wrap: nowrap !important;
-        overflow-x: scroll !important;
+        overflow-x: auto !important;
         overflow-y: visible !important;
         scroll-snap-type: x mandatory !important;
         scroll-behavior: smooth !important;
@@ -1935,8 +2083,8 @@ body {
     justify-content: center;
     align-items: center;
     gap: 8px;
-    margin-top: var(--space-4);
-    padding: var(--space-2) 0;
+    margin-top: var(--space-2);
+    padding: var(--space-1) 0;
     width: 100%;
 }
 
@@ -2048,6 +2196,11 @@ body {
     .nav-toggle span {
         height: 1.5px;
         background-color: var(--text-primary);
+    }
+    
+    /* 480px 이하에서 nav-menu 위치 조정 */
+    .nav-menu {
+        top: 38px !important;
     }
     
     /* 섹션 제목/소제목 더 작게 */

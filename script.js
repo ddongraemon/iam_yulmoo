@@ -36,6 +36,8 @@ function initializeApp() {
 }
 
 // Navigation functionality
+let isManualScroll = false; // 수동 스크롤 플래그
+
 function setupNavigation() {
     // Smooth scrolling for navigation links
     elements.navLinks.forEach(link => {
@@ -45,24 +47,37 @@ function setupNavigation() {
             const targetElement = document.querySelector(targetId);
             
             if (targetElement) {
-                const offsetTop = targetElement.offsetTop - 70; // Account for fixed navbar
+                // Update active link immediately
+                elements.navLinks.forEach(l => {
+                    l.classList.remove('active');
+                });
+                link.classList.add('active');
+                
+                // Set manual scroll flag
+                isManualScroll = true;
+                
+                const offsetTop = targetElement.offsetTop - 70;
                 window.scrollTo({
                     top: offsetTop,
                     behavior: 'smooth'
                 });
                 
-                // Update active link
-                elements.navLinks.forEach(l => l.classList.remove('active'));
-                link.classList.add('active');
+                // Reset flag after scroll animation
+                setTimeout(() => {
+                    isManualScroll = false;
+                }, 1000);
             }
         });
     });
     
-    // Update active link on scroll
+    // Update active link on scroll (only when not manually scrolling)
     window.addEventListener('scroll', updateActiveNavLink);
 }
 
 function updateActiveNavLink() {
+    // Skip if user manually clicked a link
+    if (isManualScroll) return;
+    
     const sections = document.querySelectorAll('section[id]');
     const scrollPos = window.scrollY + 100;
     
@@ -203,18 +218,232 @@ function setupMobileMenu() {
     const navMenu = document.querySelector('.nav-menu');
     
     if (navToggle && navMenu) {
-        navToggle.addEventListener('click', () => {
+        navToggle.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            // 700px 이하에서만 작동
+            if (window.innerWidth <= 700) {
             navToggle.classList.toggle('active');
             navMenu.classList.toggle('active');
-        });
-        
-        // Close menu when clicking on a link
-        elements.navLinks.forEach(link => {
+                
+                // 강제로 스타일 적용
+                if (navMenu.classList.contains('active')) {
+                    navMenu.style.setProperty('display', 'flex', 'important');
+                    navMenu.style.position = 'fixed';
+                    navMenu.style.top = '70px';
+                    navMenu.style.right = '1rem';
+                    // 화면 크기에 비례한 콤팩트한 크기 설정
+                    const screenWidth = window.innerWidth;
+                    const baseWidth = Math.max(screenWidth * 0.25, 120); // 화면 너비의 25%, 최소 120px
+                    const baseHeight = Math.max(screenWidth * 0.25, 150); // 화면 너비의 25%, 최소 150px
+                    const fontSize = Math.max(screenWidth * 0.025, 10); // 화면 너비의 2.5%, 최소 10px
+                    const padding = Math.max(screenWidth * 0.015, 6); // 화면 너비의 1.5%, 최소 6px
+                    const gap = Math.max(screenWidth * 0.01, 3); // 화면 너비의 1%, 최소 3px
+                    
+                    navMenu.style.setProperty('width', `${baseWidth}px`, 'important');
+                    navMenu.style.setProperty('min-width', `${Math.min(baseWidth * 0.9, 110)}px`, 'important');
+                    navMenu.style.setProperty('max-width', `${Math.min(baseWidth * 1.1, 140)}px`, 'important');
+                    navMenu.style.setProperty('left', 'auto', 'important');
+                    navMenu.style.setProperty('right', `${Math.max(screenWidth * 0.03, 8)}px`, 'important');
+                    navMenu.style.height = 'auto';
+                    navMenu.style.maxHeight = `${baseHeight}px`;
+                    navMenu.style.backgroundColor = 'rgba(10, 10, 15, 0.95)';
+                    navMenu.style.backdropFilter = 'blur(20px)';
+                    navMenu.style.flexDirection = 'column';
+                    navMenu.style.setProperty('padding', `${padding}px`, 'important');
+                    navMenu.style.setProperty('gap', `${gap * 2}px`, 'important');
+                    navMenu.style.borderRadius = '8px';
+                    navMenu.style.border = 'none';
+                    navMenu.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.3)';
+                    navMenu.style.zIndex = '9999999';
+                    navMenu.style.overflow = 'visible';
+                    navMenu.style.opacity = '0';
+                    navMenu.style.transform = 'translateY(-10px) scale(0.95)';
+                    navMenu.style.transition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+                    
+                    // body에 직접 추가하여 모든 요소 위에 표시
+                    document.body.appendChild(navMenu);
+                    
+                    // 깔끔한 메뉴 링크들 (이미지 스타일)
+                    const menuLinks = navMenu.querySelectorAll('.nav-link');
+                    menuLinks.forEach((link, index) => {
+                        // 기본 스타일 설정
+                        link.style.setProperty('font-size', `${fontSize}px`, 'important');
+                        link.style.setProperty('padding', `${gap * 1.5}px 0`, 'important');
+                        link.style.setProperty('margin', '0', 'important');
+                        link.style.setProperty('border-radius', '0', 'important');
+                        link.style.setProperty('background', 'transparent', 'important');
+                        link.style.setProperty('border', 'none', 'important');
+                        link.style.setProperty('backdrop-filter', 'none', 'important');
+                        link.style.setProperty('transition', 'all 0.3s ease', 'important');
+                        link.style.setProperty('color', '#ffffff', 'important');
+                        link.style.setProperty('text-align', 'center', 'important');
+                        link.style.setProperty('font-weight', '400', 'important');
+                        link.style.setProperty('text-shadow', 'none', 'important');
+                        link.style.setProperty('box-shadow', 'none', 'important');
+                        link.style.setProperty('position', 'relative', 'important');
+                        link.style.setProperty('display', 'block', 'important');
+                        link.style.setProperty('text-decoration', 'none', 'important');
+                        
+                        // 핑크 밑줄 효과 (이미지와 동일)
+                        const underline = document.createElement('div');
+                        underline.style.position = 'absolute';
+                        underline.style.bottom = '0';
+                        underline.style.left = '50%';
+                        underline.style.transform = 'translateX(-50%)';
+                        underline.style.width = '0';
+                        underline.style.height = '2px';
+                        underline.style.backgroundColor = '#ff6b9d';
+                        underline.style.transition = 'width 0.3s ease';
+                        underline.style.borderRadius = '1px';
+                        link.appendChild(underline);
+                        
+                        // 호버 효과
+                        link.addEventListener('mouseenter', () => {
+                            underline.style.width = '100%';
+                            link.style.setProperty('color', '#ffffff', 'important');
+                        });
+                        
+                        link.addEventListener('mouseleave', () => {
+                            underline.style.width = '0';
+                            link.style.setProperty('color', '#ffffff', 'important');
+                        });
+                        
+                        // 메뉴 클릭 시 무조건 메뉴 닫기 (안전한 방법)
             link.addEventListener('click', () => {
+                            // 즉시 메뉴 닫기
                 navToggle.classList.remove('active');
                 navMenu.classList.remove('active');
+                            
+                            // 스타일 즉시 초기화
+                            navMenu.style.display = 'none';
+                            navMenu.style.opacity = '0';
+                            navMenu.style.transform = 'translateY(-10px) scale(0.95)';
+                            
+                            // 밑줄 요소 제거
+                            const underline = link.querySelector('div');
+                            if (underline) {
+                                underline.remove();
+                            }
+                            
+                            // 원래 위치로 되돌리기
+                            const navContainer = document.querySelector('.nav-container');
+                            if (navContainer) {
+                                navContainer.appendChild(navMenu);
+                            }
             });
         });
+                    
+                    // 애니메이션 효과 적용
+                    setTimeout(() => {
+                        navMenu.style.opacity = '1';
+                        navMenu.style.transform = 'translateY(0) scale(1)';
+                    }, 10);
+                } else {
+                    // 닫기 애니메이션
+                    navMenu.style.opacity = '0';
+                    navMenu.style.transform = 'translateY(-10px) scale(0.95)';
+                    
+                    // 애니메이션 완료 후 스타일 초기화
+                    setTimeout(() => {
+                        // 메뉴 링크 스타일 및 이벤트 초기화
+                        const menuLinks = navMenu.querySelectorAll('.nav-link');
+                        menuLinks.forEach(link => {
+                            // 밑줄 요소 제거
+                            const underline = link.querySelector('div');
+                            if (underline) {
+                                underline.remove();
+                            }
+                            
+                            link.style.removeProperty('font-size');
+                            link.style.removeProperty('padding');
+                            link.style.removeProperty('margin');
+                            link.style.removeProperty('border-radius');
+                            link.style.removeProperty('background');
+                            link.style.removeProperty('border');
+                            link.style.removeProperty('backdrop-filter');
+                            link.style.removeProperty('transition');
+                            link.style.removeProperty('color');
+                            link.style.removeProperty('text-align');
+                            link.style.removeProperty('font-weight');
+                            link.style.removeProperty('text-shadow');
+                            link.style.removeProperty('box-shadow');
+                            link.style.removeProperty('position');
+                            link.style.removeProperty('transform');
+                            
+                            // 이벤트 리스너 제거를 위해 클론
+                            const newLink = link.cloneNode(true);
+                            link.parentNode.replaceChild(newLink, link);
+                        });
+                        
+                        navMenu.style.removeProperty('display');
+                        navMenu.style.position = '';
+                        navMenu.style.top = '';
+                        navMenu.style.right = '';
+                        navMenu.style.width = '';
+                        navMenu.style.minWidth = '';
+                        navMenu.style.maxWidth = '';
+                        navMenu.style.height = '';
+                        navMenu.style.maxHeight = '';
+                        navMenu.style.backgroundColor = '';
+                        navMenu.style.backdropFilter = '';
+                        navMenu.style.flexDirection = '';
+                        navMenu.style.padding = '';
+                        navMenu.style.gap = '';
+                        navMenu.style.borderRadius = '';
+                        navMenu.style.borderTop = '';
+                        navMenu.style.boxShadow = '';
+                        navMenu.style.zIndex = '';
+                        navMenu.style.overflow = '';
+                        navMenu.style.opacity = '';
+                        navMenu.style.transform = '';
+                        navMenu.style.transition = '';
+                        
+                        // 원래 위치로 되돌리기
+                        const navContainer = document.querySelector('.nav-container');
+                        if (navContainer) {
+                            navContainer.appendChild(navMenu);
+                        }
+                    }, 300);
+                }
+            }
+        });
+        
+        // 메뉴 링크 클릭 이벤트는 각 링크에 직접 추가됨 (위에서 처리)
+        
+        // 화면 크기 변경 시 메뉴 초기화
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 700) {
+                navToggle.classList.remove('active');
+                navMenu.classList.remove('active');
+                // 스타일 초기화
+                navMenu.style.display = '';
+                navMenu.style.position = '';
+                navMenu.style.top = '';
+                navMenu.style.left = '';
+                navMenu.style.right = '';
+                navMenu.style.width = '';
+                navMenu.style.height = '';
+                navMenu.style.maxHeight = '';
+                navMenu.style.backgroundColor = '';
+                navMenu.style.backdropFilter = '';
+                navMenu.style.flexDirection = '';
+                navMenu.style.padding = '';
+                navMenu.style.gap = '';
+                navMenu.style.borderTop = '';
+                navMenu.style.boxShadow = '';
+                navMenu.style.zIndex = '';
+                
+                // 원래 위치로 되돌리기
+                const navContainer = document.querySelector('.nav-container');
+                if (navContainer) {
+                    navContainer.appendChild(navMenu);
+                }
+            }
+        });
+    } else {
+        console.error('❌ navToggle 또는 navMenu를 찾을 수 없습니다!');
     }
 }
 
@@ -255,37 +484,6 @@ style.textContent = `
         to {
             transform: scale(4);
             opacity: 0;
-        }
-    }
-    
-    .nav-menu.active {
-        display: flex;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        background: rgba(10, 10, 15, 0.95);
-        backdrop-filter: blur(20px);
-        flex-direction: column;
-        padding: 1rem;
-        border-top: 1px solid var(--border);
-    }
-    
-    .nav-toggle.active span:nth-child(1) {
-        transform: rotate(45deg) translate(5px, 5px);
-    }
-    
-    .nav-toggle.active span:nth-child(2) {
-        opacity: 0;
-    }
-    
-    .nav-toggle.active span:nth-child(3) {
-        transform: rotate(-45deg) translate(7px, -6px);
-    }
-    
-    @media (max-width: 768px) {
-        .nav-menu {
-            display: none;
         }
     }
 `;
@@ -524,7 +722,7 @@ function renderPopularVideos(videos) {
     });
     
     // 모바일과 태블릿에서 슬라이드 인디케이터 추가
-    if (window.innerWidth <= 1024) {
+    if (window.innerWidth <= 1198) {
         setTimeout(() => {
             addSlideIndicators(videoSection, videoGrid, videos.length);
             // 드래그 기능 추가
@@ -552,7 +750,7 @@ function renderRecentVideos(videos) {
     });
     
     // 모바일과 태블릿에서 슬라이드 인디케이터 추가
-    if (window.innerWidth <= 1024) {
+    if (window.innerWidth <= 1198) {
         setTimeout(() => {
             addSlideIndicators(videoSection, videoGrid, videos.length);
             // 드래그 기능 추가
@@ -585,6 +783,16 @@ function addSlideIndicators(videoSection, videoGrid, videoCount) {
         const dot = document.createElement('span');
         dot.className = 'indicator-dot';
         if (i === 0) dot.classList.add('active');
+        
+        // 인디케이터 클릭 시 해당 슬라이드로 이동
+        dot.addEventListener('click', () => {
+            const containerWidth = videoGrid.offsetWidth;
+            videoGrid.scrollTo({
+                left: i * containerWidth,
+                behavior: 'smooth'
+            });
+        });
+        
         indicatorsContainer.appendChild(dot);
     }
     
@@ -597,25 +805,16 @@ function addSlideIndicators(videoSection, videoGrid, videoCount) {
     let currentIndex = 0;
     
     // 스크롤 이벤트로 활성 인디케이터 업데이트
-    videoGrid.addEventListener('scroll', () => {
+    const updateIndicator = () => {
         const scrollPosition = videoGrid.scrollLeft;
         const containerWidth = videoGrid.offsetWidth;
         
-        // 현재 인덱스 계산 (앞 더미 없음)
+        // 현재 인덱스 계산
         currentIndex = Math.round(scrollPosition / containerWidth);
         
         // 경계값 처리
         if (currentIndex < 0) currentIndex = 0;
         if (currentIndex >= videoCount) currentIndex = videoCount - 1;
-        
-        // 디버깅: 인덱스가 올바르게 계산되는지 확인
-        console.log('인덱스 계산:', {
-            scrollPosition,
-            containerWidth,
-            계산된인덱스: Math.round(scrollPosition / containerWidth),
-            최종인덱스: currentIndex,
-            비디오개수: videoCount
-        });
         
         // 인디케이터 업데이트
         indicatorsContainer.querySelectorAll('.indicator-dot').forEach((dot, index) => {
@@ -625,28 +824,22 @@ function addSlideIndicators(videoSection, videoGrid, videoCount) {
                 dot.classList.remove('active');
             }
         });
-        
-        console.log('=== 스크롤 정보 ===');
-        console.log('스크롤 위치:', scrollPosition);
-        console.log('컨테이너 너비:', containerWidth);
-        console.log('계산된 인덱스:', Math.round(scrollPosition / containerWidth));
-        console.log('최종 인덱스:', currentIndex);
-        console.log('==================');
-    });
+    };
     
+    // 스크롤 이벤트 - 인디케이터만 업데이트 (스냅은 CSS에 맡김)
+    videoGrid.addEventListener('scroll', updateIndicator, { passive: true });
 }
 
-// 드래그 스크롤 기능
+// 드래그 스크롤 기능 (마우스 전용, 터치는 네이티브 사용)
 function enableDragScroll(container) {
     let isDown = false;
     let startX;
     let scrollLeft;
     
-    // 마우스 드래그
+    // 마우스 드래그만 처리 (터치는 네이티브 스크롤 사용)
     container.addEventListener('mousedown', (e) => {
         isDown = true;
         container.style.cursor = 'grabbing';
-        container.style.scrollBehavior = 'auto';
         startX = e.pageX - container.offsetLeft;
         scrollLeft = container.scrollLeft;
     });
@@ -659,7 +852,6 @@ function enableDragScroll(container) {
     container.addEventListener('mouseup', () => {
         isDown = false;
         container.style.cursor = 'grab';
-        container.style.scrollBehavior = 'smooth';
     });
     
     container.addEventListener('mousemove', (e) => {
@@ -670,7 +862,7 @@ function enableDragScroll(container) {
         container.scrollLeft = scrollLeft - walk;
     });
     
-    // 터치 드래그는 네이티브로 동작 (scroll-snap과 함께)
+    // 기본 커서 스타일
     container.style.cursor = 'grab';
 }
 
