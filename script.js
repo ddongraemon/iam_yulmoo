@@ -683,10 +683,16 @@ async function loadYouTubeData() {
         let statsData = null;
         
         try {
-        const statsResponse = await fetch('/api/social-stats');
-        if (statsResponse.ok) {
+            const statsResponse = await fetch('/api/social-stats');
+            if (statsResponse.ok) {
                 statsData = await statsResponse.json();
                 console.log('✅ 통합 통계 API 데이터 로드 완료:', statsData);
+                
+                // 데이터 유효성 검사: YouTube 데이터가 포함되어 있는지 확인
+                if (!statsData.total || statsData.total.subscribersRaw < 4000) {
+                    console.warn('⚠️ API 데이터가 불완전함 (YouTube 데이터 누락), 정적 파일 사용');
+                    throw new Error('불완전한 API 데이터');
+                }
             } else {
                 throw new Error(`API 응답 실패: ${statsResponse.status}`);
             }
