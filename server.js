@@ -4,6 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const axios = require('axios');
 const cron = require('node-cron');
+const nodemailer = require('nodemailer');
 
 const port = process.env.PORT || 3000;
 const host = process.env.HOST || '127.0.0.1';

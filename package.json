@@ -7,15 +7,18 @@
     "start": "node server.js",
     "dev": "node server.js"
   },
-  "keywords": ["yulmoo", "pet", "youtube", "website"],
+  "keywords": [
+    "yulmoo",
+    "pet",
+    "youtube",
+    "website"
+  ],
   "author": "율무인데요",
   "license": "ISC",
   "dependencies": {
+    "axios": "^1.7.7",
     "dotenv": "^16.4.5",
     "node-cron": "^3.0.3",
-    "axios": "^1.7.7"
+    "nodemailer": "^7.0.9"
   }
 }
-
-
-
