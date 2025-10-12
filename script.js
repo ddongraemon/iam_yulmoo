@@ -832,72 +832,80 @@ function addSlideIndicators(videoSection, videoGrid, videoCount) {
 
 // 드래그 스크롤 기능 (마우스 및 초민감 터치)
 function enableDragScroll(container) {
+    // 이미 이벤트 리스너가 등록되어 있는지 확인
+    if (container.dataset.dragScrollEnabled === 'true') {
+        return;
+    }
+    container.dataset.dragScrollEnabled = 'true';
+    
     let isDown = false;
     let startX;
     let scrollLeft;
     let scrollTimeout;
     
     // 마우스 드래그 처리
-    container.addEventListener('mousedown', (e) => {
+    const handleMouseDown = (e) => {
         isDown = true;
         container.style.cursor = 'grabbing';
         startX = e.pageX - container.offsetLeft;
         scrollLeft = container.scrollLeft;
-    });
+    };
     
-    container.addEventListener('mouseleave', () => {
+    const handleMouseLeave = () => {
         isDown = false;
         container.style.cursor = 'grab';
-    });
+    };
     
-    container.addEventListener('mouseup', () => {
+    const handleMouseUp = () => {
         isDown = false;
         container.style.cursor = 'grab';
-    });
+    };
     
-    container.addEventListener('mousemove', (e) => {
+    const handleMouseMove = (e) => {
         if (!isDown) return;
         e.preventDefault();
         const x = e.pageX - container.offsetLeft;
         const walk = (x - startX) * 2;
         container.scrollLeft = scrollLeft - walk;
-    });
+    };
+    
+    container.addEventListener('mousedown', handleMouseDown);
+    container.addEventListener('mouseleave', handleMouseLeave);
+    container.addEventListener('mouseup', handleMouseUp);
+    container.addEventListener('mousemove', handleMouseMove);
     
     // 초민감 터치 이벤트 - 극도로 민감한 스와이프
     let touchStartX = 0;
     let touchStartY = 0;
     let touchStartScrollLeft = 0;
     let isHorizontalSwipe = null;
-    const MIN_SWIPE_DISTANCE = 15; // 15px만 움직여도 다음 영상으로 (이전 30px에서 절반으로 감소)
+    const MIN_SWIPE_DISTANCE = 15;
     
-    container.addEventListener('touchstart', (e) => {
+    const handleTouchStart = (e) => {
         touchStartX = e.touches[0].clientX;
         touchStartY = e.touches[0].clientY;
         touchStartScrollLeft = container.scrollLeft;
         isHorizontalSwipe = null;
-    }, { passive: true });
+    };
     
-    container.addEventListener('touchmove', (e) => {
+    const handleTouchMove = (e) => {
         clearTimeout(scrollTimeout);
         
-        // 방향 감지 (매우 빠르게)
         if (isHorizontalSwipe === null) {
             const touchCurrentX = e.touches[0].clientX;
             const touchCurrentY = e.touches[0].clientY;
             const diffX = Math.abs(touchCurrentX - touchStartX);
             const diffY = Math.abs(touchCurrentY - touchStartY);
             
-            // 3px만 움직여도 방향 감지 (이전 5px에서 더 줄임)
             if (diffX > diffY && diffX > 3) {
                 isHorizontalSwipe = true;
             } else if (diffY > diffX && diffY > 3) {
                 isHorizontalSwipe = false;
             }
         }
-    }, { passive: true });
+    };
     
-    container.addEventListener('touchend', (e) => {
-        // 수직 스크롤이면 스킵
+    const handleTouchEnd = (e) => {
         if (isHorizontalSwipe === false) {
             isHorizontalSwipe = null;
             return;
@@ -906,9 +914,11 @@ function enableDragScroll(container) {
         const currentScrollLeft = container.scrollLeft;
         const scrollDiff = currentScrollLeft - touchStartScrollLeft;
         const containerWidth = container.offsetWidth;
-        const currentIndex = Math.floor(touchStartScrollLeft / containerWidth);
         
-        // 15px 이상 움직였으면 무조건 다음/이전 영상으로
+        // 정확한 현재 인덱스 계산 (반올림으로 가장 가까운 카드)
+        const currentIndex = Math.round(touchStartScrollLeft / containerWidth);
+        
+        // 15px 이상 움직였으면 다음/이전 영상으로
         if (Math.abs(scrollDiff) >= MIN_SWIPE_DISTANCE) {
             let targetIndex;
             
@@ -921,12 +931,13 @@ function enableDragScroll(container) {
             const maxIndex = Math.floor(container.scrollWidth / containerWidth) - 1;
             targetIndex = Math.max(0, Math.min(targetIndex, maxIndex));
             
+            // 즉시 이동
             container.scrollTo({
                 left: targetIndex * containerWidth,
                 behavior: 'smooth'
             });
         } else {
-            // 15px 미만이면 원래 위치로
+            // 15px 미만이면 원래 위치로 정확히 스냅
             container.scrollTo({
                 left: currentIndex * containerWidth,
                 behavior: 'smooth'
@@ -934,7 +945,11 @@ function enableDragScroll(container) {
         }
         
         isHorizontalSwipe = null;
-    }, { passive: true });
+    };
+    
+    container.addEventListener('touchstart', handleTouchStart, { passive: true });
+    container.addEventListener('touchmove', handleTouchMove, { passive: true });
+    container.addEventListener('touchend', handleTouchEnd, { passive: true });
     
     // 기본 커서 스타일
     container.style.cursor = 'grab';
