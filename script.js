@@ -652,8 +652,8 @@ async function loadYouTubeData() {
         
         // YouTube 영상 데이터 로드 (API 우선, 실패 시 정적 파일)
         try {
-            const youtubeResponse = await fetch('/api/youtube-data');
-            if (youtubeResponse.ok) {
+        const youtubeResponse = await fetch('/api/youtube-data');
+        if (youtubeResponse.ok) {
                 youtubeData = await youtubeResponse.json();
                 console.log('✅ YouTube API 데이터 로드 완료');
             } else {
@@ -683,26 +683,36 @@ async function loadYouTubeData() {
         let statsData = null;
         
         try {
-            const statsResponse = await fetch('/api/social-stats');
-            if (statsResponse.ok) {
+        const statsResponse = await fetch('/api/social-stats');
+        if (statsResponse.ok) {
                 statsData = await statsResponse.json();
                 console.log('✅ 통합 통계 API 데이터 로드 완료:', statsData);
             } else {
-                throw new Error('API 응답 실패');
+                throw new Error(`API 응답 실패: ${statsResponse.status}`);
             }
         } catch (apiError) {
             console.warn('⚠️ 통계 API 호출 실패, 캐시된 데이터 사용:', apiError.message);
             // API 실패 시 정적 JSON 파일 사용
-            const fallbackResponse = await fetch('/social-stats.json');
-            if (fallbackResponse.ok) {
-                statsData = await fallbackResponse.json();
-                console.log('✅ 캐시된 통계 데이터 로드 완료:', statsData);
+            try {
+                const fallbackResponse = await fetch('/social-stats.json');
+                console.log('📄 정적 파일 요청:', fallbackResponse.status, fallbackResponse.ok);
+                if (fallbackResponse.ok) {
+                    statsData = await fallbackResponse.json();
+                    console.log('✅ 캐시된 통계 데이터 로드 완료:', statsData);
+                } else {
+                    console.error('❌ 정적 파일 로드 실패:', fallbackResponse.status);
+                }
+            } catch (fallbackError) {
+                console.error('❌ 정적 파일 fetch 오류:', fallbackError);
             }
         }
         
         if (statsData && statsData.total) {
+            console.log('🎯 통계 업데이트 시작:', statsData.total);
             // 히어로 섹션 통계 업데이트
             updateHeroStats(statsData.total);
+        } else {
+            console.error('❌ 통계 데이터가 없습니다:', statsData);
         }
         
     } catch (error) {
