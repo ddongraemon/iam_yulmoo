@@ -1426,8 +1426,8 @@ body {
         flex-wrap: nowrap !important;
         overflow-x: auto !important;
         overflow-y: visible !important;
-        scroll-snap-type: x mandatory !important;
-        scroll-behavior: smooth !important;
+        scroll-snap-type: x proximity !important;
+        scroll-behavior: auto !important;
         -webkit-overflow-scrolling: touch !important;
         scrollbar-width: none !important;
         -ms-overflow-style: none !important;
@@ -1438,6 +1438,8 @@ body {
         justify-content: flex-start !important;
         margin: 0 !important;
         cursor: grab !important;
+        touch-action: pan-x !important;
+        will-change: scroll-position !important;
     }
     
     .video-grid:active {
@@ -1455,8 +1457,8 @@ body {
         min-width: 60% !important;
         max-width: 60% !important;
         width: 60% !important;
-        scroll-snap-align: start !important;
-        scroll-snap-stop: always !important;
+        scroll-snap-align: center !important;
+        scroll-snap-stop: normal !important;
         padding: var(--space-3) !important;
         box-sizing: border-box !important;
         margin: 0 !important;
@@ -1465,6 +1467,8 @@ body {
         border-radius: 16px;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         transition: transform 0.3s ease, box-shadow 0.3s ease;
+        transform: translateZ(0) !important;
+        backface-visibility: hidden !important;
     }
     
     .video-card > * {
@@ -1972,8 +1976,8 @@ body {
         flex-wrap: nowrap !important;
         overflow-x: auto !important;
         overflow-y: visible !important;
-        scroll-snap-type: x mandatory !important;
-        scroll-behavior: smooth !important;
+        scroll-snap-type: x proximity !important;
+        scroll-behavior: auto !important;
         -webkit-overflow-scrolling: touch !important;
         scrollbar-width: none !important;
         -ms-overflow-style: none !important;
@@ -1984,6 +1988,8 @@ body {
         justify-content: flex-start !important;
         margin: 0 !important;
         cursor: grab !important;
+        touch-action: pan-x !important;
+        will-change: scroll-position !important;
     }
     
     .video-grid:active {
@@ -2001,12 +2007,14 @@ body {
         min-width: 100% !important;
         max-width: 100% !important;
         width: 100% !important;
-        scroll-snap-align: start !important;
-        scroll-snap-stop: always !important;
+        scroll-snap-align: center !important;
+        scroll-snap-stop: normal !important;
         margin: 0 !important;
         padding: 0 !important;
         box-sizing: border-box !important;
         overflow: visible !important;
+        transform: translateZ(0) !important;
+        backface-visibility: hidden !important;
     }
     
     .video-card > * {

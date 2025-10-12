@@ -830,13 +830,14 @@ function addSlideIndicators(videoSection, videoGrid, videoCount) {
     videoGrid.addEventListener('scroll', updateIndicator, { passive: true });
 }
 
-// 드래그 스크롤 기능 (마우스 전용, 터치는 네이티브 사용)
+// 드래그 스크롤 기능 (마우스 및 터치)
 function enableDragScroll(container) {
     let isDown = false;
     let startX;
     let scrollLeft;
+    let scrollTimeout;
     
-    // 마우스 드래그만 처리 (터치는 네이티브 스크롤 사용)
+    // 마우스 드래그 처리
     container.addEventListener('mousedown', (e) => {
         isDown = true;
         container.style.cursor = 'grabbing';
@@ -862,8 +863,58 @@ function enableDragScroll(container) {
         container.scrollLeft = scrollLeft - walk;
     });
     
+    // 터치 이벤트 - 스냅 보조
+    let touchStartX = 0;
+    let touchStartTime = 0;
+    
+    container.addEventListener('touchstart', (e) => {
+        touchStartX = e.touches[0].clientX;
+        touchStartTime = Date.now();
+    }, { passive: true });
+    
+    container.addEventListener('touchend', (e) => {
+        const touchEndTime = Date.now();
+        const touchDuration = touchEndTime - touchStartTime;
+        
+        // 빠른 스와이프 감지 (300ms 이내)
+        if (touchDuration < 300) {
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(() => {
+                snapToNearestCard(container);
+            }, 100);
+        } else {
+            // 일반 스크롤 종료 시
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(() => {
+                snapToNearestCard(container);
+            }, 150);
+        }
+    }, { passive: true });
+    
+    // 스크롤 종료 시 자동 스냅
+    container.addEventListener('scroll', () => {
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+            snapToNearestCard(container);
+        }, 150);
+    }, { passive: true });
+    
     // 기본 커서 스타일
     container.style.cursor = 'grab';
+}
+
+// 가장 가까운 카드로 스냅
+function snapToNearestCard(container) {
+    const containerWidth = container.offsetWidth;
+    const scrollPosition = container.scrollLeft;
+    const nearestIndex = Math.round(scrollPosition / containerWidth);
+    const targetScrollLeft = nearestIndex * containerWidth;
+    
+    // 부드럽게 스냅
+    container.scrollTo({
+        left: targetScrollLeft,
+        behavior: 'smooth'
+    });
 }
 
 // 비디오 카드 HTML 생성
