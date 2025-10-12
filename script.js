@@ -915,11 +915,10 @@ function enableDragScroll(container) {
         const scrollDiff = currentScrollLeft - touchStartScrollLeft;
         const containerWidth = container.offsetWidth;
         
-        // 현재 인덱스를 정확히 계산 (소수점 포함)
-        const exactCurrentIndex = touchStartScrollLeft / containerWidth;
-        const currentIndex = Math.floor(exactCurrentIndex);
+        // 현재 인덱스를 정확히 계산
+        const currentIndex = Math.floor(touchStartScrollLeft / containerWidth);
         
-        // 15px 이상 움직였으면 다음/이전 영상으로
+        // 15px 이상 움직였으면 무조건 다음/이전 영상으로
         if (Math.abs(scrollDiff) >= MIN_SWIPE_DISTANCE) {
             let targetIndex;
             
@@ -941,10 +940,9 @@ function enableDragScroll(container) {
                 behavior: 'smooth'
             });
         } else {
-            // 15px 미만이면 가장 가까운 위치로 스냅
-            const nearestIndex = Math.round(exactCurrentIndex);
+            // 15px 미만이면 현재 위치 유지 (원래 카드로 돌아가기)
             container.scrollTo({
-                left: nearestIndex * containerWidth,
+                left: currentIndex * containerWidth,
                 behavior: 'smooth'
             });
         }
