@@ -349,7 +349,7 @@ body {
     position: relative;
     overflow: hidden;
     padding: 90px 0 5px 0;
-    z-index: -1;
+    z-index: 1;
 }
 
 .hero-background {
@@ -419,7 +419,8 @@ body {
 
 .hero-content {
     grid-column: 1;
-    z-index: 1;
+    z-index: 10;
+    position: relative;
 }
 
 .hero-badge {
@@ -471,6 +472,8 @@ body {
     display: flex;
     gap: var(--space-3);
     margin-bottom: var(--space-6);
+    position: relative;
+    z-index: 1000;
 }
 
 .btn {
@@ -484,6 +487,16 @@ body {
     transition: var(--transition-normal);
     position: relative;
     overflow: hidden;
+    z-index: 1001;
+    cursor: pointer;
+    pointer-events: auto;
+}
+
+/* 히어로 섹션 버튼들에 추가 우선순위 */
+.hero-actions .btn {
+    z-index: 1001 !important;
+    pointer-events: auto !important;
+    cursor: pointer !important;
 }
 
 .btn-primary {
