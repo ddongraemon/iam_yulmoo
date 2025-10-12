@@ -863,22 +863,48 @@ function enableDragScroll(container) {
         container.scrollLeft = scrollLeft - walk;
     });
     
-    // 초민감 터치 이벤트 - 조금만 슬라이드해도 바로 다음 영상으로
+    // 초민감 터치 이벤트 - 수평/수직 스크롤 구분
     let touchStartX = 0;
+    let touchStartY = 0;
     let touchStartScrollLeft = 0;
+    let isHorizontalSwipe = null;
     const MIN_SWIPE_DISTANCE = 30; // 30px만 움직여도 다음 영상으로
     
     container.addEventListener('touchstart', (e) => {
         touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
         touchStartScrollLeft = container.scrollLeft;
+        isHorizontalSwipe = null; // 초기화
     }, { passive: true });
     
     container.addEventListener('touchmove', (e) => {
         // 스크롤 타임아웃 클리어
         clearTimeout(scrollTimeout);
+        
+        // 첫 터치 이동에서 방향 감지
+        if (isHorizontalSwipe === null) {
+            const touchCurrentX = e.touches[0].clientX;
+            const touchCurrentY = e.touches[0].clientY;
+            const diffX = Math.abs(touchCurrentX - touchStartX);
+            const diffY = Math.abs(touchCurrentY - touchStartY);
+            
+            // 수평 이동이 더 크면 수평 스와이프로 간주
+            if (diffX > diffY && diffX > 10) {
+                isHorizontalSwipe = true;
+            } else if (diffY > diffX && diffY > 10) {
+                // 수직 이동이 더 크면 페이지 스크롤 허용
+                isHorizontalSwipe = false;
+            }
+        }
     }, { passive: true });
     
     container.addEventListener('touchend', (e) => {
+        // 수직 스크롤이었으면 스냅하지 않음
+        if (isHorizontalSwipe === false) {
+            isHorizontalSwipe = null;
+            return;
+        }
+        
         const currentScrollLeft = container.scrollLeft;
         const scrollDiff = currentScrollLeft - touchStartScrollLeft;
         const containerWidth = container.offsetWidth;
@@ -909,6 +935,8 @@ function enableDragScroll(container) {
             // 움직임이 미미하면 원래 위치로
             snapToNearestCard(container);
         }
+        
+        isHorizontalSwipe = null; // 리셋
     }, { passive: true });
     
     // 기본 커서 스타일

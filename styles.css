@@ -1438,7 +1438,7 @@ body {
         justify-content: flex-start !important;
         margin: 0 !important;
         cursor: grab !important;
-        touch-action: pan-x !important;
+        touch-action: pan-x pan-y !important;
         will-change: scroll-position !important;
     }
     
@@ -1988,7 +1988,7 @@ body {
         justify-content: flex-start !important;
         margin: 0 !important;
         cursor: grab !important;
-        touch-action: pan-x !important;
+        touch-action: pan-x pan-y !important;
         will-change: scroll-position !important;
     }
     
