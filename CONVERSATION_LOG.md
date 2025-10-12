@@ -89,9 +89,260 @@ npm start
 - CSS 수정 시 인코딩 문제 주의 (UTF-8 사용)
 
 ## 마지막 업데이트
-- 날짜: 2025-10-11
-- 작업: 🎉 소셜 미디어 통합 통계 시스템 완성 (YouTube + Instagram + TikTok)
+- 날짜: 2025-10-12
+- 작업: 🎬 히어로 섹션 동영상 배경 구현 완료
 - 상태: 서버 정상 실행 중 (http://localhost:3000/)
+
+---
+
+## 2025-10-12 (오후): 히어로 섹션 동영상 배경 구현
+
+### 🎬 동영상 배경 완성
+
+#### 동영상 파일
+- **원본**: `Backgroundvod.mp4` (12.14MB)
+- **모바일**: `vodmobile.mp4` (11.77MB)
+- **길이**: 6-7초
+- **재생**: 무한 반복
+
+#### 구현 기능
+1. **자동 재생**
+   - `autoplay` 속성
+   - JavaScript 강제 재생
+   - 사용자 인터랙션 후 재시도
+
+2. **무한 반복**
+   - `loop` 속성
+   - JavaScript 재생 종료 감지 및 재시작
+
+3. **반응형 지원**
+   - 데스크톱: Backgroundvod.mp4
+   - 모바일: vodmobile.mp4
+   - `object-fit: cover` 전체 화면 채움
+
+4. **성능 최적화**
+   - `preload="auto"` 미리 로드
+   - `muted` 음소거
+   - `playsinline` 모바일 인라인 재생
+
+5. **오버레이 효과**
+   - 어두운 오버레이 (35% 투명도)
+   - 텍스트 가독성 향상
+
+6. **자동 재생 보장**
+   - 로드 완료 시 재생
+   - 페이지 visible 상태 복원 시 재생
+   - 재생 실패 시 사용자 클릭 후 재시도
+
+#### 수정된 파일
+- `index.html` - 동영상 요소 추가
+- `styles.css` - 동영상 배경 스타일
+- `script.js` - 동영상 재생 로직
+
+#### CSS 스타일
+```css
+.hero-video-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 0;
+}
+
+.hero-video {
+    object-fit: cover;
+    min-width: 100%;
+    min-height: 100%;
+}
+
+.video-overlay {
+    background: rgba(0, 0, 0, 0.35);
+}
+```
+
+#### z-index 레이어링
+- **0**: 동영상 배경
+- **1**: 비디오 오버레이
+- **2**: floating-element (거의 투명)
+- **10**: hero-container
+- **20**: hero-content, hero-visual
+
+#### 성능 고려사항
+- 11-12MB 동영상 (압축 실패)
+- 최적화 기법으로 로딩 체감 최소화
+- 실제 테스트 후 필요 시 재압축 가능
+
+### 📝 작업 완료 체크리스트
+- ✅ 동영상 파일 프로젝트에 추가
+- ✅ HTML에 video 태그 추가
+- ✅ CSS 스타일 구현
+- ✅ JavaScript 자동 재생 로직
+- ✅ 무한 반복 구현
+- ✅ 반응형 지원
+- ✅ 오버레이 효과
+- ✅ z-index 레이어링
+
+---
+
+## 2025-10-12 (오전): Vercel 배포 최적화 및 방문자 카운터 통합
+
+### 🚀 Vercel KV 방문자 카운터 시스템
+
+#### 문제점
+- 기존 방문자 카운터는 로컬 스토리지 기반
+- 각 브라우저/세션마다 다른 TOTAL 카운트 표시
+- Vercel 배포 시 파일 시스템 사용 불가 (서버리스 환경)
+
+#### 해결 방법: Vercel KV (Redis) 통합
+1. **@vercel/kv 패키지 설치**
+   ```json
+   "dependencies": {
+     "@vercel/kv": "^1.0.1"
+   }
+   ```
+
+2. **Vercel Serverless Functions 생성**
+   - `api/visitor-count.js` - 방문자 카운터 조회
+   - `api/visitor-increment.js` - 방문자 카운터 증가
+
+3. **주요 기능**
+   - ✅ 모든 사용자가 공유하는 통합 TOTAL 카운트
+   - ✅ 날짜 자동 변경 시 TODAY 리셋
+   - ✅ 세션당 1회만 카운트 (sessionStorage)
+   - ✅ Vercel 서버리스 환경 완벽 지원
+
+4. **데이터 구조 (Redis)**
+   ```
+   visitor_total: 총 방문자 수
+   visitor_today_YYYY-MM-DD: 오늘 방문자 수
+   visitor_last_date: 마지막 업데이트 날짜
+   ```
+
+#### 새로 추가된 파일
+- `api/visitor-count.js` - Vercel Function (조회)
+- `api/visitor-increment.js` - Vercel Function (증가)
+- `vercel.json` - Vercel 배포 설정
+- `.vercelignore` - 배포 제외 파일
+- `VERCEL_DEPLOYMENT_GUIDE.md` - 상세 배포 가이드
+- `README.md` - 프로젝트 문서
+
+#### 수정된 파일
+- `package.json` - @vercel/kv 패키지 추가
+- `script.js` - 서버 기반 카운터로 변경
+- `server.js` - 로컬 개발용 통합 카운터 추가
+
+#### Vercel 배포 설정
+- **스토리지**: Vercel KV (Redis)
+- **Functions**: Serverless
+- **무료 플랜**: 월 100,000 요청 (충분)
+
+#### 배포 방법
+```bash
+# Vercel CLI 설치
+npm install -g vercel
+
+# 로그인 및 배포
+vercel login
+vercel
+
+# 프로덕션 배포
+vercel --prod
+```
+
+### 📱 Contact 폼 반응형 최적화
+
+#### 1. 달력 아이콘 반응형 조정
+- 시작일정(희망일) 필드의 달력 아이콘 크기를 화면 크기에 맞게 리사이징
+- 화면별 아이콘 크기:
+  - PC (1400px+): 20px
+  - 1200px-1399px: 19px
+  - 1024px-1199px: 18px
+  - 태블릿 (1024px 이하): 17px
+  - 모바일 (1023px 이하): 16px → 11px (360px 이하)
+
+#### 2. 문의 버튼 경로 통합
+- 홈 화면 하단 "이메일 보내기" 버튼 경로 변경
+- `mailto:` → `/contact.html`
+- 히어로 섹션 문의 버튼과 동일하게 통합
+
+#### 수정된 파일
+- `contact.css` - 달력 아이콘 반응형 스타일 추가
+- `index.html` - 하단 문의 버튼 경로 변경
+
+### 🔧 환경 구성
+
+#### 로컬 개발 환경
+- Node.js 서버 (`server.js`)
+- 파일 기반 카운터 (`visitor-counter.json`)
+- 로컬 테스트용
+
+#### Vercel 배포 환경
+- Serverless Functions (`api/*.js`)
+- Vercel KV (Redis)
+- 프로덕션용
+
+#### 양방향 호환
+- 같은 API 엔드포인트 사용
+- 로컬/배포 환경 자동 감지
+- 추가 설정 불필요
+
+### 📊 무료 플랜 제한
+
+#### Vercel KV
+- 스토리지: 256 MB
+- 요청 수: 월 100,000
+- 대역폭: 월 100 GB
+- ✅ 방문자 카운터에 충분
+
+#### Vercel Functions
+- 실행 시간: 10초/요청
+- 메모리: 1024 MB
+- 배포 수: 무제한
+- ✅ 현재 사용량으로 충분
+
+### 🎯 배포 체크리스트
+
+1. ✅ Vercel KV 데이터베이스 생성
+2. ✅ 프로젝트 연결 (`vercel link`)
+3. ✅ 환경 변수 설정
+   - KV_REST_API_URL (자동)
+   - KV_REST_API_TOKEN (자동)
+   - YOUTUBE_API_KEY
+   - INSTAGRAM_ACCESS_TOKEN
+   - 기타 API 키
+4. ✅ 배포 (`vercel --prod`)
+5. ✅ 방문자 카운터 작동 확인
+
+### 📁 프로젝트 구조 업데이트
+
+```
+pet-channel-website/
+├── api/                           # 🆕 Vercel Serverless Functions
+│   ├── visitor-count.js           # 방문자 카운터 조회
+│   └── visitor-increment.js       # 방문자 카운터 증가
+├── index.html
+├── contact.html
+├── styles.css
+├── contact.css                    # ✅ 달력 아이콘 반응형 추가
+├── script.js                      # ✅ 서버 기반 카운터로 변경
+├── server.js                      # ✅ 통합 카운터 추가
+├── package.json                   # ✅ @vercel/kv 추가
+├── vercel.json                    # 🆕 Vercel 배포 설정
+├── .vercelignore                  # 🆕 배포 제외 파일
+├── VERCEL_DEPLOYMENT_GUIDE.md     # 🆕 배포 가이드
+└── README.md                      # 🆕 프로젝트 문서
+```
+
+### 🔄 다음 작업 가능 영역
+
+1. ✅ Vercel 배포 완료
+2. 커스텀 도메인 연결
+3. Google Analytics 통합
+4. Lighthouse 성능 최적화
+5. PWA 기능 추가
+6. Contact 폼 이메일 발송 기능 (Vercel + Nodemailer)
 
 ---
 

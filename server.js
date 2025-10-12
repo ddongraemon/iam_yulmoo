@@ -35,9 +35,80 @@ const mimeTypes = {
 // 캐시 파일 경로
 const YOUTUBE_CACHE_FILE = path.join(__dirname, 'youtube-data.json');
 const SOCIAL_STATS_CACHE_FILE = path.join(__dirname, 'social-stats.json');
+const VISITOR_COUNTER_FILE = path.join(__dirname, 'visitor-counter.json');
 
 // 채널 ID 캐시
 let cachedChannelId = null;
+
+// ========================================
+// 방문자 카운터 시스템
+// ========================================
+
+// 방문자 카운터 초기화
+function initVisitorCounter() {
+    if (!fs.existsSync(VISITOR_COUNTER_FILE)) {
+        const initialData = {
+            total: 0,
+            today: 0,
+            date: getTodayDate()
+        };
+        fs.writeFileSync(VISITOR_COUNTER_FILE, JSON.stringify(initialData, null, 2), 'utf8');
+        console.log('✅ 방문자 카운터 초기화 완료');
+    } else {
+        // 날짜가 바뀌었는지 확인
+        const data = getVisitorCounter();
+        const today = getTodayDate();
+        if (data.date !== today) {
+            data.today = 0;
+            data.date = today;
+            saveVisitorCounter(data);
+            console.log(`📅 날짜 변경: TODAY 카운터 리셋 (${today})`);
+        }
+    }
+}
+
+// 오늘 날짜 가져오기 (YYYY-MM-DD)
+function getTodayDate() {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+}
+
+// 방문자 카운터 읽기
+function getVisitorCounter() {
+    if (fs.existsSync(VISITOR_COUNTER_FILE)) {
+        return JSON.parse(fs.readFileSync(VISITOR_COUNTER_FILE, 'utf8'));
+    }
+    return { total: 0, today: 0, date: getTodayDate() };
+}
+
+// 방문자 카운터 저장
+function saveVisitorCounter(data) {
+    fs.writeFileSync(VISITOR_COUNTER_FILE, JSON.stringify(data, null, 2), 'utf8');
+}
+
+// 방문자 증가
+function incrementVisitor() {
+    const data = getVisitorCounter();
+    const today = getTodayDate();
+    
+    // 날짜가 바뀌었으면 TODAY 리셋
+    if (data.date !== today) {
+        data.today = 0;
+        data.date = today;
+    }
+    
+    data.total += 1;
+    data.today += 1;
+    
+    saveVisitorCounter(data);
+    return data;
+}
+
+// 방문자 카운터 초기화
+initVisitorCounter();
 
 // ========================================
 // YouTube API
@@ -523,6 +594,28 @@ const server = http.createServer((req, res) => {
             res.writeHead(500, { 'Content-Type': 'application/json' });
             res.end(JSON.stringify({ error: error.message }));
         });
+        return;
+    }
+
+    // 방문자 카운터 조회 API
+    if (req.url === '/api/visitor-count') {
+        const data = getVisitorCounter();
+        res.writeHead(200, { 
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+        });
+        res.end(JSON.stringify(data));
+        return;
+    }
+
+    // 방문자 카운터 증가 API
+    if (req.url === '/api/visitor-increment' && req.method === 'POST') {
+        const data = incrementVisitor();
+        res.writeHead(200, { 
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+        });
+        res.end(JSON.stringify(data));
         return;
     }
 

@@ -16,9 +16,12 @@
   "author": "율무인데요",
   "license": "ISC",
   "dependencies": {
+    "@vercel/kv": "^1.0.1",
     "axios": "^1.7.7",
     "dotenv": "^16.4.5",
     "node-cron": "^3.0.3",
     "nodemailer": "^7.0.9"
   }
 }
+
+

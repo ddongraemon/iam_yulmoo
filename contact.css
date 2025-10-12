@@ -276,6 +276,7 @@
     width: 20px;
     height: 20px;
     filter: invert(50%);
+    transition: var(--transition-normal);
 }
 
 .form-group input[type="date"]::-webkit-inner-spin-button,
@@ -514,6 +515,11 @@ input[type="number"]::-webkit-inner-spin-button {
         padding: var(--space-3) var(--space-6);
         font-size: 0.95rem;
     }
+    
+    .form-group input[type="date"]::-webkit-calendar-picker-indicator {
+        width: 19px;
+        height: 19px;
+    }
 }
 
 @media (min-width: 1200px) and (max-width: 1399px) {
@@ -541,6 +547,11 @@ input[type="number"]::-webkit-inner-spin-button {
     .contact-subtitle {
         font-size: 1rem;
     }
+    
+    .form-group input[type="date"]::-webkit-calendar-picker-indicator {
+        width: 18px;
+        height: 18px;
+    }
 }
 
 @media (min-width: 1024px) and (max-width: 1199px) {
@@ -567,6 +578,11 @@ input[type="number"]::-webkit-inner-spin-button {
     
     .contact-subtitle {
         font-size: 0.95rem;
+    }
+    
+    .form-group input[type="date"]::-webkit-calendar-picker-indicator {
+        width: 17px;
+        height: 17px;
     }
 }
 
@@ -680,6 +696,11 @@ input[type="number"]::-webkit-inner-spin-button {
     .field-note {
         font-size: 0.7rem;
     }
+    
+    .form-group input[type="date"]::-webkit-calendar-picker-indicator {
+        width: 16px;
+        height: 16px;
+    }
 }
 
 @media (max-width: 900px) {
@@ -750,6 +771,11 @@ input[type="number"]::-webkit-inner-spin-button {
 
     .campaign-type-box span {
         font-size: 0.73rem;
+    }
+    
+    .form-group input[type="date"]::-webkit-calendar-picker-indicator {
+        width: 15px;
+        height: 15px;
     }
 }
 
@@ -844,6 +870,11 @@ input[type="number"]::-webkit-inner-spin-button {
         height: 45px;
         font-size: 1rem;
     }
+    
+    .form-group input[type="date"]::-webkit-calendar-picker-indicator {
+        width: 14px;
+        height: 14px;
+    }
 }
 
 @media (max-width: 600px) {
@@ -918,6 +949,11 @@ input[type="number"]::-webkit-inner-spin-button {
 
     .field-note {
         font-size: 0.62rem;
+    }
+    
+    .form-group input[type="date"]::-webkit-calendar-picker-indicator {
+        width: 13px;
+        height: 13px;
     }
 }
 
@@ -1051,6 +1087,11 @@ input[type="number"]::-webkit-inner-spin-button {
     .back-link span {
         display: none;
     }
+    
+    .form-group input[type="date"]::-webkit-calendar-picker-indicator {
+        width: 12px;
+        height: 12px;
+    }
 }
 
 @media (max-width: 360px) {
@@ -1137,5 +1178,10 @@ input[type="number"]::-webkit-inner-spin-button {
     .submit-btn {
         padding: var(--space-1) var(--space-2);
         font-size: 0.65rem;
+    }
+    
+    .form-group input[type="date"]::-webkit-calendar-picker-indicator {
+        width: 11px;
+        height: 11px;
     }
 }

@@ -1,3 +1,25 @@
 {
-  "version": 2
+  "version": 2,
+  "builds": [
+    {
+      "src": "api/**/*.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/$1"
+    }
+  ],
+  "env": {
+    "YOUTUBE_API_KEY": "@youtube_api_key",
+    "YOUTUBE_CHANNEL_ID": "@youtube_channel_id",
+    "INSTAGRAM_USER_ID": "@instagram_user_id",
+    "INSTAGRAM_ACCESS_TOKEN": "@instagram_access_token",
+    "INSTAGRAM_HANDLE": "@instagram_handle",
+    "TIKTOK_USERNAME": "@tiktok_username",
+    "TIKTOK_CLIENT_SECRET": "@tiktok_client_secret",
+    "TIKTOK_ACCESS_TOKEN": "@tiktok_access_token"
+  }
 }

@@ -1,4 +1,5 @@
-﻿/* Paybooc Font Face */
+﻿/* CSS Cache Buster - 2025-01-12 21:25 */
+/* Paybooc Font Face */
 @font-face {
     font-family: 'Paybooc';
     src: url('fonts/paybooc-Light.ttf') format('truetype');
@@ -361,12 +362,51 @@ body {
     z-index: -1;
 }
 
+/* 동영상 배경 스타일 */
+.hero-video-background {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 1200px;
+    height: 100%;
+    overflow: hidden;
+    z-index: 0;
+}
+
+.hero-video {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    transform: translate(-50%, -50%);
+    object-fit: cover;
+    z-index: 0;
+    filter: blur(1.5px) brightness(0.7) contrast(1.2);
+}
+
+.hero-video-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+    pointer-events: none;
+}
+
 .floating-element {
     position: absolute;
     border-radius: var(--radius-full);
     background: linear-gradient(135deg, var(--primary), var(--secondary));
-    opacity: 0.1;
+    opacity: 0.03;
     animation: float 6s ease-in-out infinite;
+    z-index: 2;
 }
 
 .element-1 {
@@ -407,6 +447,8 @@ body {
     grid-template-columns: 1fr 1fr;
     gap: 51px;
     align-items: center;
+    position: relative;
+    z-index: 10;
 }
 
 .hero-visual {
@@ -414,12 +456,13 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1;
+    z-index: 20;
+    position: relative;
 }
 
 .hero-content {
     grid-column: 1;
-    z-index: 10;
+    z-index: 20;
     position: relative;
 }
 
@@ -749,18 +792,9 @@ body {
     color: var(--primary);
 }
 
-.video-overlay {
-    position: absolute;
-    top: var(--space-4);
-    right: var(--space-4);
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
-    align-items: flex-end;
-}
-
 .video-duration,
 .video-views {
+    position: absolute;
     background: rgba(0, 0, 0, 0.8);
     color: white;
     padding: 3px 6px;
@@ -771,6 +805,16 @@ body {
     white-space: nowrap;
     width: fit-content;
     min-width: auto;
+}
+
+.video-duration {
+    top: var(--space-4);
+    right: var(--space-4);
+}
+
+.video-views {
+    top: calc(var(--space-4) + 25px);
+    right: var(--space-4);
 }
 
 .video-info {
@@ -2536,10 +2580,24 @@ body {
     
     .video-duration,
     .video-views {
+        position: absolute;
+        background: rgba(0, 0, 0, 0.8);
+        color: white;
         font-size: 0.65rem;
         padding: 2px 5px;
         text-align: right;
         width: fit-content;
+        border-radius: var(--radius-sm);
+    }
+
+    .video-duration {
+        top: var(--space-3);
+        right: var(--space-3);
+    }
+
+    .video-views {
+        top: calc(var(--space-3) + 20px);
+        right: var(--space-3);
     }
     
     /* 작은 화면에서 컨테이너 가운데 정렬 */
@@ -2813,18 +2871,44 @@ body {
     
     .video-duration,
     .video-views {
+        position: absolute !important;
+        background: rgba(0, 0, 0, 0.8) !important;
+        color: white !important;
         font-size: 0.5rem !important;
         padding: 1px 3px !important;
         text-align: right !important;
         width: fit-content !important;
+        border-radius: var(--radius-sm) !important;
+    }
+
+    .video-duration {
+        top: var(--space-2) !important;
+        right: var(--space-2) !important;
+    }
+
+    .video-views {
+        top: calc(var(--space-2) + 15px) !important;
+        right: var(--space-2) !important;
     }
 }
+
 
 /* 강제 히어로 간격 조정 - 480px 이하 */
 @media (max-width: 480px) {
     html body .hero .hero-title,
     html body .hero .hero-title-main {
         margin-bottom: 1px !important;
+    }
+    
+    /* 비디오 카드 재생시간/조회수 위치 조정 */
+    .video-thumbnail .video-duration {
+        top: calc(var(--space-2) + 8px) !important;
+        right: calc(var(--space-2) + 8px) !important;
+    }
+
+    .video-thumbnail .video-views {
+        top: calc(var(--space-2) + 25px) !important;
+        right: calc(var(--space-2) + 8px) !important;
     }
     
     html body .hero .hero-actions {

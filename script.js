@@ -32,6 +32,7 @@ function initializeApp() {
     setupSocialLinks();
     setupAnimations();
     setupMobileMenu();
+    setupHeroVideo(); // 히어로 동영상 배경 설정
     loadYouTubeData(); // YouTube 데이터 로드
 }
 
@@ -447,6 +448,48 @@ function setupMobileMenu() {
     }
 }
 
+// 히어로 동영상 배경 설정
+function setupHeroVideo() {
+    const heroVideo = document.querySelector('.hero-video');
+    
+    if (!heroVideo) {
+        console.log('히어로 동영상이 없습니다.');
+        return;
+    }
+    
+    // 동영상 자동 재생 보장
+    const playVideo = () => {
+        heroVideo.play().catch(error => {
+            console.log('동영상 자동 재생 실패:', error);
+            // 사용자 인터랙션 후 재시도
+            document.addEventListener('click', () => {
+                heroVideo.play();
+            }, { once: true });
+        });
+    };
+    
+    // 동영상 로드 완료 시 재생
+    heroVideo.addEventListener('loadeddata', playVideo);
+    
+    // 동영상 종료 시 자동 반복 (loop 속성이 있지만 보장용)
+    heroVideo.addEventListener('ended', () => {
+        heroVideo.currentTime = 0;
+        heroVideo.play();
+    });
+    
+    // 페이지 visible 상태 복원 시 재생
+    document.addEventListener('visibilitychange', () => {
+        if (!document.hidden && heroVideo.paused) {
+            heroVideo.play();
+        }
+    });
+    
+    // 즉시 재생 시도
+    playVideo();
+    
+    console.log('✅ 히어로 동영상 배경 설정 완료');
+}
+
 // Ripple effect for buttons
 function createRippleEffect(event, element) {
     const ripple = document.createElement('span');
@@ -528,99 +571,79 @@ if ('serviceWorker' in navigator) {
     });
 }
 
-// Visitor Counter System - 날짜별 카운팅
+// Visitor Counter System - 서버 기반 통합 카운팅
 class VisitorCounter {
     constructor() {
-        this.totalKey = 'yulmoo_total_visitors';
-        this.todayKey = 'yulmoo_today_visitors';
-        this.dateKey = 'yulmoo_last_visit_date';
         this.sessionKey = 'yulmoo_session_counted';
-
         this.init();
     }
 
-    init() {
-        this.checkAndResetDaily();
-        this.incrementVisitors();
-        this.updateDisplay();
-    }
-
-    // 오늘 날짜 가져오기 (YYYY-MM-DD 형식)
-    getTodayDate() {
-        const today = new Date();
-        const year = today.getFullYear();
-        const month = String(today.getMonth() + 1).padStart(2, '0');
-        const day = String(today.getDate()).padStart(2, '0');
-        return `${year}-${month}-${day}`;
-    }
-
-    // 날짜가 바뀌었는지 확인하고 TODAY 카운터 리셋
-    checkAndResetDaily() {
-        const today = this.getTodayDate();
-        const lastVisitDate = localStorage.getItem(this.dateKey);
-
-        if (lastVisitDate !== today) {
-            // 날짜가 바뀌었으면 TODAY 카운터를 0으로 리셋
-            localStorage.setItem(this.todayKey, '0');
-            localStorage.setItem(this.dateKey, today);
-            console.log(`날짜 변경: ${lastVisitDate || '없음'} → ${today}, TODAY 카운터 리셋`);
-        }
-    }
-
-    getTotalVisitors() {
-        const total = localStorage.getItem(this.totalKey);
-        return total ? parseInt(total) : 0;
-    }
-
-    getTodayVisitors() {
-        const today = localStorage.getItem(this.todayKey);
-        return today ? parseInt(today) : 0;
-    }
-
-    saveTotalVisitors(count) {
-        localStorage.setItem(this.totalKey, count.toString());
-    }
-
-    saveTodayVisitors(count) {
-        localStorage.setItem(this.todayKey, count.toString());
-    }
-
-    incrementVisitors() {
+    async init() {
         // 이 세션에서 이미 카운팅되었는지 확인
-        if (sessionStorage.getItem(this.sessionKey)) {
-            console.log('이미 카운팅된 세션입니다.');
-            return;
+        const isSessionCounted = sessionStorage.getItem(this.sessionKey);
+        
+        if (!isSessionCounted) {
+            // 서버에 방문자 증가 요청
+            await this.incrementVisitor();
+            // 이 세션에서 카운팅되었음을 표시
+            sessionStorage.setItem(this.sessionKey, 'true');
+        } else {
+            // 이미 카운팅된 세션이면 현재 값만 가져오기
+            await this.loadVisitorCount();
         }
-
-        // TOTAL 방문자 수 증가
-        const currentTotal = this.getTotalVisitors();
-        const newTotal = currentTotal + 1;
-        this.saveTotalVisitors(newTotal);
-
-        // TODAY 방문자 수 증가
-        const currentToday = this.getTodayVisitors();
-        const newToday = currentToday + 1;
-        this.saveTodayVisitors(newToday);
-
-        // 이 세션에서 카운팅되었음을 표시
-        sessionStorage.setItem(this.sessionKey, 'true');
-
-        console.log(`방문자 카운터: TOTAL ${newTotal}명, TODAY ${newToday}명`);
+        
+        // 화면에 표시
+        await this.updateDisplay();
     }
 
-    updateDisplay() {
+    async incrementVisitor() {
+        try {
+            const response = await fetch('/api/visitor-increment', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            
+            if (response.ok) {
+                const data = await response.json();
+                console.log(`✅ 방문자 카운터: TOTAL ${data.total}명, TODAY ${data.today}명`);
+                return data;
+            }
+        } catch (error) {
+            console.error('❌ 방문자 카운터 증가 오류:', error);
+        }
+        return null;
+    }
+
+    async loadVisitorCount() {
+        try {
+            const response = await fetch('/api/visitor-count');
+            if (response.ok) {
+                const data = await response.json();
+                console.log(`📊 방문자 카운터 조회: TOTAL ${data.total}명, TODAY ${data.today}명`);
+                return data;
+            }
+        } catch (error) {
+            console.error('❌ 방문자 카운터 조회 오류:', error);
+        }
+        return null;
+    }
+
+    async updateDisplay() {
+        const data = await this.loadVisitorCount();
+        
+        if (!data) return;
+
         const totalElement = document.getElementById('totalVisitors');
         const todayElement = document.getElementById('todayVisitors');
 
-        const total = this.getTotalVisitors();
-        const today = this.getTodayVisitors();
-
         if (totalElement) {
-            totalElement.textContent = this.formatNumber(total);
+            totalElement.textContent = this.formatNumber(data.total);
         }
 
         if (todayElement) {
-            todayElement.textContent = this.formatNumber(today);
+            todayElement.textContent = this.formatNumber(data.today);
         }
     }
 

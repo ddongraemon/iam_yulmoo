@@ -1,103 +1,290 @@
-# 다음 세션 대화 가이드
+# 다음 세션 작업 가이드
 
-## 📍 프로젝트 위치
+## 📅 마지막 작업일: 2025-10-12
+
+---
+
+## ✅ 오늘 완료된 작업 (2025-10-12)
+
+### 1. 방문자 카운터 Vercel KV 통합 완료
+- ✅ Vercel KV (Redis) 패키지 설치 (`@vercel/kv`)
+- ✅ Serverless Functions 생성:
+  - `api/visitor-count.js` - 조회
+  - `api/visitor-increment.js` - 증가
+- ✅ `vercel.json`, `.vercelignore` 배포 설정 완료
+- ✅ 로컬/배포 환경 양방향 호환
+- ✅ 문서 작성: `VERCEL_DEPLOYMENT_GUIDE.md`, `README.md`
+
+### 2. Contact 폼 반응형 최적화
+- ✅ 달력 아이콘 화면 크기별 리사이징 (20px → 11px)
+- ✅ 하단 문의 버튼 경로 통합 (`mailto:` → `/contact.html`)
+
+### 3. 동영상 배경 준비
+- ✅ `backgroundvod.mp4` (11.58MB) 프로젝트 폴더에 복사 완료
+- ⏳ **압축 버전 생성 대기** (내일 작업)
+- ⏳ **코드 구현 대기** (내일 작업)
+
+---
+
+## 🎯 다음 세션 작업 내용
+
+### 📹 히어로 섹션 동영상 배경 구현
+
+#### 1단계: 압축 버전 만들기 (내일 할 일)
+
+**HandBrake 설정**:
 ```
-C:\Users\ehdeh\pet-channel-website\pet-channel-website\
+입력 파일: backgroundvod.mp4 (11.58MB)
+출력 파일: backgroundvod-mobile.mp4
+Preset: Fast 1080p30
+Video Codec: H.264 (x264)
+Constant Quality: 25
+Resolution: 1920x1080 유지
+예상 크기: 4-5MB
 ```
 
-## 🔄 대화 내용 불러오기
+**HandBrake 다운로드**: https://handbrake.fr/downloads.php
 
-### 방법 1: 대화 로그 파일 참조
-```
-"CONVERSATION_LOG.md 파일을 읽어서 이전 작업 내용을 확인해줘"
-```
+#### 2단계: 코드 구현
+- 데스크톱: `backgroundvod.mp4` (11.58MB, 고화질)
+- 모바일: `backgroundvod-mobile.mp4` (4-5MB, 최적화)
+- 자동 디바이스 감지
+- 로딩 최적화
+- 대체 이미지 표시
 
-### 방법 2: 프로젝트 상태 파악
-```
-"율무인데요 웹사이트 프로젝트의 현재 상태를 파악해줘"
-```
+---
 
-### 방법 3: 작업 이력 요청
-```
-"지금까지 어떤 작업을 했는지 요약해줘"
-```
+## 🚀 다음 세션 시작 방법
 
-## 📁 작업 파일 불러오기
-
-### 방법 1: 프로젝트 경로 지정
+### 1️⃣ 프로젝트 불러오기
 ```
-"C:\Users\ehdeh\pet-channel-website\pet-channel-website 경로의 율무인데요 웹사이트 프로젝트를 불러와줘"
-```
-
-### 방법 2: 파일 직접 지정
-```
-"index.html, styles.css, script.js 파일들을 읽어서 현재 상태를 파악해줘"
-```
-
-### 방법 3: 서버 실행 요청
-```
-"율무인데요 웹사이트 서버를 실행해줘"
-```
-
-## 🚀 완전한 세션 복원 요청
-
-### 추천 요청문:
-```
-"율무인데요 웹사이트 프로젝트를 불러와줘. 
+안녕! 율무인데요 웹사이트 프로젝트를 불러와줘.
 경로: C:\Users\ehdeh\pet-channel-website\pet-channel-website
-CONVERSATION_LOG.md 파일을 읽어서 이전 작업 내용을 확인하고, 
-현재 프로젝트 상태를 파악한 후 서버를 실행해줘"
+CONVERSATION_LOG.md 파일을 읽어서 이전 작업 내용을 확인하고,
+현재 프로젝트 상태를 파악한 후 서버를 실행해줘
 ```
 
-## 📋 주요 파일들
+### 2️⃣ 동영상 배경 작업 시작
+```
+히어로 섹션에 동영상 배경을 추가하고 싶어.
+backgroundvod.mp4와 backgroundvod-mobile.mp4 파일이 있어.
+데스크톱에서는 원본, 모바일에서는 압축 버전을 사용하도록 구현해줘.
+```
 
-### 메인 파일들
-- `index.html` - 메인 HTML 파일
-- `styles.css` - 반응형 CSS (푸터 최적화 포함)
-- `script.js` - JavaScript 기능
-- `yulmoo-dog.png` - 로고 이미지
-- `server.js` - Node.js 서버
+---
 
-### 문서화 파일들
-- `CONVERSATION_LOG.md` - 전체 개발 대화 로그
-- `README.md` - 프로젝트 설명서
-- `GITHUB_UPLOAD_GUIDE.md` - GitHub 업로드 가이드
-- `NEXT_SESSION_GUIDE.md` - 이 파일 (다음 세션 가이드)
+## 📁 현재 프로젝트 상태
 
-## 🎯 현재 완료된 작업
+### 파일 구조
+```
+pet-channel-website/
+├── api/                           ✅ Vercel Functions
+│   ├── visitor-count.js
+│   └── visitor-increment.js
+├── index.html                     ✅ 메인 페이지
+├── contact.html                   ✅ 문의 페이지
+├── styles.css                     ✅ 메인 스타일
+├── contact.css                    ✅ 문의 스타일 (달력 반응형 완료)
+├── script.js                      ✅ 메인 JS (서버 기반 카운터)
+├── contact.js                     ✅ 문의 JS
+├── server.js                      ✅ Node.js 서버 (통합 카운터)
+├── package.json                   ✅ @vercel/kv 추가
+├── vercel.json                    ✅ 배포 설정
+├── .vercelignore                  ✅ 배포 제외
+├── backgroundvod.mp4              ✅ 원본 동영상 (11.58MB)
+├── backgroundvod-mobile.mp4       ⏳ 압축 버전 (내일 생성)
+├── yulmoo-dog.png                 ✅ 로고
+├── CONVERSATION_LOG.md            ✅ 작업 로그
+├── VERCEL_DEPLOYMENT_GUIDE.md     ✅ 배포 가이드
+├── README.md                      ✅ 프로젝트 문서
+└── NEXT_SESSION_GUIDE.md          ✅ 이 파일
+```
 
-1. ✅ 모바일 반응형 네비게이션 수정
-2. ✅ 푸터 반응형 스타일 완성
-3. ✅ 화면 크기별 최적화 (태블릿, 모바일, 소형 모바일)
-4. ✅ 개발 문서화 완료
-5. ✅ 백업 파일 생성
+### 동영상 파일 상태
+- ✅ `backgroundvod.mp4` (11.58MB) - 복사 완료
+- ⏳ `backgroundvod-mobile.mp4` - 내일 HandBrake로 생성 예정
+
+---
 
 ## 🔧 서버 실행 방법
+
+### 로컬 개발 서버
 ```bash
 cd C:\Users\ehdeh\pet-channel-website\pet-channel-website
 node server.js
 ```
-접속: http://localhost:3000/
+또는
+```bash
+npm start
+```
 
-## 📱 반응형 브레이크포인트
-- PC: 769px 이상
-- 태블릿: 769px - 1024px  
-- 모바일: 768px 이하
-- 소형 모바일: 480px 이하
-- 매우 작은 화면: 320px 이하
+**접속**: http://localhost:3000/
 
-## 🎯 다음 작업 계획
-1. 히어로 버튼 모바일 최적화
-2. 영상 섹션 모바일 개선
-3. 성능 최적화
-4. SEO 개선
+### 포트 3000 사용 중 오류 시
+```bash
+# Ctrl+C로 기존 프로세스 종료 후 재실행
+```
 
-## 💡 팁
-- 대화 시작 시 "CONVERSATION_LOG.md 파일을 읽어줘"라고 요청하면 이전 작업 내용을 빠르게 파악할 수 있습니다
-- "현재 프로젝트 상태를 파악해줘"라고 요청하면 파일들을 읽어서 현재 상황을 분석해드립니다
-- "서버를 실행해줘"라고 요청하면 바로 개발 환경을 준비해드립니다
+---
 
+## 📊 주요 기능 현황
 
+### ✅ 완료된 기능
+1. **소셜 미디어 통합 통계**
+   - YouTube + Instagram + TikTok
+   - 자동 업데이트 (08:00, 13:00, 20:00)
 
+2. **YouTube 영상 자동 로드**
+   - 인기 영상 TOP 3
+   - 최신 영상 3개
 
+3. **방문자 카운터 (Vercel KV)**
+   - 모든 사용자 공유
+   - 날짜별 자동 리셋
+   - 세션 중복 방지
 
+4. **반응형 디자인**
+   - PC, 태블릿, 모바일 최적화
+   - Contact 폼 완전 반응형
+
+5. **문의 폼**
+   - 캠페인 유형 선택
+   - 이메일 자동 발송
+   - 반응형 달력 아이콘
+
+### ⏳ 진행 중인 작업
+1. **동영상 배경** (다음 세션)
+   - 압축 버전 생성
+   - 코드 구현
+   - 성능 최적화
+
+### 🔮 향후 작업 가능 영역
+1. Vercel 배포
+2. 커스텀 도메인 연결
+3. Google Analytics 통합
+4. Lighthouse 성능 최적화
+5. PWA 기능 추가
+
+---
+
+## 💾 중요 파일 위치
+
+### 환경 변수 (.env)
+```
+C:\Users\ehdeh\pet-channel-website\pet-channel-website\.env
+```
+
+**필수 API 키**:
+- YOUTUBE_API_KEY
+- INSTAGRAM_USER_ID
+- INSTAGRAM_ACCESS_TOKEN
+- (기타 API 키들)
+
+### 문서 파일
+- `CONVERSATION_LOG.md` - 전체 작업 히스토리
+- `VERCEL_DEPLOYMENT_GUIDE.md` - Vercel 배포 방법
+- `README.md` - 프로젝트 개요
+- `NEXT_SESSION_GUIDE.md` - 이 파일
+
+---
+
+## 📝 HandBrake 압축 체크리스트 (내일)
+
+### 준비물
+- [ ] HandBrake 설치 완료
+- [ ] `backgroundvod.mp4` 파일 확인
+
+### 압축 설정
+- [ ] Open Source → `backgroundvod.mp4` 선택
+- [ ] Save As → `backgroundvod-mobile.mp4`
+- [ ] Preset → `Fast 1080p30`
+- [ ] Video Codec → `H.264 (x264)`
+- [ ] Constant Quality → `25`
+- [ ] Resolution → `1920x1080` 유지
+- [ ] Start Encode 클릭
+
+### 완료 후
+- [ ] 파일 크기 확인 (4-5MB 목표)
+- [ ] AI에게 "압축 완료했어" 알리기
+- [ ] 코드 구현 시작
+
+---
+
+## 🎯 다음 세션 첫 질문 예시
+
+### 패턴 1: 프로젝트 복원 + 서버 실행
+```
+안녕! 율무인데요 프로젝트 복원해줘.
+경로: C:\Users\ehdeh\pet-channel-website\pet-channel-website
+CONVERSATION_LOG.md 읽고 서버 실행해줘.
+```
+
+### 패턴 2: 동영상 배경 바로 시작
+```
+동영상 압축 완료했어. 
+backgroundvod-mobile.mp4 파일도 준비됐어.
+이제 히어로 섹션에 동영상 배경 구현해줘.
+```
+
+### 패턴 3: 상태 확인부터
+```
+프로젝트 상태 확인하고, 
+다음에 뭘 해야 하는지 알려줘.
+```
+
+---
+
+## 🔍 문제 발생 시
+
+### 서버 실행 안 됨
+```bash
+# 포트 3000 사용 중 오류
+# Ctrl+C로 기존 프로세스 종료 후 재실행
+```
+
+### 파일 찾을 수 없음
+```
+경로 확인: C:\Users\ehdeh\pet-channel-website\pet-channel-website\
+```
+
+### API 데이터 로드 안 됨
+```bash
+# .env 파일 확인
+# API 키 유효성 확인
+# 서버 재시작
+```
+
+---
+
+## 📞 연락처
+
+**율무인데요**
+- YouTube: @Iam_Yulmoo
+- Instagram: _iam_yulmoo
+- TikTok: iam_yulmoo
+- Email: iamyulmoo@naver.com
+
+---
+
+## 🎉 마무리
+
+오늘도 수고하셨습니다! 🐕
+
+**완료된 작업**:
+- ✅ Vercel KV 방문자 카운터 통합
+- ✅ Contact 폼 반응형 최적화
+- ✅ 동영상 파일 준비
+
+**내일 할 일**:
+1. HandBrake로 동영상 압축 (11.58MB → 4-5MB)
+2. 히어로 섹션 동영상 배경 구현
+3. 데스크톱/모바일 자동 분기
+4. 성능 최적화
+
+다음 세션에서 뵙겠습니다! 🚀
+
+---
+
+**마지막 업데이트**: 2025-10-12
+**다음 작업**: 동영상 배경 구현
+**상태**: 동영상 압축 대기 중
