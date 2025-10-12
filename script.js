@@ -863,56 +863,43 @@ function enableDragScroll(container) {
         container.scrollLeft = scrollLeft - walk;
     });
     
-    // 초민감 터치 이벤트 - 수평/수직 스크롤 구분
+    // 초민감 터치 이벤트 - 극도로 민감한 스와이프
     let touchStartX = 0;
     let touchStartY = 0;
     let touchStartScrollLeft = 0;
     let isHorizontalSwipe = null;
-    let hasMoved = false;
-    const MIN_SWIPE_DISTANCE = 30; // 30px만 움직여도 다음 영상으로
+    const MIN_SWIPE_DISTANCE = 15; // 15px만 움직여도 다음 영상으로 (이전 30px에서 절반으로 감소)
     
     container.addEventListener('touchstart', (e) => {
         touchStartX = e.touches[0].clientX;
         touchStartY = e.touches[0].clientY;
         touchStartScrollLeft = container.scrollLeft;
-        isHorizontalSwipe = null; // 초기화
-        hasMoved = false;
+        isHorizontalSwipe = null;
     }, { passive: true });
     
     container.addEventListener('touchmove', (e) => {
-        // 스크롤 타임아웃 클리어
         clearTimeout(scrollTimeout);
-        hasMoved = true;
         
-        // 첫 터치 이동에서 방향 감지
+        // 방향 감지 (매우 빠르게)
         if (isHorizontalSwipe === null) {
             const touchCurrentX = e.touches[0].clientX;
             const touchCurrentY = e.touches[0].clientY;
             const diffX = Math.abs(touchCurrentX - touchStartX);
             const diffY = Math.abs(touchCurrentY - touchStartY);
             
-            // 수평 이동이 더 크면 수평 스와이프로 간주
-            if (diffX > diffY && diffX > 5) {
+            // 3px만 움직여도 방향 감지 (이전 5px에서 더 줄임)
+            if (diffX > diffY && diffX > 3) {
                 isHorizontalSwipe = true;
-            } else if (diffY > diffX && diffY > 5) {
-                // 수직 이동이 더 크면 페이지 스크롤 허용
+            } else if (diffY > diffX && diffY > 3) {
                 isHorizontalSwipe = false;
             }
         }
     }, { passive: true });
     
     container.addEventListener('touchend', (e) => {
-        // 수직 스크롤이었으면 스냅하지 않음
+        // 수직 스크롤이면 스킵
         if (isHorizontalSwipe === false) {
             isHorizontalSwipe = null;
-            hasMoved = false;
-            return;
-        }
-        
-        // 움직임이 없었으면 처리하지 않음
-        if (!hasMoved) {
-            isHorizontalSwipe = null;
-            hasMoved = false;
             return;
         }
         
@@ -921,57 +908,36 @@ function enableDragScroll(container) {
         const containerWidth = container.offsetWidth;
         const currentIndex = Math.floor(touchStartScrollLeft / containerWidth);
         
-        // 조금이라도 움직였으면 다음/이전 카드로 스냅
-        if (Math.abs(scrollDiff) > MIN_SWIPE_DISTANCE) {
+        // 15px 이상 움직였으면 무조건 다음/이전 영상으로
+        if (Math.abs(scrollDiff) >= MIN_SWIPE_DISTANCE) {
             let targetIndex;
             
             if (scrollDiff > 0) {
-                // 오른쪽으로 스와이프 (다음 영상)
                 targetIndex = currentIndex + 1;
             } else {
-                // 왼쪽으로 스와이프 (이전 영상)
                 targetIndex = currentIndex - 1;
             }
             
-            // 경계값 처리
             const maxIndex = Math.floor(container.scrollWidth / containerWidth) - 1;
             targetIndex = Math.max(0, Math.min(targetIndex, maxIndex));
             
-            // 즉시 타겟 카드로 이동 (강제)
-            const targetScrollLeft = targetIndex * containerWidth;
             container.scrollTo({
-                left: targetScrollLeft,
+                left: targetIndex * containerWidth,
                 behavior: 'smooth'
             });
         } else {
-            // 움직임이 미미하면 가장 가까운 위치로
-            const nearestIndex = Math.round(currentScrollLeft / containerWidth);
+            // 15px 미만이면 원래 위치로
             container.scrollTo({
-                left: nearestIndex * containerWidth,
+                left: currentIndex * containerWidth,
                 behavior: 'smooth'
             });
         }
         
-        isHorizontalSwipe = null; // 리셋
-        hasMoved = false;
+        isHorizontalSwipe = null;
     }, { passive: true });
     
     // 기본 커서 스타일
     container.style.cursor = 'grab';
-}
-
-// 가장 가까운 카드로 스냅 (보조 함수)
-function snapToNearestCard(container) {
-    const containerWidth = container.offsetWidth;
-    const scrollPosition = container.scrollLeft;
-    const nearestIndex = Math.round(scrollPosition / containerWidth);
-    const targetScrollLeft = nearestIndex * containerWidth;
-    
-    // 부드럽게 스냅
-    container.scrollTo({
-        left: targetScrollLeft,
-        behavior: 'smooth'
-    });
 }
 
 // 비디오 카드 HTML 생성
