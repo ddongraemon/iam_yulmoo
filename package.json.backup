@@ -5,9 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "node server.js",
-    "build": "echo 'Build completed'",
-    "lint": "echo 'Linting completed'"
+    "dev": "node server.js"
   },
   "keywords": [
     "yulmoo",
@@ -25,3 +23,5 @@
     "nodemailer": "^7.0.9"
   }
 }
+
+
