@@ -18,6 +18,7 @@
   "author": "율무인데요",
   "license": "ISC",
   "dependencies": {
+    "@supabase/supabase-js": "^2.39.0",
     "@vercel/kv": "^1.0.1",
     "axios": "^1.7.7",
     "dotenv": "^16.4.5",
