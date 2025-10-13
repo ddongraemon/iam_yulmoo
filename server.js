@@ -29,7 +29,10 @@ const mimeTypes = {
     '.ttf': 'font/ttf',
     '.otf': 'font/otf',
     '.woff': 'font/woff',
-    '.woff2': 'font/woff2'
+    '.woff2': 'font/woff2',
+    '.mp4': 'video/mp4',
+    '.webm': 'video/webm',
+    '.ogg': 'video/ogg'
 };
 
 // 캐시 파일 경로

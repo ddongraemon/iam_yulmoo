@@ -34,6 +34,7 @@ function initializeApp() {
     setupMobileMenu();
     setupHeroVideo(); // 히어로 동영상 배경 설정
     loadYouTubeData(); // YouTube 데이터 로드
+    loadGalleryPreview(); // 갤러리 프리뷰 로드
 }
 
 // Navigation functionality
@@ -1125,4 +1126,130 @@ videoStyle.textContent = `
     }
 `;
 document.head.appendChild(videoStyle);
+
+// 터치 효과를 위한 이벤트 리스너 추가
+function setupTouchEffects() {
+    // 영상 카드 터치 효과
+    const videoCards = document.querySelectorAll('.video-card');
+    videoCards.forEach(card => {
+        // 터치 시작
+        card.addEventListener('touchstart', function() {
+            this.style.transform = 'translateY(-8px)';
+            this.style.boxShadow = '0 16px 64px rgba(0, 0, 0, 0.4)';
+            this.style.borderColor = '#ff6b9d';
+        }, { passive: true });
+        
+        // 터치 종료
+        card.addEventListener('touchend', function() {
+            setTimeout(() => {
+                this.style.transform = '';
+                this.style.boxShadow = '';
+                this.style.borderColor = '';
+            }, 150);
+        }, { passive: true });
+        
+        // 터치 취소
+        card.addEventListener('touchcancel', function() {
+            this.style.transform = '';
+            this.style.boxShadow = '';
+            this.style.borderColor = '';
+        }, { passive: true });
+    });
+    
+    // 갤러리 카드 터치 효과
+    const galleryItems = document.querySelectorAll('.gallery-item');
+    galleryItems.forEach(item => {
+        // 터치 시작
+        item.addEventListener('touchstart', function() {
+            this.style.transform = 'translateY(-4px)';
+            this.style.boxShadow = '0 16px 64px rgba(0, 0, 0, 0.4)';
+            this.style.borderColor = '#ff6b9d';
+        }, { passive: true });
+        
+        // 터치 종료
+        item.addEventListener('touchend', function() {
+            setTimeout(() => {
+                this.style.transform = '';
+                this.style.boxShadow = '';
+                this.style.borderColor = '';
+            }, 150);
+        }, { passive: true });
+        
+        // 터치 취소
+        item.addEventListener('touchcancel', function() {
+            this.style.transform = '';
+            this.style.boxShadow = '';
+            this.style.borderColor = '';
+        }, { passive: true });
+    });
+}
+
+// 페이지 로드 시 터치 효과 설정
+if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+    document.addEventListener('DOMContentLoaded', setupTouchEffects);
+    // 동적으로 추가되는 요소를 위해 약간 지연 후 다시 실행
+    setTimeout(setupTouchEffects, 500);
+}
+
+// 갤러리 프리뷰 로드 (Supabase에서 랜덤 3개 이미지)
+async function loadGalleryPreview() {
+    try {
+        // Supabase 클라이언트 초기화
+        const SUPABASE_URL = 'https://xthcitqhmsjslxayhgvt.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_S3zm1hnfz6r30ntj4aUrkA_neuo-I7B';
+        const { createClient } = supabase;
+        const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        
+        // 모든 이미지 가져오기
+        const { data: images, error } = await supabaseClient
+            .from('gallery')
+            .select('image_url, file_name')
+            .order('created_at', { ascending: false });
+        
+        if (error) {
+            console.error('갤러리 이미지 로드 오류:', error);
+            return;
+        }
+        
+        if (!images || images.length === 0) {
+            console.log('갤러리에 이미지가 없습니다.');
+            return;
+        }
+        
+        // 랜덤하게 3개 선택 (Fisher-Yates shuffle 알고리즘)
+        const shuffled = [...images].sort(() => Math.random() - 0.5);
+        const selectedImages = shuffled.slice(0, 3);
+        
+        // 갤러리 아이템 업데이트
+        const galleryItems = document.querySelectorAll('.gallery-section .gallery-item');
+        const isMobile = window.innerWidth <= 768;
+        
+        selectedImages.forEach((image, index) => {
+            if (galleryItems[index]) {
+                const placeholder = galleryItems[index].querySelector('.gallery-placeholder');
+                
+                if (placeholder) {
+                    // 모바일인 경우 최적화된 이미지 URL 생성
+                    let imageUrl = image.image_url;
+                    if (isMobile && imageUrl.includes('supabase.co')) {
+                        const path = imageUrl.split('/storage/v1/object/public/gallery-images/')[1];
+                        if (path) {
+                            imageUrl = `${SUPABASE_URL}/storage/v1/object/public/gallery-images/${path}?width=400&quality=70&format=webp`;
+                        }
+                    }
+                    
+                    // placeholder를 img 태그로 교체
+                    galleryItems[index].innerHTML = `
+                        <img src="${imageUrl}" alt="${image.file_name}" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius-xl);">
+                    `;
+                }
+            }
+        });
+        
+        console.log('갤러리 프리뷰 로드 완료:', selectedImages.length, '개 이미지');
+        
+    } catch (error) {
+        console.error('갤러리 프리뷰 로드 실패:', error);
+    }
+}
 

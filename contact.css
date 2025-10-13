@@ -243,6 +243,36 @@
     transition: var(--transition-normal);
 }
 
+/* input placeholder 색상 명시적으로 정의 */
+.form-group input::placeholder {
+    color: var(--text-muted) !important;
+    opacity: 1 !important;
+}
+
+/* 모든 input 필드의 placeholder 색상 통일 */
+input::placeholder,
+input::-webkit-input-placeholder,
+input::-moz-placeholder,
+input:-ms-input-placeholder {
+    color: var(--text-muted) !important;
+    opacity: 1 !important;
+}
+
+/* textarea placeholder 색상 명시적으로 정의 */
+.form-group textarea::placeholder {
+    color: var(--text-muted) !important;
+    opacity: 1 !important;
+}
+
+/* 모든 textarea 필드의 placeholder 색상 통일 */
+textarea::placeholder,
+textarea::-webkit-input-placeholder,
+textarea::-moz-placeholder,
+textarea:-ms-input-placeholder {
+    color: var(--text-muted) !important;
+    opacity: 1 !important;
+}
+
 /* 자동완성(autofill) 스타일 오버라이드 */
 .form-group input:-webkit-autofill,
 .form-group input:-webkit-autofill:hover,
@@ -260,35 +290,179 @@
     color: var(--text-primary) !important;
 }
 
-/* 날짜 입력 필드 스타일 */
-.form-group input[type="date"] {
-    cursor: pointer;
-    position: relative;
-    -webkit-appearance: auto;
-    -moz-appearance: auto;
-    appearance: auto;
+/* Flatpickr 달력 스타일링 */
+.flatpickr-calendar {
+    background: var(--background) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: var(--radius-lg) !important;
+    box-shadow: var(--shadow-lg) !important;
 }
 
-.form-group input[type="date"]::-webkit-calendar-picker-indicator {
-    cursor: pointer;
-    opacity: 1;
-    display: block;
-    width: 20px;
-    height: 20px;
-    filter: invert(50%);
-    transition: var(--transition-normal);
+.flatpickr-calendar .flatpickr-months {
+    background: var(--background) !important;
 }
 
-.form-group input[type="date"]::-webkit-inner-spin-button,
-.form-group input[type="date"]::-webkit-clear-button {
-    display: none;
+.flatpickr-calendar .flatpickr-weekdays {
+    background: var(--surface-hover) !important;
 }
 
-.form-group input[type="date"]::-webkit-datetime-edit-fields-wrapper {
-    padding: 0;
+.flatpickr-calendar .flatpickr-weekday {
+    color: var(--text-secondary) !important;
+    font-weight: 600 !important;
 }
 
-.form-select {
+.flatpickr-calendar .flatpickr-day {
+    color: var(--text-primary) !important;
+    background: transparent !important;
+    border: none !important;
+}
+
+.flatpickr-calendar .flatpickr-day:hover {
+    background: var(--primary) !important;
+    color: white !important;
+}
+
+.flatpickr-calendar .flatpickr-day.selected {
+    background: var(--primary) !important;
+    color: white !important;
+}
+
+.flatpickr-calendar .flatpickr-day.today {
+    border-color: var(--primary) !important;
+    background: var(--surface) !important;
+}
+
+.flatpickr-calendar .flatpickr-prev-month,
+.flatpickr-calendar .flatpickr-next-month {
+    color: var(--text-primary) !important;
+}
+
+.flatpickr-calendar .flatpickr-current-month {
+    color: var(--text-primary) !important;
+}
+
+.flatpickr-calendar .flatpickr-current-month .flatpickr-monthDropdown-months {
+    background: var(--background) !important;
+    color: var(--text-primary) !important;
+    border: 1px solid var(--border) !important;
+}
+
+.flatpickr-calendar .flatpickr-current-month .flatpickr-monthDropdown-months option {
+    background: var(--background) !important;
+    color: var(--text-primary) !important;
+}
+
+/* 모바일에서 Flatpickr 반응형 스타일 */
+@media (max-width: 768px) {
+    .flatpickr-calendar {
+        font-size: 0.9rem !important;
+        width: 280px !important;
+        max-width: 90vw !important;
+    }
+    
+    .flatpickr-calendar .flatpickr-day {
+        height: 40px !important;
+        line-height: 40px !important;
+        width: 40px !important;
+        font-size: 0.9rem !important;
+    }
+    
+    .flatpickr-calendar .flatpickr-prev-month,
+    .flatpickr-calendar .flatpickr-next-month {
+        height: 40px !important;
+        width: 40px !important;
+        line-height: 40px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .flatpickr-calendar {
+        font-size: 0.8rem !important;
+        width: 260px !important;
+    }
+    
+    .flatpickr-calendar .flatpickr-day {
+        height: 38px !important;
+        line-height: 38px !important;
+        width: 38px !important;
+        font-size: 0.8rem !important;
+    }
+    
+    .flatpickr-calendar .flatpickr-prev-month,
+    .flatpickr-calendar .flatpickr-next-month {
+        height: 38px !important;
+        width: 38px !important;
+        line-height: 38px !important;
+    }
+}
+
+@media (max-width: 360px) {
+    .flatpickr-calendar {
+        width: 240px !important;
+    }
+    
+    .flatpickr-calendar .flatpickr-day {
+        height: 35px !important;
+        line-height: 35px !important;
+        width: 35px !important;
+        font-size: 0.75rem !important;
+    }
+}
+
+/* 모바일에서 네이티브 날짜 피커 캘린더 아이콘 숨기기 및 높이 통일 */
+@media (max-width: 768px) {
+    input[type="date"] {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        height: auto !important;
+        min-height: auto !important;
+        line-height: normal !important;
+        padding: var(--space-3) !important;
+        font-size: 0.8rem !important;
+        box-sizing: border-box !important;
+    }
+    
+    input[type="date"]::-webkit-calendar-picker-indicator {
+        display: none !important;
+        opacity: 0 !important;
+        width: 0 !important;
+        height: 0 !important;
+    }
+    
+    input[type="date"]::-webkit-inner-spin-button,
+    input[type="date"]::-webkit-clear-button {
+        display: none !important;
+        opacity: 0 !important;
+        width: 0 !important;
+        height: 0 !important;
+    }
+}
+
+@media (max-width: 480px) {
+    input[type="date"] {
+        height: auto !important;
+        min-height: auto !important;
+        line-height: normal !important;
+        padding: var(--space-3) !important;
+        font-size: 0.8rem !important;
+        box-sizing: border-box !important;
+    }
+}
+
+@media (max-width: 360px) {
+    input[type="date"] {
+        height: auto !important;
+        min-height: auto !important;
+        line-height: normal !important;
+        padding: var(--space-1) var(--space-2) !important;
+        font-size: 0.65rem !important;
+        box-sizing: border-box !important;
+    }
+}
+
+/* select 필드 화살표 아이콘 */
+.form-group select {
     cursor: pointer;
     appearance: none;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23ff6b9d' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
@@ -297,7 +471,84 @@
     padding-right: calc(var(--space-4) * 2.5);
 }
 
-.form-select option {
+/* select 필드 플레이스홀더를 input placeholder와 완전히 동일하게 */
+.form-group select option:disabled {
+    color: var(--text-muted) !important;
+}
+
+.form-group select:invalid {
+    color: var(--text-muted) !important;
+}
+
+/* select 필드의 첫 번째 옵션(플레이스홀더) 강제 스타일링 */
+.form-group select option:first-child {
+    color: var(--text-muted) !important;
+}
+
+/* select 필드 자체가 invalid 상태일 때 */
+.form-group select[required]:invalid {
+    color: var(--text-muted) !important;
+}
+
+/* form-select 클래스 직접 타겟팅 */
+.form-select {
+    color: var(--text-muted) !important;
+}
+
+.form-select:invalid {
+    color: var(--text-muted) !important;
+}
+
+/* 보상형태 필드 ID로 직접 지정 */
+#compensationType {
+    color: var(--text-muted) !important;
+}
+
+#compensationType:invalid {
+    color: var(--text-muted) !important;
+}
+
+/* form-select 클래스의 옵션들 - 더 강력한 선택자 */
+.form-select option:disabled,
+.form-select option[disabled],
+.form-select option[value=""] {
+    color: var(--text-muted) !important;
+}
+
+.form-select option:first-child,
+.form-select option:nth-child(1) {
+    color: var(--text-muted) !important;
+}
+
+/* 모든 select 옵션의 disabled 상태 강제 적용 */
+select option:disabled,
+select option[disabled],
+select option[value=""] {
+    color: var(--text-muted) !important;
+}
+
+/* select 필드 자체의 색상 - invalid 상태(플레이스홀더)일 때만 회색 */
+.form-select:invalid,
+.form-group select:invalid,
+#compensationType:invalid {
+    color: var(--text-muted) !important;
+}
+
+/* select 필드 - 옵션 선택 후 valid 상태일 때 하얀 글씨 */
+.form-select:valid,
+.form-group select:valid,
+#compensationType:valid {
+    color: var(--text-primary) !important;
+}
+
+/* select 필드 - 값이 선택된 경우 하얀 글씨 */
+.form-select:not(:invalid),
+.form-group select:not(:invalid),
+#compensationType:not(:invalid) {
+    color: var(--text-primary) !important;
+}
+
+.form-group select option {
     background: var(--background);
     color: var(--text-primary);
     padding: var(--space-2);
@@ -516,9 +767,14 @@ input[type="number"]::-webkit-inner-spin-button {
         font-size: 0.95rem;
     }
     
-    .form-group input[type="date"]::-webkit-calendar-picker-indicator {
-        width: 19px;
-        height: 19px;
+    /* 날짜 필드 높이 통일 */
+    input[type="date"] {
+        height: auto !important;
+        min-height: auto !important;
+        line-height: normal !important;
+        padding: var(--space-3) !important;
+        font-size: 0.95rem !important;
+        box-sizing: border-box !important;
     }
 }
 
@@ -548,9 +804,14 @@ input[type="number"]::-webkit-inner-spin-button {
         font-size: 1rem;
     }
     
-    .form-group input[type="date"]::-webkit-calendar-picker-indicator {
-        width: 18px;
-        height: 18px;
+    /* 날짜 필드 높이 통일 */
+    input[type="date"] {
+        height: auto !important;
+        min-height: auto !important;
+        line-height: normal !important;
+        padding: var(--space-3) !important;
+        font-size: 0.95rem !important;
+        box-sizing: border-box !important;
     }
 }
 
@@ -792,9 +1053,122 @@ input[type="number"]::-webkit-inner-spin-button {
         width: 28px;
         height: 28px;
     }
+}
+
+/* 700px 이하 - 홈 화면과 동일한 네비게이션 스타일 */
+@media (max-width: 700px) {
+    /* 모바일 네비게이션 바 크기 - 훨씬 더 작게 */
+    body .navbar {
+        height: 42px !important;
+        min-height: 42px !important;
+        max-height: 42px !important;
+        padding: 0 !important;
+        line-height: 42px !important;
+    }
+    
+    body .nav-container {
+        height: 42px !important;
+        min-height: 42px !important;
+        max-height: 42px !important;
+        padding: 0 var(--space-4) !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+    }
+    
+    .nav-logo {
+        display: flex !important;
+        align-items: center !important;
+        gap: 6px !important;
+    }
+    
+    .nav-logo-img {
+        width: 20px !important;
+        height: 20px !important;
+    }
+    
+    .nav-logo-text {
+        font-size: 0.75rem !important;
+        line-height: 1 !important;
+        font-weight: 600 !important;
+    }
 
     .contact-container {
-        padding: 70px var(--space-3) var(--space-8) var(--space-3);
+        padding: 60px var(--space-3) var(--space-8) var(--space-3) !important;
+    }
+}
+
+/* 강제 네비게이션 바 크기 적용 - 700px 이하 */
+@media screen and (max-width: 700px) {
+    html body .navbar {
+        height: 42px !important;
+        min-height: 42px !important;
+        max-height: 42px !important;
+        overflow: hidden !important;
+    }
+    
+    html body .nav-container {
+        height: 42px !important;
+        min-height: 42px !important;
+        max-height: 42px !important;
+        overflow: hidden !important;
+    }
+}
+
+/* 480px 이하 - 더 작은 네비게이션 바 */
+@media (max-width: 480px) {
+    /* 작은 모바일 네비게이션 바 크기 */
+    body .navbar {
+        height: 38px !important;
+        min-height: 38px !important;
+        max-height: 38px !important;
+        padding: 0 !important;
+        line-height: 38px !important;
+    }
+    
+    body .nav-container {
+        height: 38px !important;
+        min-height: 38px !important;
+        max-height: 38px !important;
+        padding: 0 var(--space-3) !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+    }
+    
+    .nav-logo {
+        display: flex !important;
+        align-items: center !important;
+        gap: 5px !important;
+    }
+    
+    .nav-logo-img {
+        width: 18px !important;
+        height: 18px !important;
+    }
+    
+    .nav-logo-text {
+        font-size: 0.7rem !important;
+        line-height: 1 !important;
+        font-weight: 600 !important;
+    }
+    
+    html body .navbar {
+        height: 38px !important;
+        min-height: 38px !important;
+        max-height: 38px !important;
+        overflow: hidden !important;
+    }
+    
+    html body .nav-container {
+        height: 38px !important;
+        min-height: 38px !important;
+        max-height: 38px !important;
+        overflow: hidden !important;
+    }
+    
+    .contact-container {
+        padding: 55px var(--space-3) var(--space-8) var(--space-3) !important;
     }
 
     .contact-title {
@@ -1089,8 +1463,8 @@ input[type="number"]::-webkit-inner-spin-button {
     }
     
     .form-group input[type="date"]::-webkit-calendar-picker-indicator {
-        width: 12px;
-        height: 12px;
+        width: 16px;
+        height: 16px;
     }
 }
 
@@ -1181,7 +1555,7 @@ input[type="number"]::-webkit-inner-spin-button {
     }
     
     .form-group input[type="date"]::-webkit-calendar-picker-indicator {
-        width: 11px;
-        height: 11px;
+        width: 14px;
+        height: 14px;
     }
 }

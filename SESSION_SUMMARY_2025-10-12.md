@@ -32,14 +32,14 @@
 - ✅ Gmail SMTP를 통한 이메일 전송
 - ✅ 서버리스 함수: `/api/send-email.js`
 - ✅ 수신 이메일: `iamyulmoo@naver.com`
-- ✅ Gmail 계정: `yulmoo.gam@gmail.com`
-- ✅ 앱 비밀번호: `asfefkztxlexhjyz`
+- ✅ Gmail 계정: [삭제됨]
+- ✅ 앱 비밀번호: [삭제됨]
 - ✅ 이메일 템플릿: HTML 형식, 핑크 포인트 컬러, 반응형
 
 **⚠️ 중요: Vercel 환경 변수 설정 필요**
 ```
-EMAIL_USER = yulmoo.gam@gmail.com
-EMAIL_PASS = asfefkztxlexhjyz
+EMAIL_USER = [삭제됨]
+EMAIL_PASS = [삭제됨]
 ```
 설정 후 반드시 **Redeploy** 필요!
 
@@ -169,35 +169,35 @@ pet-channel-website/
 ### 로컬 환경 변수 (.env)
 ```env
 # YouTube API
-YOUTUBE_API_KEY=AIzaSyDfGmZTlgUVeRlcANGxWGSfHKolYkJleSQ
+YOUTUBE_API_KEY=[삭제됨]
 YOUTUBE_CHANNEL_ID=@Iam_Yulmoo
 
 # Instagram API
-INSTAGRAM_USER_ID=17841471961216287
-INSTAGRAM_ACCESS_TOKEN=(긴 토큰)
+INSTAGRAM_USER_ID=[삭제됨]
+INSTAGRAM_ACCESS_TOKEN=[삭제됨]
 INSTAGRAM_HANDLE=_iam_yulmoo
 
 # TikTok API
 TIKTOK_USERNAME=iam_yulmoo
-TIKTOK_CLIENT_SECRET=(시크릿)
+TIKTOK_CLIENT_SECRET=[삭제됨]
 
 # 서버 설정
 PORT=3000
 HOST=127.0.0.1
 
 # Gmail SMTP (NEW)
-EMAIL_USER=yulmoo.gam@gmail.com
-EMAIL_PASS=asfefkztxlexhjyz
+EMAIL_USER=[삭제됨]
+EMAIL_PASS=[삭제됨]
 ```
 
 ### Vercel 환경 변수 (설정 필요!)
 ```
-EMAIL_USER = yulmoo.gam@gmail.com
-EMAIL_PASS = asfefkztxlexhjyz
-YOUTUBE_API_KEY = (기존 값)
-YOUTUBE_CHANNEL_ID = (기존 값)
-INSTAGRAM_USER_ID = (기존 값)
-INSTAGRAM_ACCESS_TOKEN = (기존 값)
+EMAIL_USER = [삭제됨]
+EMAIL_PASS = [삭제됨]
+YOUTUBE_API_KEY = [삭제됨]
+YOUTUBE_CHANNEL_ID = [삭제됨]
+INSTAGRAM_USER_ID = [삭제됨]
+INSTAGRAM_ACCESS_TOKEN = [삭제됨]
 ```
 
 ---
@@ -247,6 +247,7 @@ type 파일명
 ---
 
 **✅ 모든 작업이 Git에 커밋되어 안전하게 저장되었습니다!**
+
 
 
 

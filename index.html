@@ -24,6 +24,7 @@
             <div class="nav-menu">
                 <a href="#home" class="nav-link active">홈</a>
                 <a href="#videos" class="nav-link">영상</a>
+                <a href="#gallery" class="nav-link">갤러리</a>
                 <a href="#contact" class="nav-link">문의</a>
             </div>
             <div class="nav-toggle">
@@ -282,6 +283,48 @@
         </div>
     </section>
 
+    <!-- Gallery Section -->
+    <section class="gallery-section" id="gallery">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">율무 갤러리</h2>
+                <p class="section-subtitle">율무의 다양한 모습을 담았습니다!</p>
+            </div>
+            
+            <div class="gallery-content">
+                <div class="gallery-action">
+                    <a href="/gallery.html" class="gallery-btn">
+                        <i class="fas fa-images"></i>
+                        <span>갤러리 보러가기</span>
+                    </a>
+                </div>
+                
+                <div class="gallery-preview">
+                    <div class="gallery-grid">
+                        <div class="gallery-item">
+                            <div class="gallery-placeholder">
+                                <i class="fas fa-camera"></i>
+                                <span>갤러리 1</span>
+                            </div>
+                        </div>
+                        <div class="gallery-item">
+                            <div class="gallery-placeholder">
+                                <i class="fas fa-camera"></i>
+                                <span>갤러리 2</span>
+                            </div>
+                        </div>
+                        <div class="gallery-item">
+                            <div class="gallery-placeholder">
+                                <i class="fas fa-camera"></i>
+                                <span>갤러리 3</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
         <!-- Contact Section -->
         <section class="contact-section" id="contact">
             <div class="container">
@@ -375,5 +418,8 @@
             }
         });
     </script>
+    
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </body>
 </html>
