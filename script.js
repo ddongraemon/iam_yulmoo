@@ -35,6 +35,7 @@ function initializeApp() {
     setupHeroVideo(); // 히어로 동영상 배경 설정
     loadYouTubeData(); // YouTube 데이터 로드
     loadGalleryPreview(); // 갤러리 프리뷰 로드
+    setupFortuneButton(); // 율무 운세 버튼 설정
 }
 
 // Navigation functionality
@@ -1191,7 +1192,7 @@ if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
     setTimeout(setupTouchEffects, 500);
 }
 
-// 갤러리 프리뷰 로드 (Supabase에서 랜덤 3개 이미지)
+// 갤러리 프리뷰 로드 (gallery-images 버킷에서 랜덤 3개 이미지)
 async function loadGalleryPreview() {
     try {
         // Supabase 클라이언트 초기화
@@ -1200,24 +1201,57 @@ async function loadGalleryPreview() {
         const { createClient } = supabase;
         const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         
-        // 모든 이미지 가져오기
-        const { data: images, error } = await supabaseClient
-            .from('gallery')
-            .select('image_url, file_name')
-            .order('created_at', { ascending: false });
+        // gallery-images 버킷에서 모든 연도 폴더의 이미지들을 가져오기
+        let allImages = [];
+        const years = ['2023', '2024', '2025'];
         
-        if (error) {
-            console.error('갤러리 이미지 로드 오류:', error);
-            return;
+        for (const year of years) {
+            try {
+                const { data: files, error: listError } = await supabaseClient.storage
+                    .from('gallery-images')
+                    .list(year, {
+                        limit: 50,
+                        sortBy: { column: 'name', order: 'asc' }
+                    });
+                
+                if (!listError && files && files.length > 0) {
+                    for (const file of files) {
+                        const { data: urlData } = supabaseClient.storage
+                            .from('gallery-images')
+                            .getPublicUrl(`${year}/${file.name}`);
+                        
+                        allImages.push({
+                            image_url: urlData.publicUrl,
+                            file_name: file.name,
+                            year: year
+                        });
+                    }
+                }
+            } catch (folderError) {
+                console.warn(`${year} 폴더 접근 실패:`, folderError);
+            }
         }
         
-        if (!images || images.length === 0) {
+        // 만약 버킷에서 이미지를 가져오지 못했다면 기존 gallery 테이블에서 가져오기
+        if (allImages.length === 0) {
+            console.log('버킷에서 이미지를 가져오지 못했습니다. gallery 테이블을 사용합니다.');
+            const { data, error } = await supabaseClient
+                .from('gallery')
+                .select('image_url, file_name')
+                .order('created_at', { ascending: false });
+
+            if (!error && data) {
+                allImages = data;
+            }
+        }
+        
+        if (!allImages || allImages.length === 0) {
             console.log('갤러리에 이미지가 없습니다.');
             return;
         }
         
         // 랜덤하게 3개 선택 (Fisher-Yates shuffle 알고리즘)
-        const shuffled = [...images].sort(() => Math.random() - 0.5);
+        const shuffled = [...allImages].sort(() => Math.random() - 0.5);
         const selectedImages = shuffled.slice(0, 3);
         
         // 갤러리 아이템 업데이트
@@ -1229,27 +1263,55 @@ async function loadGalleryPreview() {
                 const placeholder = galleryItems[index].querySelector('.gallery-placeholder');
                 
                 if (placeholder) {
-                    // 모바일인 경우 최적화된 이미지 URL 생성
-                    let imageUrl = image.image_url;
-                    if (isMobile && imageUrl.includes('supabase.co')) {
-                        const path = imageUrl.split('/storage/v1/object/public/gallery-images/')[1];
-                        if (path) {
-                            imageUrl = `${SUPABASE_URL}/storage/v1/object/public/gallery-images/${path}?width=400&quality=70&format=webp`;
-                        }
-                    }
+                    // 모바일 이미지 최적화 함수 사용
+                    const optimizedUrl = getOptimizedGalleryPreviewUrl(image.image_url, isMobile);
                     
                     // placeholder를 img 태그로 교체
                     galleryItems[index].innerHTML = `
-                        <img src="${imageUrl}" alt="${image.file_name}" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius-xl);">
+                        <img src="${optimizedUrl}" alt="${image.file_name}" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius-xl);">
                     `;
                 }
             }
         });
         
-        console.log('갤러리 프리뷰 로드 완료:', selectedImages.length, '개 이미지');
+        console.log('갤러리 프리뷰 로드 완료:', selectedImages.length, '개 이미지 (랜덤 선택)');
         
     } catch (error) {
         console.error('갤러리 프리뷰 로드 실패:', error);
     }
+}
+
+// 갤러리 프리뷰용 이미지 최적화 URL 생성
+function getOptimizedGalleryPreviewUrl(src, isMobile) {
+    try {
+        // 데스크톱에서는 원본 이미지 사용
+        if (!isMobile) {
+            return src;
+        }
+        
+        // 모바일에서는 최적화된 이미지 사용
+        const url = new URL(src);
+        
+        // Supabase Storage 이미지 변환 파라미터
+        // - width: 300px (갤러리 프리뷰용 작은 크기)
+        // - quality: 75 (적당한 품질)
+        // - format: webp (최신 압축 형식)
+        url.searchParams.set('width', '300');
+        url.searchParams.set('quality', '75');
+        url.searchParams.set('format', 'webp');
+        
+        console.log('갤러리 프리뷰 모바일 최적화 적용:', url.toString());
+        return url.toString();
+        
+    } catch (error) {
+        console.warn('갤러리 프리뷰 이미지 최적화 실패, 원본 사용:', error);
+        return src;
+    }
+}
+
+// 율무 운세 버튼 설정 (링크로 변경되어 별도 기능 불필요)
+function setupFortuneButton() {
+    // 버튼이 링크로 변경되어 fortune.html로 이동
+    console.log('율무 운세 버튼 설정 완료 (링크 방식)');
 }
 

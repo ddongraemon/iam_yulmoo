@@ -223,3 +223,4 @@ CREATE TABLE tags (
 Supabase 설정이 완료되었습니다. 이제 율무 갤러리를 사용할 수 있습니다!
 
 
+

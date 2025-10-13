@@ -696,6 +696,86 @@ body {
     margin-bottom: var(--space-6);
 }
 
+/* 갤러리/운세 페이지 상단 Back 링크 스타일 */
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-primary);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.back-link:hover {
+    opacity: 0.85;
+}
+
+/* 모바일에서 back-link 텍스트 숨김, 화살표만 표시 */
+@media (max-width: 768px) {
+    .back-link span {
+        display: none;
+    }
+}
+
+/* 율무 운세 버튼 스타일 */
+.fortune-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.4rem 1.5rem;
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, rgba(255, 107, 157, 0.2), rgba(78, 205, 196, 0.2));
+    border: 2px solid rgba(255, 107, 157, 0.4);
+    border-radius: 50px;
+    color: var(--text-primary);
+    font-size: 0.85rem;
+    font-weight: 500;
+    font-family: var(--font-family);
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 15px rgba(255, 107, 157, 0.2);
+}
+
+.fortune-btn:hover {
+    background: linear-gradient(135deg, rgba(255, 107, 157, 0.3), rgba(78, 205, 196, 0.3));
+    border-color: rgba(255, 107, 157, 0.6);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 107, 157, 0.3);
+}
+
+.fortune-btn:active {
+    transform: translateY(0);
+}
+
+.fortune-btn i {
+    font-size: 0.75rem;
+    animation: pawBounce 1s ease-in-out infinite;
+}
+
+@keyframes pawBounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-3px);
+    }
+}
+
+/* 모바일에서 버튼 크기 조정 */
+@media (max-width: 768px) {
+    .fortune-btn {
+        font-size: 0.75rem;
+        padding: 0.35rem 1.2rem;
+    }
+    
+    .fortune-btn i {
+        font-size: 0.65rem;
+    }
+}
+
 /* 1198px 이하에서 section-header margin-bottom 완전 제거 및 인디케이터 간격 조정 */
 @media (max-width: 1198px) {
     .section-header {
