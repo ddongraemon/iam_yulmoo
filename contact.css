@@ -47,10 +47,7 @@
 .nav-logo-text {
     font-size: var(--font-size-xl);
     font-weight: 700;
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: white;
 }
 
 .back-link {
@@ -1091,6 +1088,7 @@ input[type="number"]::-webkit-inner-spin-button {
         font-size: 0.75rem !important;
         line-height: 1 !important;
         font-weight: 600 !important;
+        color: white !important;
     }
 
     .contact-container {
@@ -1151,6 +1149,7 @@ input[type="number"]::-webkit-inner-spin-button {
         font-size: 0.7rem !important;
         line-height: 1 !important;
         font-weight: 600 !important;
+        color: white !important;
     }
     
     html body .navbar {

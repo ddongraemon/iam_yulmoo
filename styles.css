@@ -179,10 +179,7 @@ body {
 .nav-logo-text {
     font-size: var(--font-size-xl);
     font-weight: 700;
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: white;
 }
 
 .nav-menu {
@@ -1536,6 +1533,7 @@ body {
     .nav-logo-text {
         font-size: var(--font-size-base);
         line-height: 1;
+        color: white;
     }
     
     .nav-menu {
@@ -1921,6 +1919,7 @@ body {
         font-size: 0.75rem !important;
         line-height: 1 !important;
         font-weight: 600 !important;
+        color: white !important;
     }
     
     .nav-toggle {
@@ -2519,6 +2518,7 @@ body {
         font-size: 0.7rem !important;
         line-height: 1 !important;
         font-weight: 600 !important;
+        color: white !important;
     }
     
     .nav-toggle {
@@ -2986,6 +2986,7 @@ body {
     
     .nav-logo-text {
         font-size: 0.75rem !important; /* 모바일에서 작은 크기로 강제 적용 */
+        color: white !important;
     }
     
     .nav-menu {

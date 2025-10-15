@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>율무 갤러리 - 율무인데요</title>
+    <title>율무 사진 모아보기</title>
     <meta name="description" content="율무의 추억이 가득한 갤러리">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="gallery.css">
@@ -28,7 +28,7 @@
     <!-- 갤러리 헤더 -->
     <div class="gallery-header">
         <h1 class="gallery-title">율무 갤러리</h1>
-        <p class="gallery-subtitle">율무의 소중한 순간들을 모았습니다</p>
+        <p class="gallery-subtitle">율무의 어릴때부터 다양한 모습을 담았습니다!!</p>
         
         <!-- 관리자 버튼 -->
         <div class="admin-controls">
@@ -54,24 +54,11 @@
         </div>
     </div>
     
-    <!-- 캐러셀 네비게이션 -->
-    <div class="carousel-nav">
-        <button class="carousel-btn" id="prevBtn" onclick="previousSlide()">
-            <i class="fas fa-chevron-left"></i>
-        </button>
-        <span id="slideCounter">1 / 1</span>
-        <button class="carousel-btn" id="nextBtn" onclick="nextSlide()">
-            <i class="fas fa-chevron-right"></i>
-        </button>
-    </div>
-    
-    <!-- 캐러셀 인디케이터 -->
-    <div class="carousel-indicators" id="carouselIndicators">
-        <!-- 인디케이터들이 동적으로 생성됩니다 -->
-    </div>
 
     <!-- 갤러리 슬라이더 (모바일) -->
     <div class="gallery-slider" id="gallerySlider">
+        <!-- 이미지 카운터 -->
+        <div class="image-counter" id="imageCounter">1 / 1</div>
         <button class="slider-btn prev-btn" onclick="prevImage()">
             <i class="fas fa-chevron-left"></i>
         </button>
@@ -81,9 +68,6 @@
         <button class="slider-btn next-btn" onclick="nextImage()">
             <i class="fas fa-chevron-right"></i>
         </button>
-        <div class="slider-indicators" id="sliderIndicators">
-            <!-- 인디케이터가 동적으로 생성됩니다 -->
-        </div>
     </div>
 
     <!-- 로딩 스피너 -->

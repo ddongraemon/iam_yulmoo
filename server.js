@@ -5,9 +5,15 @@ const path = require('path');
 const axios = require('axios');
 const cron = require('node-cron');
 const nodemailer = require('nodemailer');
+const { createClient } = require('@supabase/supabase-js');
 
 const port = process.env.PORT || 3000;
 const host = process.env.HOST || '127.0.0.1';
+
+// Supabase 클라이언트 초기화
+const supabaseUrl = process.env.SUPABASE_URL || 'https://xthcitqhmsjslxayhgvt.supabase.co';
+const supabaseKey = process.env.SUPABASE_ANON_KEY || 'sb_publishable_S3zm1hnfz6r30ntj4aUrkA_neuo-I7B';
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 // API 설정
 const YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY;
@@ -38,37 +44,13 @@ const mimeTypes = {
 // 캐시 파일 경로
 const YOUTUBE_CACHE_FILE = path.join(__dirname, 'youtube-data.json');
 const SOCIAL_STATS_CACHE_FILE = path.join(__dirname, 'social-stats.json');
-const VISITOR_COUNTER_FILE = path.join(__dirname, 'visitor-counter.json');
 
 // 채널 ID 캐시
 let cachedChannelId = null;
 
 // ========================================
-// 방문자 카운터 시스템
+// 방문자 카운터 시스템 (Supabase 연동)
 // ========================================
-
-// 방문자 카운터 초기화
-function initVisitorCounter() {
-    if (!fs.existsSync(VISITOR_COUNTER_FILE)) {
-        const initialData = {
-            total: 0,
-            today: 0,
-            date: getTodayDate()
-        };
-        fs.writeFileSync(VISITOR_COUNTER_FILE, JSON.stringify(initialData, null, 2), 'utf8');
-        console.log('✅ 방문자 카운터 초기화 완료');
-    } else {
-        // 날짜가 바뀌었는지 확인
-        const data = getVisitorCounter();
-        const today = getTodayDate();
-        if (data.date !== today) {
-            data.today = 0;
-            data.date = today;
-            saveVisitorCounter(data);
-            console.log(`📅 날짜 변경: TODAY 카운터 리셋 (${today})`);
-        }
-    }
-}
 
 // 오늘 날짜 가져오기 (YYYY-MM-DD)
 function getTodayDate() {
@@ -79,38 +61,151 @@ function getTodayDate() {
     return `${year}-${month}-${day}`;
 }
 
-// 방문자 카운터 읽기
-function getVisitorCounter() {
-    if (fs.existsSync(VISITOR_COUNTER_FILE)) {
-        return JSON.parse(fs.readFileSync(VISITOR_COUNTER_FILE, 'utf8'));
+// 방문자 카운터 초기화 (Supabase)
+async function initVisitorCounter() {
+    try {
+        const today = getTodayDate();
+        
+        // 오늘 날짜의 레코드가 있는지 확인
+        const { data: existingRecord, error: selectError } = await supabase
+            .from('visitor_counter')
+            .select('*')
+            .eq('date', today)
+            .single();
+        
+        if (selectError && selectError.code !== 'PGRST116') { // PGRST116은 "no rows returned" 에러
+            console.error('❌ 방문자 카운터 초기화 오류:', selectError);
+            return;
+        }
+        
+        // 오늘 날짜의 레코드가 없으면 생성
+        if (!existingRecord) {
+            // 전체 총합 계산
+            const { data: allRecords, error: sumError } = await supabase
+                .from('visitor_counter')
+                .select('total')
+                .order('date', { ascending: false })
+                .limit(1);
+            
+            let totalCount = 0;
+            if (allRecords && allRecords.length > 0) {
+                totalCount = allRecords[0].total;
+            }
+            
+            const { error: insertError } = await supabase
+                .from('visitor_counter')
+                .insert({
+                    date: today,
+                    total: totalCount,
+                    today: 0
+                });
+            
+            if (insertError) {
+                console.error('❌ 방문자 카운터 초기화 오류:', insertError);
+            } else {
+                console.log(`✅ 방문자 카운터 초기화 완료 (${today})`);
+            }
+        } else {
+            console.log(`✅ 방문자 카운터 이미 존재 (${today})`);
+        }
+    } catch (error) {
+        console.error('❌ 방문자 카운터 초기화 중 오류:', error);
     }
-    return { total: 0, today: 0, date: getTodayDate() };
 }
 
-// 방문자 카운터 저장
-function saveVisitorCounter(data) {
-    fs.writeFileSync(VISITOR_COUNTER_FILE, JSON.stringify(data, null, 2), 'utf8');
-}
-
-// 방문자 증가
-function incrementVisitor() {
-    const data = getVisitorCounter();
-    const today = getTodayDate();
-    
-    // 날짜가 바뀌었으면 TODAY 리셋
-    if (data.date !== today) {
-        data.today = 0;
-        data.date = today;
+// 방문자 카운터 읽기 (Supabase)
+async function getVisitorCounter() {
+    try {
+        const today = getTodayDate();
+        
+        const { data, error } = await supabase
+            .from('visitor_counter')
+            .select('*')
+            .eq('date', today)
+            .single();
+        
+        if (error) {
+            console.error('❌ 방문자 카운터 조회 오류:', error);
+            return { total: 0, today: 0, date: today };
+        }
+        
+        return {
+            total: data.total || 0,
+            today: data.today || 0,
+            date: data.date
+        };
+    } catch (error) {
+        console.error('❌ 방문자 카운터 조회 중 오류:', error);
+        return { total: 0, today: 0, date: getTodayDate() };
     }
-    
-    data.total += 1;
-    data.today += 1;
-    
-    saveVisitorCounter(data);
-    return data;
 }
 
-// 방문자 카운터 초기화
+// 방문자 증가 (Supabase)
+async function incrementVisitor() {
+    try {
+        const today = getTodayDate();
+        
+        // 오늘 날짜의 레코드 조회
+        const { data: existingRecord, error: selectError } = await supabase
+            .from('visitor_counter')
+            .select('*')
+            .eq('date', today)
+            .single();
+        
+        if (selectError && selectError.code !== 'PGRST116') {
+            console.error('❌ 방문자 카운터 조회 오류:', selectError);
+            return { total: 0, today: 0, date: today };
+        }
+        
+        let newTotal, newToday;
+        
+        if (existingRecord) {
+            // 기존 레코드 업데이트
+            newTotal = existingRecord.total + 1;
+            newToday = existingRecord.today + 1;
+            
+            const { error: updateError } = await supabase
+                .from('visitor_counter')
+                .update({
+                    total: newTotal,
+                    today: newToday,
+                    updated_at: new Date().toISOString()
+                })
+                .eq('date', today);
+            
+            if (updateError) {
+                console.error('❌ 방문자 카운터 업데이트 오류:', updateError);
+                return { total: existingRecord.total, today: existingRecord.today, date: today };
+            }
+        } else {
+            // 새 레코드 생성
+            newTotal = 1;
+            newToday = 1;
+            
+            const { error: insertError } = await supabase
+                .from('visitor_counter')
+                .insert({
+                    date: today,
+                    total: newTotal,
+                    today: newToday
+                });
+            
+            if (insertError) {
+                console.error('❌ 방문자 카운터 생성 오류:', insertError);
+                return { total: 0, today: 0, date: today };
+            }
+        }
+        
+        console.log(`📊 방문자 카운터 증가: TOTAL ${newTotal}명, TODAY ${newToday}명`);
+        return { total: newTotal, today: newToday, date: today };
+        
+    } catch (error) {
+        console.error('❌ 방문자 카운터 증가 중 오류:', error);
+        return { total: 0, today: 0, date: getTodayDate() };
+    }
+}
+
+// 방문자 카운터 초기화 (비동기)
 initVisitorCounter();
 
 // ========================================
@@ -602,23 +697,39 @@ const server = http.createServer((req, res) => {
 
     // 방문자 카운터 조회 API
     if (req.url === '/api/visitor-count') {
-        const data = getVisitorCounter();
-        res.writeHead(200, { 
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*'
+        getVisitorCounter().then(data => {
+            res.writeHead(200, { 
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            });
+            res.end(JSON.stringify(data));
+        }).catch(error => {
+            console.error('❌ 방문자 카운터 조회 API 오류:', error);
+            res.writeHead(500, { 
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            });
+            res.end(JSON.stringify({ error: '방문자 카운터 조회 실패' }));
         });
-        res.end(JSON.stringify(data));
         return;
     }
 
     // 방문자 카운터 증가 API
     if (req.url === '/api/visitor-increment' && req.method === 'POST') {
-        const data = incrementVisitor();
-        res.writeHead(200, { 
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*'
+        incrementVisitor().then(data => {
+            res.writeHead(200, { 
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            });
+            res.end(JSON.stringify(data));
+        }).catch(error => {
+            console.error('❌ 방문자 카운터 증가 API 오류:', error);
+            res.writeHead(500, { 
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            });
+            res.end(JSON.stringify({ error: '방문자 카운터 증가 실패' }));
         });
-        res.end(JSON.stringify(data));
         return;
     }
 

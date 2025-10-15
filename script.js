@@ -1192,45 +1192,58 @@ if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
     setTimeout(setupTouchEffects, 500);
 }
 
-// 갤러리 프리뷰 로드 (gallery-images 버킷에서 랜덤 3개 이미지)
+// 갤러리 프리뷰 로드 (최적화된 버전)
 async function loadGalleryPreview() {
     try {
+        // 네트워크 속도와 기기 성능 감지
+        const isMobile = window.innerWidth <= 768;
+        const isLowEndDevice = navigator.hardwareConcurrency <= 4;
+        const networkSpeed = detectNetworkSpeed();
+        
+        console.log(`📱 갤러리 프리뷰 로딩 시작 - 모바일: ${isMobile}, 저사양: ${isLowEndDevice}, 네트워크: ${networkSpeed}`);
+        
         // Supabase 클라이언트 초기화
         const SUPABASE_URL = 'https://xthcitqhmsjslxayhgvt.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_S3zm1hnfz6r30ntj4aUrkA_neuo-I7B';
         const { createClient } = supabase;
         const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         
+        // 네트워크 속도에 따른 병렬 처리 수 제한
+        const maxConcurrent = networkSpeed === 'slow' ? 1 : (networkSpeed === 'medium' ? 2 : 3);
+        
         // gallery-images 버킷에서 모든 연도 폴더의 이미지들을 가져오기
         let allImages = [];
         const years = ['2023', '2024', '2025'];
         
-        for (const year of years) {
+        // 병렬 처리로 연도별 폴더 접근
+        const yearPromises = years.map(async (year) => {
             try {
                 const { data: files, error: listError } = await supabaseClient.storage
                     .from('gallery-images')
                     .list(year, {
-                        limit: 50,
+                        limit: 30, // 제한을 줄여서 빠른 로딩
                         sortBy: { column: 'name', order: 'asc' }
                     });
                 
                 if (!listError && files && files.length > 0) {
-                    for (const file of files) {
-                        const { data: urlData } = supabaseClient.storage
+                    return files.map(file => ({
+                        image_url: supabaseClient.storage
                             .from('gallery-images')
-                            .getPublicUrl(`${year}/${file.name}`);
-                        
-                        allImages.push({
-                            image_url: urlData.publicUrl,
-                            file_name: file.name,
-                            year: year
-                        });
-                    }
+                            .getPublicUrl(`${year}/${file.name}`).data.publicUrl,
+                        file_name: file.name,
+                        year: year
+                    }));
                 }
+                return [];
             } catch (folderError) {
                 console.warn(`${year} 폴더 접근 실패:`, folderError);
+                return [];
             }
-        }
+        });
+        
+        // 모든 연도 폴더를 병렬로 처리
+        const yearResults = await Promise.all(yearPromises);
+        allImages = yearResults.flat();
         
         // 만약 버킷에서 이미지를 가져오지 못했다면 기존 gallery 테이블에서 가져오기
         if (allImages.length === 0) {
@@ -1238,7 +1251,8 @@ async function loadGalleryPreview() {
             const { data, error } = await supabaseClient
                 .from('gallery')
                 .select('image_url, file_name')
-                .order('created_at', { ascending: false });
+                .order('created_at', { ascending: false })
+                .limit(20); // 제한을 줄여서 빠른 로딩
 
             if (!error && data) {
                 allImages = data;
@@ -1254,59 +1268,154 @@ async function loadGalleryPreview() {
         const shuffled = [...allImages].sort(() => Math.random() - 0.5);
         const selectedImages = shuffled.slice(0, 3);
         
-        // 갤러리 아이템 업데이트
+        // 갤러리 아이템 업데이트 (지연 로딩 적용)
         const galleryItems = document.querySelectorAll('.gallery-section .gallery-item');
-        const isMobile = window.innerWidth <= 768;
         
         selectedImages.forEach((image, index) => {
             if (galleryItems[index]) {
                 const placeholder = galleryItems[index].querySelector('.gallery-placeholder');
                 
                 if (placeholder) {
-                    // 모바일 이미지 최적화 함수 사용
+                    // 최적화된 URL 생성
                     const optimizedUrl = getOptimizedGalleryPreviewUrl(image.image_url, isMobile);
+                    
+                    // 첫 번째 이미지는 즉시 로딩, 나머지는 지연 로딩
+                    const shouldLazyLoad = index > 0;
+                    const imgSrc = shouldLazyLoad ? '' : optimizedUrl;
+                    const dataSrc = shouldLazyLoad ? optimizedUrl : '';
                     
                     // placeholder를 img 태그로 교체
                     galleryItems[index].innerHTML = `
-                        <img src="${optimizedUrl}" alt="${image.file_name}" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius-xl);">
+                        <img ${imgSrc ? `src="${imgSrc}"` : ''} ${dataSrc ? `data-src="${dataSrc}"` : ''} 
+                             alt="${image.file_name}" 
+                             loading="lazy" 
+                             decoding="async"
+                             style="width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius-xl);">
                     `;
                 }
             }
         });
         
-        console.log('갤러리 프리뷰 로드 완료:', selectedImages.length, '개 이미지 (랜덤 선택)');
+        // 지연 로딩 설정
+        setupGalleryPreviewLazyLoading();
+        
+        // 첫 번째 이미지 프리로딩
+        if (selectedImages.length > 0) {
+            const firstImageUrl = getOptimizedGalleryPreviewUrl(selectedImages[0].image_url, isMobile);
+            preloadGalleryPreviewImage(firstImageUrl);
+        }
+        
+        console.log(`✅ 갤러리 프리뷰 로드 완료: ${selectedImages.length}개 이미지 (최적화 적용)`);
         
     } catch (error) {
         console.error('갤러리 프리뷰 로드 실패:', error);
     }
 }
 
-// 갤러리 프리뷰용 이미지 최적화 URL 생성
+// 갤러리 프리뷰 지연 로딩 설정
+function setupGalleryPreviewLazyLoading() {
+    if (!('IntersectionObserver' in window)) {
+        return;
+    }
+    
+    const imageObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const img = entry.target;
+                const optimizedUrl = img.dataset.src;
+                
+                if (optimizedUrl) {
+                    img.src = optimizedUrl;
+                    img.removeAttribute('data-src');
+                    observer.unobserve(img);
+                }
+            }
+        });
+    }, {
+        rootMargin: '100px 0px', // 100px 전에 미리 로딩
+        threshold: 0.1
+    });
+    
+    // 모든 lazy 이미지에 observer 적용
+    document.querySelectorAll('.gallery-section img[data-src]').forEach(img => {
+        imageObserver.observe(img);
+    });
+}
+
+// 갤러리 프리뷰 이미지 프리로딩
+function preloadGalleryPreviewImage(url) {
+    const img = new Image();
+    img.src = url;
+    img.loading = 'eager';
+    img.decoding = 'async';
+}
+
+// 갤러리 프리뷰용 이미지 최적화 URL 생성 (네트워크 속도 고려)
 function getOptimizedGalleryPreviewUrl(src, isMobile) {
     try {
-        // 데스크톱에서는 원본 이미지 사용
-        if (!isMobile) {
-            return src;
-        }
+        const isLowEndDevice = navigator.hardwareConcurrency <= 4;
+        const networkSpeed = detectNetworkSpeed();
         
-        // 모바일에서는 최적화된 이미지 사용
         const url = new URL(src);
         
-        // Supabase Storage 이미지 변환 파라미터
-        // - width: 300px (갤러리 프리뷰용 작은 크기)
-        // - quality: 75 (적당한 품질)
-        // - format: webp (최신 압축 형식)
-        url.searchParams.set('width', '300');
-        url.searchParams.set('quality', '75');
-        url.searchParams.set('format', 'webp');
+        if (isMobile) {
+            if (networkSpeed === 'slow' || isLowEndDevice) {
+                // 느린 네트워크 또는 저사양 모바일: 극도로 작은 크기, 매우 낮은 품질
+                url.searchParams.set('width', '200');
+                url.searchParams.set('quality', '30');
+                url.searchParams.set('format', 'webp');
+            } else if (networkSpeed === 'medium') {
+                // 중간 네트워크: 작은 크기, 낮은 품질
+                url.searchParams.set('width', '250');
+                url.searchParams.set('quality', '50');
+                url.searchParams.set('format', 'webp');
+            } else {
+                // 빠른 네트워크: 적당한 크기, 중간 품질
+                url.searchParams.set('width', '300');
+                url.searchParams.set('quality', '65');
+                url.searchParams.set('format', 'webp');
+            }
+        } else {
+            // 데스크톱: 네트워크 속도에 따른 적응형 크기
+            if (networkSpeed === 'slow') {
+                url.searchParams.set('width', '400');
+                url.searchParams.set('quality', '60');
+            } else if (networkSpeed === 'medium') {
+                url.searchParams.set('width', '500');
+                url.searchParams.set('quality', '70');
+            } else {
+                url.searchParams.set('width', '600');
+                url.searchParams.set('quality', '80');
+            }
+            url.searchParams.set('format', 'webp');
+        }
         
-        console.log('갤러리 프리뷰 모바일 최적화 적용:', url.toString());
         return url.toString();
         
     } catch (error) {
         console.warn('갤러리 프리뷰 이미지 최적화 실패, 원본 사용:', error);
         return src;
     }
+}
+
+// 네트워크 속도 감지 함수
+function detectNetworkSpeed() {
+    if ('connection' in navigator) {
+        const connection = navigator.connection;
+        const effectiveType = connection.effectiveType;
+        
+        switch (effectiveType) {
+            case 'slow-2g':
+            case '2g':
+                return 'slow';
+            case '3g':
+                return 'medium';
+            case '4g':
+            default:
+                return 'fast';
+        }
+    }
+    return 'fast'; // 기본값
 }
 
 // 율무 운세 버튼 설정 (링크로 변경되어 별도 기능 불필요)
