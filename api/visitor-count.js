@@ -10,8 +10,13 @@ function getTodayDate() {
 }
 
 function getSupabaseClient() {
+    // 환경변수가 없어도 기본값으로 동작하도록 수정
     const supabaseUrl = process.env.SUPABASE_URL || 'https://xthcitqhmsjslxayhgvt.supabase.co';
     const supabaseKey = process.env.SUPABASE_ANON_KEY || 'sb_publishable_S3zm1hnfz6r30ntj4aUrkA_neuo-I7B';
+    
+    console.log('Supabase URL:', supabaseUrl);
+    console.log('Supabase Key:', supabaseKey.substring(0, 20) + '...');
+    
     return createClient(supabaseUrl, supabaseKey);
 }
 
