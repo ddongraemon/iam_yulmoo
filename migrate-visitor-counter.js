@@ -64,3 +64,4 @@ async function migrateVisitorCounter() {
 
 // 마이그레이션 실행
 migrateVisitorCounter();
+

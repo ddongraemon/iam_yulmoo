@@ -1,21 +1,21 @@
 {
   "total": {
-    "subscribers": "8.0K",
-    "subscribersRaw": 8048,
-    "videos": "436",
-    "videosRaw": 436,
-    "views": "5.4M",
-    "viewsRaw": 5411338
+    "subscribers": "8.2K",
+    "subscribersRaw": 8205,
+    "videos": "444",
+    "videosRaw": 444,
+    "views": "5.5M",
+    "viewsRaw": 5490312
   },
   "platforms": {
     "youtube": {
-      "subscribers": 4870,
-      "videos": 252,
-      "views": 5411338
+      "subscribers": 4950,
+      "videos": 255,
+      "views": 5490312
     },
     "instagram": {
-      "followers": 3178,
-      "posts": 184,
+      "followers": 3255,
+      "posts": 189,
       "views": 0
     },
     "tiktok": {
@@ -24,5 +24,5 @@
       "views": 0
     }
   },
-  "lastUpdate": "2025-10-13T11:00:02.978Z"
+  "lastUpdate": "2025-10-16T11:00:02.471Z"
 }

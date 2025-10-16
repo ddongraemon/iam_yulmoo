@@ -1,21 +1,21 @@
 {
   "channelInfo": {
-    "subscriberCount": "4.9K",
-    "subscriberCountRaw": 4870,
-    "videoCount": "252",
-    "videoCountRaw": 252,
-    "viewCount": "5.4M",
-    "viewCountRaw": 5411338,
-    "lastUpdate": "2025-10-13T12:12:24.031Z"
+    "subscriberCount": "5.0K",
+    "subscriberCountRaw": 4950,
+    "videoCount": "255",
+    "videoCountRaw": 255,
+    "viewCount": "5.5M",
+    "viewCountRaw": 5490312,
+    "lastUpdate": "2025-10-16T11:00:02.470Z"
   },
   "popularVideos": [
     {
       "videoId": "zhJULr5dGQ4",
-      "title": "술취한 엄마를 대하는 강아지반응",
+      "title": "[100만뷰] 술주정 부리는 엄마를 마주한 강아지의 반응",
       "thumbnail": "https://i.ytimg.com/vi/zhJULr5dGQ4/hqdefault.jpg",
       "duration": "0:32",
-      "viewCount": "710.3K",
-      "likeCount": "7.3K",
+      "viewCount": "718.0K",
+      "likeCount": "7.4K",
       "commentCount": "1.1K",
       "publishedAt": "2025-09-11T10:04:22Z",
       "url": "https://www.youtube.com/watch?v=zhJULr5dGQ4"
@@ -25,7 +25,7 @@
       "title": "할머니를 세상 격하게 반기는 강아지",
       "thumbnail": "https://i.ytimg.com/vi/BHsL5YKglxo/hqdefault.jpg",
       "duration": "0:26",
-      "viewCount": "365.2K",
+      "viewCount": "365.3K",
       "likeCount": "4.6K",
       "commentCount": "93",
       "publishedAt": "2025-02-01T10:00:08Z",
@@ -36,7 +36,7 @@
       "title": "세상에서 제일 수상한 강아지",
       "thumbnail": "https://i.ytimg.com/vi/WUYk1D5QgKQ/hqdefault.jpg",
       "duration": "0:25",
-      "viewCount": "212.8K",
+      "viewCount": "215.6K",
       "likeCount": "3.0K",
       "commentCount": "107",
       "publishedAt": "2025-08-14T10:09:31Z",
@@ -45,37 +45,37 @@
   ],
   "recentVideos": [
     {
-      "videoId": "EU_z8zgEVOs",
-      "title": "애견동반 식당에서 편히 밥먹을 수 있는 이유",
-      "thumbnail": "https://i.ytimg.com/vi/EU_z8zgEVOs/hqdefault.jpg",
-      "duration": "0:23",
-      "viewCount": "1.6K",
-      "likeCount": "59",
-      "commentCount": "17",
-      "publishedAt": "2025-10-13T10:09:15Z",
-      "url": "https://www.youtube.com/watch?v=EU_z8zgEVOs"
+      "videoId": "-vhKyU3nzF8",
+      "title": "가을은 🌶️ 수확의 계절",
+      "thumbnail": "https://i.ytimg.com/vi/-vhKyU3nzF8/hqdefault.jpg",
+      "duration": "0:26",
+      "viewCount": "751",
+      "likeCount": "40",
+      "commentCount": "13",
+      "publishedAt": "2025-10-16T10:11:31Z",
+      "url": "https://www.youtube.com/watch?v=-vhKyU3nzF8"
     },
     {
-      "videoId": "JHOT2LuTmbc",
-      "title": "개아들과 아빠가 엄마한테 혼나는이유",
-      "thumbnail": "https://i.ytimg.com/vi/JHOT2LuTmbc/hqdefault.jpg",
+      "videoId": "LWkgwqfS5oM",
+      "title": "유기견에게 가족이 생긴 후 변화",
+      "thumbnail": "https://i.ytimg.com/vi/LWkgwqfS5oM/hqdefault.jpg",
+      "duration": "0:30",
+      "viewCount": "10.1K",
+      "likeCount": "358",
+      "commentCount": "53",
+      "publishedAt": "2025-10-15T10:22:02Z",
+      "url": "https://www.youtube.com/watch?v=LWkgwqfS5oM"
+    },
+    {
+      "videoId": "1Rxixf2DL9c",
+      "title": "수제비귀 집안의 축구 응원",
+      "thumbnail": "https://i.ytimg.com/vi/1Rxixf2DL9c/hqdefault.jpg",
       "duration": "0:18",
-      "viewCount": "8.3K",
-      "likeCount": "100",
-      "commentCount": "9",
-      "publishedAt": "2025-10-12T10:19:35Z",
-      "url": "https://www.youtube.com/watch?v=JHOT2LuTmbc"
-    },
-    {
-      "videoId": "oABHKLdpE28",
-      "title": "엄마 배 위에서 생긴 일",
-      "thumbnail": "https://i.ytimg.com/vi/oABHKLdpE28/hqdefault.jpg",
-      "duration": "0:28",
-      "viewCount": "5.1K",
-      "likeCount": "140",
-      "commentCount": "19",
-      "publishedAt": "2025-10-11T10:07:01Z",
-      "url": "https://www.youtube.com/watch?v=oABHKLdpE28"
+      "viewCount": "16.1K",
+      "likeCount": "227",
+      "commentCount": "30",
+      "publishedAt": "2025-10-14T10:21:37Z",
+      "url": "https://www.youtube.com/watch?v=1Rxixf2DL9c"
     }
   ]
 }
