@@ -260,24 +260,22 @@ body {
     border-color: var(--primary);
 }
 
-/* 캐러셀 갤러리 */
+/* 갤러리 슬라이더 (PC/모바일 통일) */
 .gallery-carousel {
-    position: relative;
-    width: 100%;
-    max-width: 1200px;
-    margin: var(--space-8) auto 0;
-    overflow: hidden;
-    border-radius: var(--radius-xl);
+    display: none; /* PC에서도 캐러셀 숨기고 슬라이더 사용 */
 }
 
-.carousel-container {
-    display: flex;
-    transition: transform 0.5s ease-in-out;
-    gap: var(--space-4);
+.gallery-slider {
+    display: block !important; /* 모든 화면에서 슬라이더 표시 */
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    margin: var(--space-8) auto 0;
+    padding: 0 var(--space-4);
 }
 
 .gallery-item {
-    flex: 0 0 300px;
+    width: 100%;
     height: 200px;
     border-radius: var(--radius-lg);
     overflow: hidden;
@@ -286,6 +284,15 @@ body {
     transition: var(--transition-normal);
     cursor: pointer;
     position: relative;
+    flex-shrink: 0;
+}
+
+/* PC와 태블릿에서 고정 크기 유지 */
+@media (min-width: 768px) {
+    .gallery-item {
+        width: 100%;
+        height: 200px;
+    }
 }
 
 .gallery-item:hover {
@@ -466,9 +473,8 @@ body {
     font-size: var(--font-size-sm);
 }
 
-/* 갤러리 슬라이더 (모바일) */
+/* 갤러리 슬라이더 (모바일) - 기존 스타일 유지하되 display는 위에서 설정 */
 .gallery-slider {
-    display: none;
     position: relative;
     width: 100%;
     max-width: 500px;
