@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>율무 엉덩이때려서 운세 확인하기</title>
+    <meta name="description" content="율무 엉덩이를 때려서 오늘의 운세를 받아보세요!">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="fortune.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/png" href="yulmoo-dog.png">
+</head>
+<body>
+    <!-- 네비게이션 바 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-logo">
+                <img src="yulmoo-dog.png" alt="율무" class="nav-logo-img">
+                <span class="nav-logo-text">율무인데요</span>
+            </a>
+            <a href="/" class="back-link">
+                <i class="fas fa-arrow-left"></i>
+                <span>메인으로</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- 운세 헤더 -->
+    <div class="fortune-header">
+        <h1 class="fortune-title">율무의 포춘 엉덩이</h1>
+        <p class="fortune-subtitle">율무를 발견한 당신은 행운이 가득합니다.<br>엉덩이를 때리고 오늘의 운세를 받아가세용!</p>
+    </div>
+
+    <!-- 운세 이미지 카드 -->
+    <div class="fortune-card-container">
+        <div class="fortune-card" id="fortuneCard">
+            <div class="loading-placeholder" id="loadingPlaceholder">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>율무를 불러오는 중...</p>
+            </div>
+            <img id="fortuneImage" src="" alt="율무" class="fortune-image" style="display: none;">
+            <div class="tap-hint" id="tapHint">
+                <i class="fas fa-hand-pointer"></i>
+                <span>엉덩이를 때려보세요!</span>
+            </div>
+        </div>
+        
+        <!-- 로딩 메시지 -->
+        <div class="fortune-loading" id="fortuneLoading" style="display: none;">
+            <i class="fas fa-paw"></i>
+            <span>율무가 오늘의 운세를 엉덩이로 점치는중...</span>
+        </div>
+    </div>
+
+    <!-- 운세 메시지 카드 -->
+    <div class="fortune-message-container" id="fortuneMessageContainer" style="display: none;">
+        <div class="fortune-message-card">
+            <div class="fortune-message-header">
+                <img src="yulmoo-dog.png" alt="율무" class="fortune-message-avatar">
+                <div class="fortune-message-info">
+                    <h3>율무</h3>
+                    <p>엉덩이로 점치기 2.5년차 <i class="fas fa-paw"></i></p>
+                </div>
+            </div>
+            <div class="fortune-message-body">
+                <div class="message-bubble">
+                    <p id="fortuneText"></p>
+                </div>
+            </div>
+            <button class="retry-btn" id="retryBtn">
+                <i class="fas fa-redo"></i>
+                <span>다시 때리기</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Back to top 버튼 -->
+    <button class="back-to-top" id="backToTop">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <!-- Fortune JavaScript -->
+    <script src="fortune.js"></script>
+</body>
+</html>
+

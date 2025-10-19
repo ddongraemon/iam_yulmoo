@@ -1,0 +1,399 @@
+/* 율무의 포춘 엉덩이 스타일 */
+
+/* 기본 레이아웃 */
+body {
+    min-height: 100vh;
+    background: var(--background);
+    padding-top: 80px;
+}
+
+/* 태블릿에서 body 상단 패딩 조정 */
+@media (max-width: 1024px) and (min-width: 769px) {
+    body {
+        padding-top: 60px;
+    }
+}
+
+/* 768px 이하에서도 body 상단 패딩 조정 */
+@media (max-width: 768px) {
+    body {
+        padding-top: 60px;
+    }
+}
+
+/* 운세 헤더 */
+.fortune-header {
+    text-align: center;
+    padding: 3rem 2rem 2rem;
+    margin-bottom: 0;
+}
+
+/* PC 화면에서 fortune-header 상단 패딩 조정 */
+@media (min-width: 1025px) {
+    .fortune-header {
+        padding: 0.625rem 2rem 2rem;
+    }
+}
+
+.fortune-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0;
+    animation: titleGlow 2s ease-in-out infinite;
+}
+
+@keyframes titleGlow {
+    0%, 100% {
+        filter: drop-shadow(0 0 10px rgba(255, 107, 157, 0.3));
+    }
+    50% {
+        filter: drop-shadow(0 0 20px rgba(255, 107, 157, 0.6));
+    }
+}
+
+.fortune-subtitle {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+/* 운세 카드 컨테이너 */
+.fortune-card-container {
+    max-width: 600px;
+    margin: 0 auto 2rem;
+    padding: 0 1.5rem;
+}
+
+.fortune-card {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 20px;
+    overflow: hidden;
+    background: var(--surface);
+    backdrop-filter: blur(10px);
+    border: 2px solid var(--border);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.fortune-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(255, 107, 157, 0.3);
+    border-color: rgba(255, 107, 157, 0.5);
+}
+
+.fortune-card:active {
+    transform: scale(0.98);
+}
+
+/* 로딩 플레이스홀더 */
+.loading-placeholder {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: var(--text-secondary);
+}
+
+.loading-placeholder i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+.loading-placeholder p {
+    font-size: 1rem;
+}
+
+/* 운세 이미지 */
+.fortune-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* 탭 힌트 */
+.tap-hint {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(10px);
+    color: white;
+    padding: 0.8rem 1.5rem;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    animation: bounce 2s ease-in-out infinite;
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateX(-50%) translateY(0);
+    }
+    50% {
+        transform: translateX(-50%) translateY(-10px);
+    }
+}
+
+.tap-hint i {
+    animation: tap 1s ease-in-out infinite;
+}
+
+@keyframes tap {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+}
+
+/* 운세 로딩 메시지 */
+.fortune-loading {
+    text-align: center;
+    margin-top: 1.5rem;
+    color: var(--primary);
+    font-size: 1.1rem;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+.fortune-loading i {
+    margin-right: 0.5rem;
+    animation: pawRotate 1s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 0.6;
+    }
+    50% {
+        opacity: 1;
+    }
+}
+
+@keyframes pawRotate {
+    0%, 100% {
+        transform: rotate(0deg);
+    }
+    50% {
+        transform: rotate(20deg);
+    }
+}
+
+/* 운세 메시지 컨테이너 */
+.fortune-message-container {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+    animation: slideUp 0.5s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fortune-message-card {
+    background: var(--surface);
+    backdrop-filter: blur(10px);
+    border: 2px solid var(--border);
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* 메시지 헤더 */
+.fortune-message-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.fortune-message-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 3px solid var(--primary);
+    box-shadow: 0 0 20px rgba(255, 107, 157, 0.3);
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.fortune-message-info h3 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.2rem;
+}
+
+.fortune-message-info p {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+/* 메시지 바디 */
+.fortune-message-body {
+    margin-bottom: 1.5rem;
+}
+
+.message-bubble {
+    background: linear-gradient(135deg, rgba(255, 107, 157, 0.1), rgba(78, 205, 196, 0.1));
+    border: 1px solid rgba(255, 107, 157, 0.3);
+    border-radius: 15px;
+    padding: 1.5rem;
+    position: relative;
+}
+
+.message-bubble::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: 40px;
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid rgba(255, 107, 157, 0.3);
+}
+
+.message-bubble p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+/* 다시 때리기 버튼 */
+.retry-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1rem;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    border: none;
+    border-radius: 50px;
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    font-family: var(--font-family);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(255, 107, 157, 0.4);
+}
+
+.retry-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 107, 157, 0.6);
+}
+
+.retry-btn:active {
+    transform: translateY(0);
+}
+
+.retry-btn i {
+    animation: rotateIcon 2s linear infinite;
+}
+
+@keyframes rotateIcon {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* 태블릿 반응형 */
+@media (max-width: 1024px) and (min-width: 769px) {
+    .fortune-header {
+        padding: 0.625rem 2rem 2rem;
+    }
+}
+
+/* 모바일 반응형 */
+@media (max-width: 768px) {
+    .fortune-header {
+        padding: 0.625rem 1.5rem 1.5rem;
+        margin-top: 1rem;
+    }
+    
+    .fortune-title {
+        font-size: 2rem;
+    }
+    
+    .fortune-subtitle {
+        font-size: 1rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    
+    .fortune-card-container {
+        padding: 0 1rem;
+    }
+    
+    .fortune-message-card {
+        padding: 1.5rem;
+    }
+    
+    .message-bubble p {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .fortune-header {
+        margin-top: 2.375rem;
+    }
+    
+    .fortune-title {
+        font-size: 1.8rem;
+    }
+    
+    .fortune-subtitle {
+        font-size: 0.95rem;
+    }
+    
+    .tap-hint {
+        font-size: 0.9rem;
+        padding: 0.6rem 1.2rem;
+        white-space: nowrap;
+    }
+    
+    .fortune-loading {
+        white-space: nowrap;
+        font-size: 0.9rem;
+    }
+}
+
