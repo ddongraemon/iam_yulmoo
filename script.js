@@ -45,8 +45,14 @@ function setupNavigation() {
     // Smooth scrolling for navigation links
     elements.navLinks.forEach(link => {
         link.addEventListener('click', (e) => {
-            e.preventDefault();
             const targetId = link.getAttribute('href');
+            
+            // 외부 링크 (admin.html 등)는 기본 동작 허용
+            if (targetId && (targetId.includes('.html') || targetId.startsWith('http'))) {
+                return; // 기본 링크 동작 허용
+            }
+            
+            e.preventDefault();
             const targetElement = document.querySelector(targetId);
             
             if (targetElement) {

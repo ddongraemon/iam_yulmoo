@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>카카오 로그인 - 율무인데요</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .login-container {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+        .logo {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+        }
+        .kakao-login-btn {
+            background: #FEE500;
+            color: #3C1E1E;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+        .kakao-login-btn:hover {
+            background: #FFEB3B;
+            transform: translateY(-2px);
+        }
+        .info {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #666;
+        }
+        .status {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="logo">율무인데요</div>
+        <div class="subtitle">카카오톡 알림을 받으려면 로그인이 필요합니다</div>
+        
+        <button class="kakao-login-btn" onclick="kakaoLogin()">
+            카카오 로그인
+        </button>
+        
+        <div class="info">
+            <strong>로그인 후 알림 기능:</strong><br>
+            • 서버 상태 모니터링<br>
+            • API 연결 상태 확인<br>
+            • 일일 방문자 통계<br>
+            • 매일 21시 자동 알림
+        </div>
+        
+        <div id="status" class="status" style="display: none;"></div>
+    </div>
+
+    <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+    <script>
+        // 카카오 SDK 초기화 (JavaScript Key 사용)
+        Kakao.init('8be4d404f675dfbe4263dd82898135f7'); // JavaScript Key
+        
+        // SDK 로드 확인
+        window.onload = function() {
+            if (typeof Kakao === 'undefined') {
+                showStatus('❌ 카카오 SDK 로드에 실패했습니다. 페이지를 새로고침해주세요.', 'error');
+                return;
+            }
+            console.log('✅ 카카오 SDK 로드 완료');
+        };
+        
+        function kakaoLogin() {
+            // 카카오 로그인 URL로 직접 이동 (메시지 발송 권한 포함)
+            const clientId = '8be4d404f675dfbe4263dd82898135f7'; // JavaScript Key
+            const redirectUri = encodeURIComponent('http://192.168.1.4:3000/kakao-callback.html');
+            const responseType = 'code';
+            const scope = 'talk_message'; // 메시지 발송 권한
+            
+            const kakaoLoginUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=${responseType}&scope=${scope}`;
+            
+            console.log('🔐 카카오 로그인 URL로 이동:', kakaoLoginUrl);
+            window.location.href = kakaoLoginUrl;
+        }
+        
+        function sendTokensToServer(accessToken, refreshToken) {
+            fetch('/api/kakao/save-token', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ 
+                    accessToken: accessToken,
+                    refreshToken: refreshToken 
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showStatus('✅ 카카오 로그인 완료! 이제 알림을 받을 수 있습니다.', 'success');
+                    
+                    // 3초 후 어드민 페이지로 이동
+                    setTimeout(() => {
+                        window.location.href = '/admin.html';
+                    }, 3000);
+                } else {
+                    showStatus('❌ 토큰 저장에 실패했습니다: ' + data.message, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('❌ 토큰 전송 실패:', error);
+                showStatus('❌ 서버 연결에 실패했습니다.', 'error');
+            });
+        }
+        
+        function showStatus(message, type) {
+            const statusDiv = document.getElementById('status');
+            statusDiv.textContent = message;
+            statusDiv.className = `status ${type}`;
+            statusDiv.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
