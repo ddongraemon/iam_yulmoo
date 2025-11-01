@@ -1539,6 +1539,23 @@ function setupFortuneButton() {
     console.log('율무 운세 버튼 설정 완료 (링크 방식)');
 }
 
+// UTM 파라미터 제거 함수
+function removeUTMParams(url) {
+    try {
+        const urlObj = new URL(url);
+        const paramsToRemove = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'];
+        
+        paramsToRemove.forEach(param => {
+            urlObj.searchParams.delete(param);
+        });
+        
+        return urlObj.toString();
+    } catch (e) {
+        // URL 파싱 실패 시 원본 반환
+        return url;
+    }
+}
+
 // 액션 버튼 설정 (공유하기, 문의하기)
 function setupActionButtons() {
     const shareBtn = document.getElementById('shareBtn');
@@ -1547,6 +1564,9 @@ function setupActionButtons() {
         shareBtn.addEventListener('click', function(e) {
             e.preventDefault();
             console.log('공유 버튼 클릭됨');
+            
+            // UTM 파라미터 제거한 깨끗한 URL
+            const cleanUrl = removeUTMParams(window.location.href);
             
             // 웹 공유 API 지원 여부 및 요구사항 확인
             console.log('navigator.share 존재:', !!navigator.share);
@@ -1560,17 +1580,17 @@ function setupActionButtons() {
                 console.log('웹 공유 API 시도 중...');
                 navigator.share({
                     title: '율무인데요 - 율무의 일상을 공유하는 유튜브 채널',
-                    url: window.location.href
+                    url: cleanUrl
                 }).then(() => {
                     console.log('웹 공유 API 성공');
                 }).catch(err => {
                     console.log('웹 공유 API 실패:', err);
-                    fallbackShare();
+                    fallbackShare(cleanUrl);
                 });
             } else {
                 // 웹 공유 API를 지원하지 않는 경우 대체 방법
                 console.log('웹 공유 API 미지원, 대체 방법 사용');
-                fallbackShare();
+                fallbackShare(cleanUrl);
             }
         });
     }
@@ -1579,8 +1599,8 @@ function setupActionButtons() {
 }
 
 // 대체 공유 방법 (클립보드 복사)
-function fallbackShare() {
-    const url = window.location.href;
+function fallbackShare(cleanUrl) {
+    const url = cleanUrl || removeUTMParams(window.location.href);
     const text = '율무인데요 - 율무의 일상을 공유하는 유튜브 채널\n' + url;
     
     console.log('대체 공유 방법 실행');
