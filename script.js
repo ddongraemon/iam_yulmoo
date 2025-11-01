@@ -481,37 +481,117 @@ function setupHeroVideo() {
         return;
     }
     
-    // 동영상 자동 재생 보장
+    // 모바일 디바이스 확인
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
+    
+    // 모바일에서 비디오 설정 강제
+    if (isMobile) {
+        heroVideo.setAttribute('playsinline', 'true');
+        heroVideo.setAttribute('webkit-playsinline', 'true');
+        heroVideo.setAttribute('x5-playsinline', 'true');
+        heroVideo.muted = true;
+        heroVideo.loop = true;
+    }
+    
+    // 동영상 자동 재생 보장 함수
     const playVideo = () => {
-        heroVideo.play().catch(error => {
-            console.log('동영상 자동 재생 실패:', error);
-            // 사용자 인터랙션 후 재시도
-            document.addEventListener('click', () => {
-                heroVideo.play();
-            }, { once: true });
+        if (heroVideo.paused) {
+            const playPromise = heroVideo.play();
+            if (playPromise !== undefined) {
+                playPromise
+                    .then(() => {
+                        console.log('✅ 히어로 비디오 재생 성공');
+                    })
+                    .catch(error => {
+                        console.log('⚠️ 비디오 자동 재생 실패 (모바일 정책):', error.message);
+                        // 모바일에서는 사용자 상호작용 후 재생 시도
+                        setupUserInteractionPlay();
+                    });
+            }
+        }
+    };
+    
+    // 사용자 상호작용 시 재생 시도
+    const setupUserInteractionPlay = () => {
+        const playOnInteraction = () => {
+            heroVideo.play().catch(err => {
+                console.log('재생 실패:', err);
+            });
+        };
+        
+        // 다양한 이벤트에서 재생 시도
+        ['click', 'touchstart', 'scroll'].forEach(eventType => {
+            document.addEventListener(eventType, playOnInteraction, { once: true, passive: true });
         });
     };
     
     // 동영상 로드 완료 시 재생
-    heroVideo.addEventListener('loadeddata', playVideo);
+    heroVideo.addEventListener('loadeddata', () => {
+        console.log('📹 비디오 로드 완료');
+        playVideo();
+    });
+    
+    // 동영상 메타데이터 로드 시 재생 (모바일 최적화)
+    heroVideo.addEventListener('loadedmetadata', () => {
+        console.log('📹 비디오 메타데이터 로드 완료');
+        playVideo();
+    });
+    
+    // canplay 이벤트에서도 재생 시도
+    heroVideo.addEventListener('canplay', () => {
+        playVideo();
+    });
     
     // 동영상 종료 시 자동 반복 (loop 속성이 있지만 보장용)
     heroVideo.addEventListener('ended', () => {
         heroVideo.currentTime = 0;
-        heroVideo.play();
+        heroVideo.play().catch(err => console.log('반복 재생 실패:', err));
     });
     
     // 페이지 visible 상태 복원 시 재생
     document.addEventListener('visibilitychange', () => {
         if (!document.hidden && heroVideo.paused) {
-            heroVideo.play();
+            playVideo();
         }
     });
     
-    // 즉시 재생 시도
-    playVideo();
+    // Intersection Observer로 뷰포트에 들어올 때 재생
+    const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1
+    };
     
-    console.log('✅ 히어로 동영상 배경 설정 완료');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting && heroVideo.paused) {
+                playVideo();
+            }
+        });
+    }, observerOptions);
+    
+    observer.observe(heroVideo);
+    
+    // 모바일에서 초기 재생 시도 (약간의 지연 후)
+    if (isMobile) {
+        setTimeout(() => {
+            playVideo();
+        }, 300);
+    } else {
+        // 즉시 재생 시도
+        playVideo();
+    }
+    
+    // 페이지 로드 완료 후에도 재생 시도
+    if (document.readyState === 'complete') {
+        playVideo();
+    } else {
+        window.addEventListener('load', () => {
+            setTimeout(playVideo, 100);
+        });
+    }
+    
+    console.log('✅ 히어로 동영상 배경 설정 완료', { isMobile });
 }
 
 // Ripple effect for buttons
