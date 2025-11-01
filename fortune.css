@@ -1,5 +1,12 @@
 /* 율무의 포춘 엉덩이 스타일 */
 
+/* 모바일에서 네비게이션 바 로고 텍스트 두께 통일 */
+@media (max-width: 700px) {
+    .nav-logo-text {
+        font-weight: 700 !important;
+    }
+}
+
 /* 기본 레이아웃 */
 body {
     min-height: 100vh;
@@ -38,20 +45,34 @@ body {
 .fortune-title {
     font-size: 2.5rem;
     font-weight: 800;
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: #2c2c2c; /* 더 어두운 색상 */
     margin-bottom: 0;
-    animation: titleGlow 2s ease-in-out infinite;
+    animation: titleGlow 2s ease-in-out infinite, titleShimmer 2s ease-in-out infinite;
+    text-shadow: 0 0 10px rgba(90, 70, 51, 0.3), 0 0 20px rgba(90, 70, 51, 0.2);
+    position: relative;
 }
 
 @keyframes titleGlow {
     0%, 100% {
-        filter: drop-shadow(0 0 10px rgba(255, 107, 157, 0.3));
+        filter: drop-shadow(0 0 8px rgba(90, 70, 51, 0.3)) drop-shadow(0 0 16px rgba(90, 70, 51, 0.2));
     }
     50% {
-        filter: drop-shadow(0 0 20px rgba(255, 107, 157, 0.6));
+        filter: drop-shadow(0 0 12px rgba(90, 70, 51, 0.4)) drop-shadow(0 0 24px rgba(90, 70, 51, 0.3));
+    }
+}
+
+@keyframes titleShimmer {
+    0%, 100% {
+        text-shadow: 0 0 10px rgba(90, 70, 51, 0.3), 0 0 20px rgba(90, 70, 51, 0.2);
+    }
+    25% {
+        text-shadow: 0 0 15px rgba(113, 110, 97, 0.5), 0 0 25px rgba(113, 110, 97, 0.3);
+    }
+    50% {
+        text-shadow: 0 0 12px rgba(90, 70, 51, 0.6), 0 0 22px rgba(90, 70, 51, 0.4);
+    }
+    75% {
+        text-shadow: 0 0 18px rgba(113, 110, 97, 0.5), 0 0 28px rgba(113, 110, 97, 0.3);
     }
 }
 
@@ -84,8 +105,8 @@ body {
 
 .fortune-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 15px 40px rgba(255, 107, 157, 0.3);
-    border-color: rgba(255, 107, 157, 0.5);
+    box-shadow: 0 15px 40px rgba(90, 70, 51, 0.3);
+    border-color: rgba(90, 70, 51, 0.5);
 }
 
 .fortune-card:active {
@@ -243,7 +264,7 @@ body {
     height: 60px;
     border-radius: 50%;
     border: 3px solid var(--primary);
-    box-shadow: 0 0 20px rgba(255, 107, 157, 0.3);
+    box-shadow: 0 0 20px rgba(90, 70, 51, 0.3);
     object-fit: cover;
     flex-shrink: 0;
 }
@@ -266,8 +287,8 @@ body {
 }
 
 .message-bubble {
-    background: linear-gradient(135deg, rgba(255, 107, 157, 0.1), rgba(78, 205, 196, 0.1));
-    border: 1px solid rgba(255, 107, 157, 0.3);
+    background: linear-gradient(135deg, rgba(90, 70, 51, 0.1), rgba(113, 110, 97, 0.1));
+    border: 1px solid rgba(90, 70, 51, 0.3);
     border-radius: 15px;
     padding: 1.5rem;
     position: relative;
@@ -282,7 +303,7 @@ body {
     height: 0;
     border-left: 10px solid transparent;
     border-right: 10px solid transparent;
-    border-bottom: 10px solid rgba(255, 107, 157, 0.3);
+    border-bottom: 10px solid rgba(90, 70, 51, 0.3);
 }
 
 .message-bubble p {
@@ -309,12 +330,12 @@ body {
     font-family: var(--font-family);
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(255, 107, 157, 0.4);
+    box-shadow: 0 4px 15px rgba(90, 70, 51, 0.4);
 }
 
 .retry-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(255, 107, 157, 0.6);
+    box-shadow: 0 6px 20px rgba(90, 70, 51, 0.6);
 }
 
 .retry-btn:active {

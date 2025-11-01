@@ -27,3 +27,6 @@ ON CONFLICT (key) DO NOTHING;
 -- 관리자만 수정 가능하도록 설정 (필요시)
 -- CREATE POLICY "Settings are updatable by admin" ON settings
 --     FOR ALL USING (auth.role() = 'service_role');
+
+
+

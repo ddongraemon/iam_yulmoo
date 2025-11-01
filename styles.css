@@ -1,4 +1,79 @@
-﻿/* CSS Cache Buster - 2025-01-12 21:25 */
+﻿/* videos-section 모든 패딩 10으로 강제 조정 - 최고 우선순위 */
+html body .videos-section,
+html body section.videos-section,
+.videos-section,
+section.videos-section {
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+}
+
+/* 모바일 전용 videos-section 패딩 강제 적용 - 모든 가능한 선택자 */
+@media (max-width: 700px) {
+    html body .videos-section,
+    html body section.videos-section,
+    html body .videos-section.animate-in,
+    html body section.videos-section.animate-in,
+    .videos-section,
+    section.videos-section,
+    .videos-section.animate-in,
+    section.videos-section.animate-in,
+    div.videos-section,
+    div.videos-section.animate-in {
+        padding-top: 10px !important;
+        padding-bottom: 10px !important;
+    }
+}
+
+/* 모든 화면 크기에서 videos-section 패딩 강제 오버라이드 */
+html body .videos-section,
+html body section.videos-section,
+html body .videos-section.animate-in,
+html body section.videos-section.animate-in,
+.videos-section,
+section.videos-section,
+.videos-section.animate-in,
+section.videos-section.animate-in,
+div.videos-section,
+div.videos-section.animate-in {
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+}
+
+/* video-section animate-in 내 section-header 상단 패딩 8 -> 0으로 변경 - 최고 우선순위 */
+html body .videos-section .section-header,
+html body .videos-section.animate-in .section-header,
+html body section.videos-section .section-header,
+html body section.videos-section.animate-in .section-header,
+.videos-section .section-header,
+.videos-section.animate-in .section-header,
+section.videos-section .section-header,
+section.videos-section.animate-in .section-header {
+    padding-top: 0 !important;
+}
+/* 소셜 버튼 아이콘 크기 소폭 상향 및 수직 중앙 정렬 (텍스트 변경 없음) */
+.social-btn i {
+    font-size: 1.2rem !important; /* PC: 한 단계 상향 */
+    line-height: 1 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    vertical-align: middle !important;
+}
+
+@media (max-width: 768px) {
+    .social-btn i {
+        font-size: 1.0rem !important; /* Mobile: 한 단계 상향 */
+    }
+}
+/* 모바일 비디오 인디케이터 색상 흰색으로 강제 */
+@media (max-width: 700px) {
+    .indicator-dot {
+        background: #D6CFC0 !important; /* hero-video-background와 동일 */
+    }
+    .indicator-dot.active {
+        background: #5a4633 !important; /* 갈색 (현재 인디케이터) */
+    }
+}
+/* CSS Cache Buster - 2025-01-12 21:25 */
 /* Paybooc Font Face */
 @font-face {
     font-family: 'Paybooc';
@@ -65,21 +140,21 @@
 
 :root {
     /* Modern Color Palette */
-    --primary: #ff6b9d;
-    --primary-dark: #e55a8a;
-    --secondary: #4ecdc4;
-    --secondary-dark: #3db5ad;
-    --accent: #ffe66d;
-    --background: #0a0a0f;
-    --surface: rgba(255, 255, 255, 0.05);
-    --surface-hover: rgba(255, 255, 255, 0.1);
-    --text-primary: #ffffff;
-    --text-secondary: #b8bcc8;
-    --text-muted: #6b7280;
-    --border: rgba(255, 255, 255, 0.1);
-    --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-    --shadow-lg: 0 16px 64px rgba(0, 0, 0, 0.4);
-    --glow: 0 0 20px rgba(255, 107, 157, 0.3);
+    --primary: #716E61; /* 포인트 텍스트/아이콘 */
+    --primary-dark: #5f5c52;
+    --secondary: #DED1BC; /* 포인트 배경 */
+    --secondary-dark: #c9bba2;
+    --accent: #D6CFC0; /* 보조 배경 */
+    --background: #F3F3EF; /* 기본 배경 */
+    --surface: rgba(255, 255, 255, 0.85);
+    --surface-hover: rgba(255, 255, 255, 0.92);
+    --text-primary: #000000;
+    --text-secondary: #2b2b2b;
+    --text-muted: #4a4a4a;
+    --border: rgba(0, 0, 0, 0.12);
+    --shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    --shadow-lg: 0 16px 64px rgba(0, 0, 0, 0.25);
+    --glow: 0 0 20px rgba(113, 110, 97, 0.25);
     
     /* Typography */
     --font-family: 'Paybooc', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -142,7 +217,7 @@ body {
     top: 0;
     left: 0;
     right: 0;
-    background: rgba(10, 10, 15, 0.8);
+    background: rgba(214, 207, 192, 0.9); /* D6CFC0 */
     backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--border);
     z-index: 999999;
@@ -179,7 +254,7 @@ body {
 .nav-logo-text {
     font-size: var(--font-size-xl);
     font-weight: 700;
-    color: white;
+    color: var(--text-primary);
 }
 
 .nav-menu {
@@ -289,7 +364,7 @@ body {
         width: 250px !important;
         min-width: 200px !important;
         max-width: 300px !important;
-        background: rgba(10, 10, 15, 0.98) !important;
+        background: rgba(214, 207, 192, 0.98) !important; /* D6CFC0 */
         backdrop-filter: blur(20px) !important;
         flex-direction: column !important;
         padding: var(--space-4) !important;
@@ -339,14 +414,191 @@ body {
     }
 }
 
+@media (max-width: 700px) {
+    .nav-menu .nav-link {
+        color: var(--text-primary) !important;
+    }
+    .nav-menu .nav-link:hover,
+    .nav-menu .nav-link.active {
+        color: var(--text-primary) !important;
+    }
+}
+
+/* Action Buttons */
+.action-buttons {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 var(--space-4);
+    z-index: 1000;
+    pointer-events: none;
+}
+
+/* PC에서 버튼 위치 조정 */
+@media (min-width: 701px) {
+    .action-buttons {
+        top: 80px;
+    }
+}
+
+.action-buttons .action-btn {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #FFFFFF;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    pointer-events: auto;
+    text-decoration: none;
+    color: var(--text-primary);
+    min-width: 48px;
+    min-height: 48px;
+    margin: 0;
+    padding: 0;
+}
+
+.action-buttons .action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    background: #f8f8f8;
+}
+
+.action-buttons .action-btn i {
+    font-size: 18px;
+    color: #333333;
+    font-weight: 300;
+    display: inline-block;
+    line-height: 1;
+}
+
+/* PC에서 공유하기와 문의하기 버튼 완전 동일 스타일 강제 적용 */
+@media (min-width: 701px) {
+    .action-buttons .share-btn,
+    .action-buttons .contact-btn {
+        width: 48px !important;
+        height: 48px !important;
+        border-radius: 50% !important;
+        background: #FFFFFF !important;
+        border: 1px solid rgba(0, 0, 0, 0.1) !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        cursor: pointer !important;
+        transition: all 0.3s ease !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+        pointer-events: auto !important;
+        text-decoration: none !important;
+        color: var(--text-primary) !important;
+        min-width: 48px !important;
+        min-height: 48px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .action-buttons .share-btn i,
+    .action-buttons .contact-btn i {
+        font-size: 18px !important;
+        color: #333333 !important;
+        font-weight: 900 !important;
+        display: inline-block !important;
+        line-height: 1 !important;
+        font-family: "Font Awesome 6 Free" !important;
+        font-style: normal !important;
+        font-variant: normal !important;
+        text-rendering: auto !important;
+        -webkit-font-smoothing: antialiased !important;
+        -moz-osx-font-smoothing: grayscale !important;
+    }
+    
+    /* 공유하기 버튼 아이콘 특별 처리 */
+    .action-buttons .share-btn i.fa-share-alt {
+        font-weight: 900 !important;
+        font-family: "Font Awesome 6 Free" !important;
+    }
+}
+
+/* 액션 버튼 개별 스타일 제거 - 모든 버튼이 동일한 스타일 적용 */
+
+/* 모바일에서 액션 버튼 위치 조정 */
+@media (max-width: 700px) {
+    .action-buttons {
+        top: 50px;
+        padding: 0 var(--space-3);
+    }
+    
+    .action-buttons .action-btn {
+        width: 44px;
+        height: 44px;
+        min-width: 44px;
+        min-height: 44px;
+        border-radius: 50%;
+    }
+    
+    .action-buttons .action-btn i {
+        font-size: 16px;
+        color: #333333;
+        font-weight: 300;
+    }
+    
+    /* 모바일에서도 공유하기와 문의하기 버튼 완전 동일 스타일 강제 적용 */
+    .action-buttons .share-btn,
+    .action-buttons .contact-btn {
+        width: 44px !important;
+        height: 44px !important;
+        border-radius: 50% !important;
+        background: #FFFFFF !important;
+        border: 1px solid rgba(0, 0, 0, 0.1) !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        cursor: pointer !important;
+        transition: all 0.3s ease !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+        pointer-events: auto !important;
+        text-decoration: none !important;
+        color: var(--text-primary) !important;
+        min-width: 44px !important;
+        min-height: 44px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        position: relative !important;
+    }
+    
+    .action-buttons .share-btn i,
+    .action-buttons .contact-btn i {
+        font-size: 16px !important;
+        color: #333333 !important;
+        font-weight: 300 !important;
+        display: block !important;
+        line-height: 44px !important;
+        text-align: center !important;
+        width: 44px !important;
+        height: 44px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        position: absolute !important;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) !important;
+    }
+}
+
 /* Hero Section */
 .hero {
-    min-height: 35vh;
+    min-height: 28vh;
     display: flex;
     align-items: center;
     position: relative;
     overflow: hidden;
-    padding: 90px 0 5px 0;
+    padding: 65px 0 5px 0;
     z-index: 1;
 }
 
@@ -376,14 +628,13 @@ body {
     position: absolute;
     top: 50%;
     left: 50%;
-    min-width: 100%;
-    min-height: 100%;
-    width: auto;
-    height: auto;
+    width: 100%;
+    height: 100%;
     transform: translate(-50%, -50%);
     object-fit: cover;
+    object-position: center;
     z-index: 0;
-    filter: blur(1.5px) brightness(0.7) contrast(1.2);
+    filter: blur(1.5px) brightness(1.1) contrast(1.0);
 }
 
 .hero-video-overlay {
@@ -392,7 +643,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(214, 207, 192, 0.3); /* D6CFC0 with alpha - 밝고 투명한 느낌 */
     z-index: 1;
     pointer-events: none;
 }
@@ -463,6 +714,24 @@ body {
     position: relative;
 }
 
+.hero-title {
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+}
+
+.hero-title-main {
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+}
+
+.hero-icon {
+    display: inline-block;
+    vertical-align: middle;
+    height: 1.2em;
+    width: auto;
+    margin-left: 0em;
+    margin-top: -0.2em;
+    object-fit: contain;
+}
+
 .hero-badge {
     display: inline-flex;
     align-items: center;
@@ -496,6 +765,7 @@ body {
     color: var(--text-secondary);
     margin-bottom: var(--space-2);
     line-height: 1.6;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
 }
 
 .hero-description .mobile-break {
@@ -503,18 +773,11 @@ body {
 }
 
 .pink-subscribe {
-    color: #ffb5ce;
+    color: #c2410c;
     font-weight: 700;
-    text-shadow: 0 0 10px rgba(255, 181, 206, 0.5);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15), 0 1px 4px rgba(0, 0, 0, 0.2);
 }
 
-.hero-actions {
-    display: flex;
-    gap: var(--space-3);
-    margin-bottom: var(--space-6);
-    position: relative;
-    z-index: 1000;
-}
 
 .btn {
     display: inline-flex;
@@ -540,8 +803,9 @@ body {
 }
 
 .btn-primary {
-    background: var(--primary);
-    color: white;
+    background: #FFFFFF;
+    color: #000000;
+    border: 1px solid var(--border);
     box-shadow: var(--shadow);
 }
 
@@ -552,8 +816,8 @@ body {
 }
 
 .btn-secondary {
-    background: var(--surface);
-    color: var(--text-primary);
+    background: #FFFFFF;
+    color: #000000;
     border: 1px solid var(--border);
     backdrop-filter: blur(10px);
 }
@@ -565,8 +829,8 @@ body {
 }
 
 .btn-inquiry {
-    background: #282828;
-    color: white;
+    background: #FFFFFF;
+    color: #000000;
     border: 1px solid var(--border);
 }
 
@@ -603,6 +867,7 @@ body {
     letter-spacing: 0.5px;
     text-align: left;
     margin-bottom: 2px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
 }
 
 .stats-row {
@@ -621,13 +886,15 @@ body {
     display: block;
     font-size: var(--font-size-2xl);
     font-weight: 700;
-    color: var(--primary);
+    color: #3d2e1f;
     margin-bottom: var(--space-1);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
 }
 
 .stat-label {
     font-size: var(--font-size-sm);
     color: var(--text-secondary);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
 }
 
 .mobile-hero-image {
@@ -680,7 +947,7 @@ body {
 /* Video Section */
 .video-section {
     padding: 20px 0;
-    background: var(--surface);
+    background: var(--background); /* 최신 업로드 섹션과 동일 */
 }
 
 .video-section.recent-videos {
@@ -714,6 +981,75 @@ body {
     }
 }
 
+/* 소셜미디어 버튼 컨테이너 */
+.social-buttons-container {
+    display: flex;
+    gap: var(--space-3);
+    justify-content: center;
+    margin-bottom: var(--space-4);
+    flex-wrap: wrap;
+}
+
+/* 소셜미디어 버튼 스타일 (PC에서 더 큰 크기) */
+.social-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.5rem 2rem;
+    background: #FFFFFF;
+    border: 1px solid var(--border);
+    border-radius: 50px;
+    color: #000000;
+    font-size: 0.9rem;
+    font-weight: 700;
+    font-family: var(--font-family);
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    white-space: nowrap;
+}
+
+.social-btn i {
+    font-size: 0.8rem;
+}
+
+.social-btn:hover {
+    background: #f0f0f0;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.social-btn:active {
+    transform: translateY(0);
+}
+
+.social-btn i {
+    font-size: 0.75rem;
+}
+
+.social-btn:hover i { color: #FFFFFF !important; }
+
+/* 유튜브 버튼 특별 스타일 */
+.youtube-btn:hover {
+    background: #ff0000;
+    color: white;
+}
+
+/* 인스타그램 버튼 특별 스타일 */
+.instagram-btn:hover {
+    background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
+    color: white;
+}
+
+/* 틱톡 버튼 특별 스타일 */
+.tiktok-btn:hover {
+    background: #000000;
+    color: white;
+}
+
 /* 율무 운세 버튼 스타일 */
 .fortune-btn {
     display: inline-flex;
@@ -722,8 +1058,8 @@ body {
     gap: 0.5rem;
     padding: 0.4rem 1.5rem;
     margin-bottom: 1rem;
-    background: linear-gradient(135deg, rgba(255, 107, 157, 0.2), rgba(78, 205, 196, 0.2));
-    border: 2px solid rgba(255, 107, 157, 0.4);
+    background: linear-gradient(135deg, rgba(113, 110, 97, 0.2), rgba(222, 209, 188, 0.2));
+    border: 2px solid var(--primary);
     border-radius: 50px;
     color: var(--text-primary);
     font-size: 0.85rem;
@@ -733,14 +1069,45 @@ body {
     text-decoration: none;
     transition: all 0.3s ease;
     backdrop-filter: blur(10px);
-    box-shadow: 0 4px 15px rgba(255, 107, 157, 0.2);
+    box-shadow: 0 4px 15px rgba(113, 110, 97, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+/* 반짝임 효과 */
+.fortune-btn::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    transform: rotate(45deg);
+    animation: shimmer 2s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 1;
+}
+
+@keyframes shimmer {
+    0% {
+        transform: translateX(-100%) translateY(-100%) rotate(45deg);
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(100%) translateY(100%) rotate(45deg);
+        opacity: 0;
+    }
 }
 
 .fortune-btn:hover {
-    background: linear-gradient(135deg, rgba(255, 107, 157, 0.3), rgba(78, 205, 196, 0.3));
-    border-color: rgba(255, 107, 157, 0.6);
+    background: linear-gradient(135deg, rgba(113, 110, 97, 0.3), rgba(222, 209, 188, 0.3));
+    border-color: var(--primary-dark);
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(255, 107, 157, 0.3);
+    box-shadow: 0 6px 20px rgba(113, 110, 97, 0.3);
 }
 
 .fortune-btn:active {
@@ -763,6 +1130,24 @@ body {
 
 /* 모바일에서 버튼 크기 조정 */
 @media (max-width: 768px) {
+    .social-buttons-container {
+        flex-direction: column;
+        align-items: center;
+        gap: var(--space-2);
+        margin-bottom: var(--space-2); /* match gap between buttons */
+    }
+    
+    .social-btn {
+        font-size: 0.75rem;
+        padding: 0.35rem 1.2rem;
+        width: 100%;
+        max-width: 280px;
+    }
+    
+    .social-btn i {
+        font-size: 0.65rem;
+    }
+    
     .fortune-btn {
         font-size: 0.75rem;
         padding: 0.35rem 1.2rem;
@@ -792,10 +1177,7 @@ body {
     font-size: var(--font-size-3xl);
     font-weight: 700;
     margin-bottom: var(--space-1);
-    background: linear-gradient(135deg, var(--text-primary), var(--primary));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--text-primary);
 }
 
 .section-subtitle {
@@ -831,12 +1213,39 @@ body {
     border-color: var(--primary);
 }
 
+/* 터치 시 자연스러운 그림자 효과 */
+.video-card.touch-active {
+    transform: translateY(-1px);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+    border-color: #5a4633 !important; /* 갈색 계열 강제 적용 */
+}
+
+/* 모바일에서 그림자 최소화 (클리핑 방지) */
+@media (max-width: 700px) {
+    .video-card.touch-active {
+        transform: translateY(-1px);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        border-color: #5a4633 !important; /* 갈색 계열 강제 적용 */
+    }
+    
+    /* 비디오 그리드에 여백 추가로 그림자 클리핑 방지 */
+    .video-grid {
+        padding: 8px 0 !important;
+        margin: 0 !important;
+    }
+    
+    /* 비디오 카드에 여백 추가 */
+    .video-card {
+        margin: 4px !important;
+    }
+}
+
 /* 모바일/태블릿에서도 터치 시 호버 효과 */
 .video-card:active,
 .video-card:focus {
-    transform: translateY(-8px);
-    box-shadow: var(--shadow-lg);
-    border-color: var(--primary);
+    transform: translateY(-1px);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12) !important;
+    border-color: #5a4633 !important; /* 갈색 계열 강제 적용 */
 }
 
 .video-card.featured {
@@ -863,7 +1272,7 @@ body {
 .video-placeholder {
     width: 100%;
     height: 100%;
-    background: linear-gradient(135deg, var(--surface), var(--surface-hover));
+    background: linear-gradient(135deg, #D6CFC0, #F3F3EF);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -948,6 +1357,14 @@ body {
     color: var(--primary) !important;
 }
 
+.video-stat-item i.fa-heart {
+    color: #ff3f3f !important;
+}
+
+.video-stat-item i.fa-comment {
+    color: #1e1818 !important;
+}
+
 .video-stat-item span {
     font-size: var(--font-size-sm);
 }
@@ -961,12 +1378,12 @@ body {
     
     .video-stat-item i.fa-heart {
         font-size: 13px;
-        color: var(--primary) !important;
+        color: #ff3f3f !important;
     }
     
     .video-stat-item i.fa-comment {
         font-size: 13px;
-        color: var(--primary) !important;
+        color: #1e1818 !important;
     }
     
     .video-stat-item span {
@@ -1002,10 +1419,7 @@ body {
     font-size: var(--font-size-4xl);
     font-weight: 700;
     margin-bottom: var(--space-6);
-    background: linear-gradient(135deg, var(--text-primary), var(--secondary));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--text-primary);
 }
 
 .about-description {
@@ -1049,7 +1463,7 @@ body {
 /* Gallery Section */
 .gallery-section {
     padding: var(--space-5) 0;
-    background: var(--surface);
+    background: var(--accent);
 }
 
 .gallery-content {
@@ -1077,7 +1491,7 @@ body {
     border-radius: var(--radius-xl);
     overflow: hidden;
     background: var(--surface);
-    border: 1px solid var(--border);
+    border: 0.5px solid #5a4633; /* 더 얇은 고동색 테두리 */
     transition: var(--transition-normal);
     cursor: pointer;
 }
@@ -1085,14 +1499,14 @@ body {
 .gallery-item:hover {
     transform: translateY(-4px);
     box-shadow: var(--shadow-lg);
-    border-color: var(--primary);
+    border-color: #5a4633; /* 고동색 유지 */
 }
 
 /* 모바일/태블릿에서도 탭/클릭 시 호버 효과 */
 .gallery-item:active {
     transform: translateY(-4px);
     box-shadow: var(--shadow-lg);
-    border-color: var(--primary);
+    border-color: #5a4633; /* 고동색 유지 */
 }
 
 .gallery-placeholder {
@@ -1104,7 +1518,7 @@ body {
     justify-content: center;
     gap: var(--space-2);
     color: var(--text-secondary);
-    background: linear-gradient(135deg, rgba(255, 107, 157, 0.1), rgba(78, 205, 196, 0.1));
+    background: linear-gradient(135deg, rgba(214, 207, 192, 0.6), rgba(243, 243, 239, 0.6));
 }
 
 .gallery-placeholder i {
@@ -1182,10 +1596,7 @@ body {
     font-size: var(--font-size-3xl);
     font-weight: 700;
     margin-bottom: var(--space-2);
-    background: linear-gradient(135deg, var(--text-primary), var(--primary));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--text-primary);
 }
 
 .contact-description {
@@ -1289,7 +1700,7 @@ body {
 .footer {
     padding: var(--space-6) 0;
     border-top: 1px solid var(--border);
-    background: var(--background);
+    background: var(--background); /* 문의하기 섹션과 동일 */
 }
 
 .footer-content {
@@ -1314,10 +1725,7 @@ body {
 .footer-logo-text {
     font-size: var(--font-size-xl);
     font-weight: 700;
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--text-primary);
 }
 
 .footer-text {
@@ -1533,7 +1941,7 @@ body {
     .nav-logo-text {
         font-size: var(--font-size-base);
         line-height: 1;
-        color: white;
+        color: var(--text-primary);
     }
     
     .nav-menu {
@@ -1616,9 +2024,9 @@ body {
     /* 태블릿 터치 효과 - 영상 카드 */
     .video-card:active,
     .video-card:focus {
-        transform: translateY(-8px) !important;
-        box-shadow: var(--shadow-lg) !important;
-        border-color: var(--primary) !important;
+        transform: translateY(-2px);
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.12);
+        border-color: var(--primary);
     }
     
     .gallery-btn {
@@ -1686,8 +2094,8 @@ body {
     
     /* 태블릿 슬라이드 방식 */
     .videos-section {
-        padding-top: var(--space-8) !important;
-        padding-bottom: var(--space-4) !important;
+        padding-top: 10px !important;
+        padding-bottom: 10px !important;
     }
     
     .videos-section .section-title,
@@ -1865,6 +2273,7 @@ body {
         margin: 0 auto !important;
     }
     
+    
     /* 모바일에서 section-header margin-bottom 제거 */
     body .videos-section .section-header,
     html .videos-section .section-header {
@@ -1881,7 +2290,7 @@ body {
             margin-bottom: 0 !important;
             padding-bottom: 0 !important;
             margin: 0 !important;
-            padding: var(--space-2) 0 0 0 !important;
+            padding: 0 0 0 0 !important;
         }
     }
     
@@ -1915,11 +2324,11 @@ body {
         height: 20px;
     }
     
-    .nav-logo-text {
+    html body .navbar .nav-logo-text {
         font-size: 0.75rem !important;
         line-height: 1 !important;
-        font-weight: 600 !important;
-        color: white !important;
+        font-weight: 700 !important;
+        color: var(--text-primary) !important;
     }
     
     .nav-toggle {
@@ -1944,7 +2353,7 @@ body {
         left: 0 !important;
         right: 0 !important;
         width: 100% !important;
-        background: rgba(10, 10, 15, 0.98) !important;
+        background: rgba(218, 216, 212, 0.98) !important;
         backdrop-filter: blur(20px) !important;
         flex-direction: column !important;
         padding: var(--space-4) !important;
@@ -1992,9 +2401,9 @@ body {
     /* 모바일 터치 효과 - 영상 카드 */
     .video-card:active,
     .video-card:focus {
-        transform: translateY(-8px) !important;
-        box-shadow: var(--shadow-lg) !important;
-        border-color: var(--primary) !important;
+        transform: translateY(-2px);
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.12);
+        border-color: var(--primary);
     }
     
     .gallery-placeholder i {
@@ -2518,7 +2927,7 @@ body {
         font-size: 0.7rem !important;
         line-height: 1 !important;
         font-weight: 600 !important;
-        color: white !important;
+        color: var(--text-primary) !important;
     }
     
     .nav-toggle {
@@ -2581,9 +2990,9 @@ body {
     /* 작은 모바일 터치 효과 - 영상 카드 */
     .video-card:active,
     .video-card:focus {
-        transform: translateY(-8px) !important;
-        box-shadow: var(--shadow-lg) !important;
-        border-color: var(--primary) !important;
+        transform: translateY(-2px);
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.12);
+        border-color: var(--primary);
     }
     
     .gallery-placeholder i {
@@ -2986,7 +3395,7 @@ body {
     
     .nav-logo-text {
         font-size: 0.75rem !important; /* 모바일에서 작은 크기로 강제 적용 */
-        color: white !important;
+        color: var(--text-primary) !important;
     }
     
     .nav-menu {
@@ -3330,4 +3739,312 @@ body {
 
 .admin-link {
     /* 다른 nav-link와 동일한 스타일을 사용 */
+}
+
+/* 플랫폼별 아이콘 브랜드 컬러 */
+.youtube-btn i { color: #FF0000; }
+.instagram-btn i { color: #E4405F; }
+.tiktok-btn i { color: #EE1D52; }
+
+/* 소셜 버튼 크기 소폭 상향 (데스크톱) */
+.social-btn { font-size: 1rem; }
+.social-btn i { font-size: 0.9rem; }
+
+/* 소셜 버튼 크기 소폭 상향 (모바일) */
+@media (max-width: 768px) {
+    .social-btn { font-size: 0.8rem; }
+    .social-btn i { font-size: 0.7rem; }
+}
+
+/* ========================================
+   쿠팡 파트너스 광고 섹션 스타일
+   ======================================== */
+
+.coupang-section {
+    padding: 60px 0;
+    background: var(--background);
+    position: relative;
+    overflow: hidden;
+}
+
+.coupang-section.animate-in {
+    padding: 0 0 20px 0;
+}
+
+.coupang-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="%23FFE082" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="%23FFE082" opacity="0.1"/><circle cx="50" cy="10" r="0.5" fill="%23FFE082" opacity="0.1"/><circle cx="10" cy="60" r="0.5" fill="%23FFE082" opacity="0.1"/><circle cx="90" cy="40" r="0.5" fill="%23FFE082" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+    pointer-events: none;
+}
+
+.coupang-ads-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+}
+
+.coupang-ad-box {
+    background: #FFFFFF;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+    border: 1px solid #F0F0F0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    min-height: 120px;
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+}
+
+.coupang-ad-box:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+    border-color: #E0E0E0;
+}
+
+.ad-image {
+    flex: 0 0 120px;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #F8F9FA 0%, #E9ECEF 100%);
+    border-right: 1px solid #F0F0F0;
+}
+
+.ad-product-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.ad-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #6C757D;
+    font-size: 0.9rem;
+    text-align: center;
+    gap: 8px;
+}
+
+.ad-placeholder i {
+    font-size: 2rem;
+    color: #D6CFC0;
+}
+
+.ad-content {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+    text-align: center;
+}
+
+.ad-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+.ad-tag {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+}
+
+.ad-tag:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.tag-recommend {
+    background: #FFF3E0;
+    color: #E65100;
+    border: 1px solid #FFCC02;
+}
+
+.tag-regret {
+    background: #FFF8E1;
+    color: #F57F17;
+    border: 1px solid #FFE082;
+}
+
+.tag-satisfied {
+    background: #E8F5E8;
+    color: #2E7D32;
+    border: 1px solid #C8E6C9;
+}
+
+.tag-size {
+    background: #FCE4EC;
+    color: #C2185B;
+    border: 1px solid #F8BBD9;
+}
+
+.tag-stable {
+    background: #F3E5F5;
+    color: #7B1FA2;
+    border: 1px solid #E1BEE7;
+}
+
+.tag-dog {
+    background: #FFFFFF;
+    color: #424242;
+    border: 1px solid #E0E0E0;
+}
+
+.tag-quality {
+    background: #E3F2FD;
+    color: #1565C0;
+    border: 1px solid #BBDEFB;
+}
+
+.tag-love {
+    background: #FFEBEE;
+    color: #D32F2F;
+    border: 1px solid #FFCDD2;
+}
+
+/* 쿠팡 파트너스 안내 문구 */
+.coupang-disclaimer {
+    margin-top: 0;
+    text-align: center;
+    padding: 0 20px;
+}
+
+.coupang-disclaimer p {
+    font-size: 0.7rem;
+    color: #666666;
+    line-height: 1.4;
+    margin: 0;
+}
+
+.ad-description {
+    font-size: 0.95rem;
+    color: #424242;
+    line-height: 1.5;
+    font-weight: 500;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .coupang-section {
+        padding: 40px 0;
+    }
+    
+    .coupang-ads-container {
+        gap: 12px;
+        padding: 10px 8px 0 8px;
+        margin-top: 8px;
+        align-items: center;
+    }
+    
+    /* 모바일에서도 가로형(길쭉한) 레이아웃 유지 */
+    .coupang-ad-box {
+        flex-direction: row;
+        align-items: center;
+        width: calc(100vw - 32px);
+        max-width: 378px;
+        height: 95px;
+        min-height: 95px; /* 기본 min-height:120px 무시 */
+        max-height: 95px;
+    }
+    
+    .ad-image {
+        flex: 0 0 95px;
+        width: 95px;
+        height: 95px;
+        border-right: 1px solid #F0F0F0;
+        border-bottom: none;
+    }
+    
+    .ad-content {
+        padding: 12px;
+    }
+    
+    /* 태그는 한 줄 스크롤로 가로 유지 */
+    .ad-tags {
+        gap: 6px;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .ad-tag {
+        font-size: 0.7rem;
+        padding: 3px 10px;
+        flex: 0 0 auto;
+    }
+    
+    /* 설명은 한 줄로 말줄임 처리 */
+    .ad-description {
+        font-size: 0.9rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
+
+@media (max-width: 480px) {
+    .coupang-section {
+        padding: 30px 0;
+    }
+    
+    .coupang-ads-container {
+        padding: 0 8px;
+        align-items: center;
+    }
+    
+    .coupang-ad-box {
+        width: calc(100vw - 32px);
+        max-width: 378px;
+        height: 95px;
+        min-height: 95px; /* 기본 min-height:120px 무시 */
+        max-height: 95px;
+    }
+    
+    .ad-image {
+        flex: 0 0 95px;
+        width: 95px;
+        height: 95px;
+    }
+    
+    .ad-content {
+        padding: 10px;
+    }
+    
+    .ad-tags {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        gap: 4px;
+    }
+    
+    .ad-tag {
+        font-size: 0.65rem;
+        padding: 2px 8px;
+        flex: 0 0 auto;
+    }
 }

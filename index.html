@@ -3,15 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="율무인데요 - 율무의 일상을 공유하는 유튜브 및 틱톡 채널">
-    <meta name="keywords" content="율무, 강아지, 유튜브, 틱톡, 펫채널, 반려견">
+    <meta name="description" content="율무's 공식홈페이지">
+    <meta name="keywords" content="율무, 강아지, 율무 유튜브, 반려동물, 유기견, 리트리버, 진돗개, 진트리버, 진도믹스">
+    <meta name="author" content="율무인데요">
     <title>율무랑 비밀친구하기</title>
+    
+    <!-- Open Graph / Facebook / Instagram 공유 메타태그 -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.yulmoo.site">
+    <meta property="og:title" content="율무랑 비밀친구하기">
+    <meta property="og:description" content="율무's 공식 홈페이지">
+    <meta property="og:image" content="https://www.yulmoo.site/yulmoo-hero.png">
+    <meta property="og:site_name" content="율무인데요">
+    
+    <!-- Twitter 카드 메타태그 -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="율무랑 비밀친구하기">
+    <meta name="twitter:description" content="율무's 공식 홈페이지">
+    <meta name="twitter:image" content="https://www.yulmoo.site/yulmoo-hero.png">
     
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <!-- Custom CSS -->
     <link rel="stylesheet" href="styles.css">
+    
+    <!-- Supabase -->
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-QVRVLYSZC2"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-QVRVLYSZC2');
+    </script>
 </head>
 <body>
     <!-- Navigation -->
@@ -35,6 +62,16 @@
         </div>
     </nav>
 
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+        <button class="action-btn share-btn" id="shareBtn" title="공유하기">
+            <i class="fas fa-share-alt" style="font-family: 'Font Awesome 6 Free'; font-weight: 900;"></i>
+        </button>
+        <a href="/contact.html" class="action-btn contact-btn" title="문의하기">
+            <i class="fas fa-envelope"></i>
+        </a>
+    </div>
+
     <!-- Hero Section -->
     <section class="hero" id="home">
         <!-- 동영상 배경 -->
@@ -49,25 +86,11 @@
         <div class="hero-container">
             <div class="hero-content">
                 <h1 class="hero-title">
-                    <span class="hero-title-main">안녕하세율 <i class="fas fa-paw"></i></span>
+                    <span class="hero-title-main">안녕하세율 <img src="yulmoo-hero.png" alt="율무" class="hero-icon"></span>
                 </h1>
                 <p class="hero-description">
                     매일매일 행복한 율무네 일상,<span class="mobile-break"></span> <span class="pink-subscribe">구독</span>으로 빠르게 만나보세요!
                 </p>
-                <div class="hero-actions">
-                    <a href="https://www.youtube.com/@Iam_Yulmoo?sub_confirmation=1" class="btn btn-primary" target="_blank" rel="noopener noreferrer">
-                        <i class="fab fa-youtube"></i>
-                        <span class="youtube-text"></span>
-                    </a>
-                    <a href="https://www.tiktok.com/@iam_yulmoo" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">
-                        <i class="fab fa-tiktok"></i>
-                        <span class="tiktok-text"></span>
-                    </a>
-                    <a href="/contact.html" class="btn btn-inquiry">
-                        <i class="fas fa-envelope"></i>
-                        <span>문의</span>
-                    </a>
-                </div>
                 <div class="hero-stats">
                     <div class="stats-total">Total</div>
                     <div class="stats-row">
@@ -102,6 +125,20 @@
     <section class="video-section" id="videos">
         <div class="container">
             <div class="section-header">
+                <div class="social-buttons-container">
+                    <a href="https://www.youtube.com/@Iam_Yulmoo?sub_confirmation=1" class="social-btn youtube-btn" target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-youtube"></i>
+                        <span>율무인데요 유튜브</span>
+                    </a>
+                    <a href="https://www.instagram.com/_iam_yulmoo" class="social-btn instagram-btn" target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-instagram"></i>
+                        <span>율무인데요 인스타그램</span>
+                    </a>
+                    <a href="https://www.tiktok.com/@iam_yulmoo" class="social-btn tiktok-btn" target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-tiktok"></i>
+                        <span>율무인데요 TIKTOK</span>
+                    </a>
+                </div>
                 <a href="/fortune.html" class="fortune-btn" id="fortuneBtn">
                     <i class="fas fa-paw"></i>
                     <span>율무 엉덩이 때려서 오늘의 운세 확인하기</span>
@@ -193,95 +230,80 @@
         </div>
     </section>
 
-        <!-- Recent Videos Section -->
-        <section class="video-section recent-videos">
+        <!-- Coupang Partners Section -->
+        <section class="coupang-section">
             <div class="container">
                 <div class="section-header">
-                    <h2 class="section-title">최신 업로드 영상</h2>
-                    <p class="section-subtitle">가장 최근의 율무 만나보기</p>
+                    <h2 class="section-title">율무의 꿀템추천</h2>
+                    <p class="section-subtitle">직접 율무가 사용해본 찐템 후기!!</p>
                 </div>
-            
-            <div class="video-grid">
-                <div class="video-card">
-                    <div class="video-thumbnail">
-                        <div class="video-placeholder">
-                            <i class="fas fa-play"></i>
-                            <span>최근영상 1</span>
+                
+                <div class="coupang-ads-container">
+                    <!-- 광고 1: 매트 -->
+                    <a href="https://link.coupang.com/a/cZMjMv" target="_blank" rel="noopener noreferrer" class="coupang-ad-box">
+                        <div class="ad-image">
+                            <img src="images/ad_image_1.png" alt="관절보호 간보호 필수영양제" class="ad-product-image">
                         </div>
-                        <div class="video-duration">1:45</div>
-                        <div class="video-views">234K 조회</div>
-                    </div>
-                    <div class="video-info">
-                        <h3 class="video-title">율무의 아침 인사</h3>
-                        <div class="video-stats">
-                            <div class="video-stat-row">
-                                <div class="video-stat-item">
-                                    <i class="fas fa-heart"></i>
-                                    <span>3.1K</span>
-                                </div>
-                                <div class="video-stat-item">
-                                    <i class="fas fa-comment"></i>
-                                    <span>67</span>
-                                </div>
+                        <div class="ad-content">
+                            <div class="ad-tags">
+                                <span class="ad-tag tag-recommend">관절보호</span>
+                                <span class="ad-tag tag-regret">간보호</span>
+                                <span class="ad-tag tag-satisfied">전연령급여</span>
+                                <span class="ad-tag tag-quality">필수영양</span>
+                            </div>
+                            <div class="ad-description">
+                                전연령 모든 강아지의 관절 보호담당✨
                             </div>
                         </div>
-                    </div>
-                </div>
+                    </a>
 
-                <div class="video-card">
-                    <div class="video-thumbnail">
-                        <div class="video-placeholder">
-                            <i class="fas fa-play"></i>
-                            <span>최근영상 2</span>
+                    <!-- 광고 2: 계단 -->
+                    <a href="https://link.coupang.com/a/cZMlGS" target="_blank" rel="noopener noreferrer" class="coupang-ad-box">
+                        <div class="ad-image">
+                            <img src="images/ad_image_2.png" alt="오리안심 간식" class="ad-product-image">
                         </div>
-                        <div class="video-duration">2:33</div>
-                        <div class="video-views">189K 조회</div>
-                    </div>
-                    <div class="video-info">
-                        <h3 class="video-title">율무의 저녁 산책</h3>
-                        <div class="video-stats">
-                            <div class="video-stat-row">
-                                <div class="video-stat-item">
+                        <div class="ad-content">
+                            <div class="ad-tags">
+                                <span class="ad-tag tag-size">대용량간식</span>
+                                <span class="ad-tag tag-stable">오리안심</span>
+                                <span class="ad-tag tag-love">
                                     <i class="fas fa-heart"></i>
-                                    <span>2.8K</span>
-                                </div>
-                                <div class="video-stat-item">
-                                    <i class="fas fa-comment"></i>
-                                    <span>45</span>
-                                </div>
+                                    율무최애간식
+                                </span>
+                            </div>
+                            <div class="ad-description">
+                                통대창강아지 율무의 국내산 최애간식🍯
                             </div>
                         </div>
-                    </div>
-                </div>
+                    </a>
 
-                <div class="video-card">
-                    <div class="video-thumbnail">
-                        <div class="video-placeholder">
-                            <i class="fas fa-play"></i>
-                            <span>최근영상 3</span>
+                    <!-- 광고 3: 추가 제품 -->
+                    <a href="https://link.coupang.com/a/cZMmlT" target="_blank" rel="noopener noreferrer" class="coupang-ad-box">
+                        <div class="ad-image">
+                            <img src="images/ad_image_3.png" alt="강아지 잠옷" class="ad-product-image">
                         </div>
-                        <div class="video-duration">1:58</div>
-                        <div class="video-views">156K 조회</div>
-                    </div>
-                    <div class="video-info">
-                        <h3 class="video-title">율무의 잠자리</h3>
-                        <div class="video-stats">
-                            <div class="video-stat-row">
-                                <div class="video-stat-item">
-                                    <i class="fas fa-heart"></i>
-                                    <span>2.3K</span>
-                                </div>
-                                <div class="video-stat-item">
-                                    <i class="fas fa-comment"></i>
-                                    <span>23</span>
-                                </div>
+                        <div class="ad-content">
+                            <div class="ad-tags">
+                                <span class="ad-tag tag-recommend">중대형견</span>
+                                <span class="ad-tag tag-quality">
+                                    <i class="fas fa-star"></i>
+                                    율무시그니쳐옷
+                                </span>
+                                <span class="ad-tag tag-love">강아지잠옷</span>
+                            </div>
+                            <div class="ad-description">
+                                많은 분들이 물어봐주신 율무의 잠옷!!🌙
                             </div>
                         </div>
+                    </a>
+                    
+                    <!-- 쿠팡 파트너스 안내 문구 -->
+                    <div class="coupang-disclaimer">
+                        <p>이 포스팅은 쿠팡 파트너스 활동의 일환으로 이에 따른 일정액의 수수료를 제공받습니다</p>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
     <!-- Gallery Section -->
     <section class="gallery-section" id="gallery">

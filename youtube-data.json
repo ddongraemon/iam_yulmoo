@@ -1,12 +1,12 @@
 {
   "channelInfo": {
-    "subscriberCount": "5.0K",
-    "subscriberCountRaw": 4950,
-    "videoCount": "255",
-    "videoCountRaw": 255,
-    "viewCount": "5.5M",
-    "viewCountRaw": 5502023,
-    "lastUpdate": "2025-10-16T23:00:01.714Z"
+    "subscriberCount": "5.2K",
+    "subscriberCountRaw": 5150,
+    "videoCount": "265",
+    "videoCountRaw": 265,
+    "viewCount": "5.9M",
+    "viewCountRaw": 5869930,
+    "lastUpdate": "2025-10-28T11:00:02.148Z"
   },
   "popularVideos": [
     {
@@ -14,8 +14,8 @@
       "title": "[100만뷰] 술주정 부리는 엄마를 마주한 강아지의 반응",
       "thumbnail": "https://i.ytimg.com/vi/zhJULr5dGQ4/hqdefault.jpg",
       "duration": "0:32",
-      "viewCount": "719.1K",
-      "likeCount": "7.4K",
+      "viewCount": "776.5K",
+      "likeCount": "7.8K",
       "commentCount": "1.1K",
       "publishedAt": "2025-09-11T10:04:22Z",
       "url": "https://www.youtube.com/watch?v=zhJULr5dGQ4"
@@ -25,7 +25,7 @@
       "title": "할머니를 세상 격하게 반기는 강아지",
       "thumbnail": "https://i.ytimg.com/vi/BHsL5YKglxo/hqdefault.jpg",
       "duration": "0:26",
-      "viewCount": "365.3K",
+      "viewCount": "365.9K",
       "likeCount": "4.6K",
       "commentCount": "93",
       "publishedAt": "2025-02-01T10:00:08Z",
@@ -36,46 +36,46 @@
       "title": "세상에서 제일 수상한 강아지",
       "thumbnail": "https://i.ytimg.com/vi/WUYk1D5QgKQ/hqdefault.jpg",
       "duration": "0:25",
-      "viewCount": "215.9K",
-      "likeCount": "3.0K",
-      "commentCount": "107",
+      "viewCount": "223.4K",
+      "likeCount": "3.1K",
+      "commentCount": "109",
       "publishedAt": "2025-08-14T10:09:31Z",
       "url": "https://www.youtube.com/watch?v=WUYk1D5QgKQ"
     }
   ],
   "recentVideos": [
     {
-      "videoId": "-vhKyU3nzF8",
-      "title": "가을은 🌶️ 수확의 계절",
-      "thumbnail": "https://i.ytimg.com/vi/-vhKyU3nzF8/hqdefault.jpg",
-      "duration": "0:26",
-      "viewCount": "4.1K",
-      "likeCount": "157",
-      "commentCount": "54",
-      "publishedAt": "2025-10-16T10:11:31Z",
-      "url": "https://www.youtube.com/watch?v=-vhKyU3nzF8"
+      "videoId": "vZj-50_HuxI",
+      "title": "이게 바로 똥꼬쇼 그자체",
+      "thumbnail": "https://i.ytimg.com/vi/vZj-50_HuxI/hqdefault.jpg",
+      "duration": "0:23",
+      "viewCount": "1.3K",
+      "likeCount": "25",
+      "commentCount": "4",
+      "publishedAt": "2025-10-28T10:10:44Z",
+      "url": "https://www.youtube.com/watch?v=vZj-50_HuxI"
     },
     {
-      "videoId": "LWkgwqfS5oM",
-      "title": "유기견에게 가족이 생긴 후 변화",
-      "thumbnail": "https://i.ytimg.com/vi/LWkgwqfS5oM/hqdefault.jpg",
-      "duration": "0:30",
-      "viewCount": "12.6K",
-      "likeCount": "395",
-      "commentCount": "55",
-      "publishedAt": "2025-10-15T10:22:02Z",
-      "url": "https://www.youtube.com/watch?v=LWkgwqfS5oM"
+      "videoId": "e1A9C5CQrC8",
+      "title": "S자로 녹아버린 통대창강아지",
+      "thumbnail": "https://i.ytimg.com/vi/e1A9C5CQrC8/hqdefault.jpg",
+      "duration": "0:25",
+      "viewCount": "10.2K",
+      "likeCount": "360",
+      "commentCount": "48",
+      "publishedAt": "2025-10-27T10:18:45Z",
+      "url": "https://www.youtube.com/watch?v=e1A9C5CQrC8"
     },
     {
-      "videoId": "1Rxixf2DL9c",
-      "title": "수제비귀 집안의 축구 응원",
-      "thumbnail": "https://i.ytimg.com/vi/1Rxixf2DL9c/hqdefault.jpg",
-      "duration": "0:18",
-      "viewCount": "16.5K",
-      "likeCount": "233",
-      "commentCount": "30",
-      "publishedAt": "2025-10-14T10:21:37Z",
-      "url": "https://www.youtube.com/watch?v=1Rxixf2DL9c"
+      "videoId": "K4bdNHcT0Do",
+      "title": "말하는 목적이 명확한 강아지2",
+      "thumbnail": "https://i.ytimg.com/vi/K4bdNHcT0Do/hqdefault.jpg",
+      "duration": "0:29",
+      "viewCount": "23.0K",
+      "likeCount": "402",
+      "commentCount": "44",
+      "publishedAt": "2025-10-26T10:22:53Z",
+      "url": "https://www.youtube.com/watch?v=K4bdNHcT0Do"
     }
   ]
 }

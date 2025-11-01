@@ -25,3 +25,6 @@ CREATE INDEX IF NOT EXISTS idx_kakao_users_updated_at ON kakao_users(updated_at)
 -- CREATE POLICY "Users can insert/update their own data" ON kakao_users
 --     FOR ALL USING (auth.uid()::text = user_id);
 
+
+
+

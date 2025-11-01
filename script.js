@@ -36,6 +36,8 @@ function initializeApp() {
     loadYouTubeData(); // YouTube 데이터 로드
     loadGalleryPreview(); // 갤러리 프리뷰 로드
     setupFortuneButton(); // 율무 운세 버튼 설정
+    setupActionButtons(); // 액션 버튼 설정
+    setupGA4Tracking(); // GA4 이벤트 추적 설정
 }
 
 // Navigation functionality
@@ -108,13 +110,9 @@ function updateActiveNavLink() {
 
 // Scroll effects
 function setupScrollEffects() {
-    // Navbar background on scroll
+    // Navbar background on scroll (고정된 밝은 톤 유지)
     window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) {
-            elements.navbar.style.background = 'rgba(10, 10, 15, 0.95)';
-        } else {
-            elements.navbar.style.background = 'rgba(10, 10, 15, 0.8)';
-        }
+        elements.navbar.style.background = 'rgba(214, 207, 192, 0.9)'; // D6CFC0 계열
     });
     
     // Back to top button
@@ -140,12 +138,30 @@ function setupVideoCards() {
     
     videoCards.forEach(card => {
         card.addEventListener('mouseenter', function() {
-            this.style.transform = 'translateY(-10px)';
+            this.classList.add('touch-active');
         });
         
         card.addEventListener('mouseleave', function() {
-            this.style.transform = 'translateY(0)';
+            this.classList.remove('touch-active');
+            this.style.transform = '';
+            this.style.boxShadow = '';
+            this.style.borderColor = '#5a4633'; // 갈색 계열로 설정
         });
+        
+        // 터치 시작 시 자연스러운 그림자
+        card.addEventListener('touchstart', function() {
+            this.classList.add('touch-active');
+        }, { passive: true });
+        
+        // 터치 종료/취소 시 원복
+        const reset = function(el) {
+            el.classList.remove('touch-active');
+            el.style.transform = '';
+            el.style.boxShadow = '';
+            el.style.borderColor = '#5a4633'; // 갈색 계열로 설정
+        };
+        card.addEventListener('touchend', function() { reset(this); }, { passive: true });
+        card.addEventListener('touchcancel', function() { reset(this); }, { passive: true });
     });
     
     // Video grid horizontal scroll
@@ -257,7 +273,7 @@ function setupMobileMenu() {
                     navMenu.style.setProperty('right', `${Math.max(screenWidth * 0.03, 8)}px`, 'important');
                     navMenu.style.height = 'auto';
                     navMenu.style.maxHeight = `${baseHeight}px`;
-                    navMenu.style.backgroundColor = 'rgba(10, 10, 15, 0.95)';
+                    navMenu.style.backgroundColor = 'rgba(214, 207, 192, 0.98)'; // D6CFC0 계열
                     navMenu.style.backdropFilter = 'blur(20px)';
                     navMenu.style.flexDirection = 'column';
                     navMenu.style.setProperty('padding', `${padding}px`, 'important');
@@ -286,7 +302,7 @@ function setupMobileMenu() {
                         link.style.setProperty('border', 'none', 'important');
                         link.style.setProperty('backdrop-filter', 'none', 'important');
                         link.style.setProperty('transition', 'all 0.3s ease', 'important');
-                        link.style.setProperty('color', '#ffffff', 'important');
+                        link.style.setProperty('color', '#000000', 'important');
                         link.style.setProperty('text-align', 'center', 'important');
                         link.style.setProperty('font-weight', '400', 'important');
                         link.style.setProperty('text-shadow', 'none', 'important');
@@ -311,12 +327,12 @@ function setupMobileMenu() {
                         // 호버 효과
                         link.addEventListener('mouseenter', () => {
                             underline.style.width = '100%';
-                            link.style.setProperty('color', '#ffffff', 'important');
+                            link.style.setProperty('color', '#000000', 'important');
                         });
                         
                         link.addEventListener('mouseleave', () => {
                             underline.style.width = '0';
-                            link.style.setProperty('color', '#ffffff', 'important');
+                            link.style.setProperty('color', '#000000', 'important');
                         });
                         
                         // 메뉴 클릭 시 무조건 메뉴 닫기 (안전한 방법)
@@ -701,9 +717,8 @@ async function loadYouTubeData() {
         }
         
         if (youtubeData) {
-            // 영상 섹션 렌더링
+            // 인기 영상 섹션 렌더링 (최신 영상 섹션은 제거됨)
             renderPopularVideos(youtubeData.popularVideos);
-            renderRecentVideos(youtubeData.recentVideos);
             
             // 비디오 카드 재설정
             setupVideoCards();
@@ -789,9 +804,16 @@ function renderPopularVideos(videos) {
     if (!videos || videos.length === 0) return;
     
     const videoSection = document.querySelector('.video-section:not(.recent-videos)');
-    const videoGrid = videoSection.querySelector('.video-grid');
+    if (!videoSection) {
+        console.warn('⚠️ 인기 영상 섹션을 찾을 수 없습니다');
+        return;
+    }
     
-    if (!videoGrid) return;
+    const videoGrid = videoSection.querySelector('.video-grid');
+    if (!videoGrid) {
+        console.warn('⚠️ 비디오 그리드를 찾을 수 없습니다');
+        return;
+    }
     
     videoGrid.innerHTML = ''; // 기존 내용 삭제
     
@@ -817,9 +839,16 @@ function renderRecentVideos(videos) {
     if (!videos || videos.length === 0) return;
     
     const videoSection = document.querySelector('.video-section.recent-videos');
-    const videoGrid = videoSection.querySelector('.video-grid');
+    if (!videoSection) {
+        console.warn('⚠️ 최신 영상 섹션을 찾을 수 없습니다');
+        return;
+    }
     
-    if (!videoGrid) return;
+    const videoGrid = videoSection.querySelector('.video-grid');
+    if (!videoGrid) {
+        console.warn('⚠️ 최신 영상 그리드를 찾을 수 없습니다');
+        return;
+    }
     
     videoGrid.innerHTML = ''; // 기존 내용 삭제
     
@@ -1430,3 +1459,323 @@ function setupFortuneButton() {
     console.log('율무 운세 버튼 설정 완료 (링크 방식)');
 }
 
+// 액션 버튼 설정 (공유하기, 문의하기)
+function setupActionButtons() {
+    const shareBtn = document.getElementById('shareBtn');
+    
+    if (shareBtn) {
+        shareBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            console.log('공유 버튼 클릭됨');
+            
+            // 웹 공유 API 지원 여부 및 요구사항 확인
+            console.log('navigator.share 존재:', !!navigator.share);
+            console.log('현재 프로토콜:', window.location.protocol);
+            console.log('현재 호스트:', window.location.host);
+            console.log('HTTPS 여부:', window.location.protocol === 'https:');
+            console.log('로컬호스트 여부:', window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+            
+            // 웹 공유 API 사용 가능한 경우
+            if (navigator.share) {
+                console.log('웹 공유 API 시도 중...');
+                navigator.share({
+                    title: '율무인데요 - 율무의 일상을 공유하는 유튜브 채널',
+                    text: '매일매일 행복한 율무네 일상을 만나보세요!',
+                    url: window.location.href
+                }).then(() => {
+                    console.log('웹 공유 API 성공');
+                }).catch(err => {
+                    console.log('웹 공유 API 실패:', err);
+                    fallbackShare();
+                });
+            } else {
+                // 웹 공유 API를 지원하지 않는 경우 대체 방법
+                console.log('웹 공유 API 미지원, 대체 방법 사용');
+                fallbackShare();
+            }
+        });
+    }
+    
+    console.log('액션 버튼 설정 완료');
+}
+
+// 대체 공유 방법 (클립보드 복사)
+function fallbackShare() {
+    const url = window.location.href;
+    const text = '율무인데요 - 율무의 일상을 공유하는 유튜브 채널\n' + url;
+    
+    console.log('대체 공유 방법 실행');
+    
+    // 클립보드 API 사용
+    if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text).then(() => {
+            console.log('클립보드 복사 성공');
+            showToast('링크가 클립보드에 복사되었습니다!');
+        }).catch(err => {
+            console.log('클립보드 복사 실패:', err);
+            // 대체 방법 시도
+            tryLegacyCopy(text);
+        });
+    } else {
+        // 레거시 방법 사용
+        tryLegacyCopy(text);
+    }
+}
+
+// 레거시 복사 방법
+function tryLegacyCopy(text) {
+    try {
+        // 텍스트 영역 생성
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        textArea.style.position = 'fixed';
+        textArea.style.left = '-999999px';
+        textArea.style.top = '-999999px';
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        
+        // 복사 실행
+        const successful = document.execCommand('copy');
+        document.body.removeChild(textArea);
+        
+        if (successful) {
+            console.log('레거시 복사 성공');
+            showToast('링크가 클립보드에 복사되었습니다!');
+        } else {
+            console.log('레거시 복사 실패');
+            showToast('링크: ' + window.location.href);
+        }
+    } catch (err) {
+        console.log('레거시 복사 오류:', err);
+        showToast('링크: ' + window.location.href);
+    }
+}
+
+// 토스트 메시지 표시
+function showToast(message) {
+    // 기존 토스트가 있으면 제거
+    const existingToast = document.querySelector('.toast');
+    if (existingToast) {
+        existingToast.remove();
+    }
+    
+    // 새 토스트 생성
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.textContent = message;
+    toast.style.cssText = `
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: rgba(0, 0, 0, 0.9);
+        color: white;
+        padding: 16px 24px;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 500;
+        z-index: 10000;
+        pointer-events: none;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        max-width: 90%;
+        text-align: center;
+    `;
+    
+    // CSS 애니메이션 추가
+    if (!document.querySelector('#toast-styles')) {
+        const style = document.createElement('style');
+        style.id = 'toast-styles';
+        style.textContent = `
+            @keyframes fadeInOut {
+                0% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+                20% { opacity: 1; transform: translateX(-50%) translateY(0); }
+                80% { opacity: 1; transform: translateX(-50%) translateY(0); }
+                100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+    
+    document.body.appendChild(toast);
+    
+    // 2초 후 자동 제거
+    setTimeout(() => {
+        if (toast && toast.parentNode) {
+            toast.style.opacity = '0';
+            toast.style.transition = 'opacity 0.3s ease';
+            setTimeout(() => {
+                if (toast.parentNode) {
+                    toast.remove();
+                }
+            }, 300);
+        }
+    }, 2000);
+}
+
+// GA4 이벤트 추적 설정
+function setupGA4Tracking() {
+    // 소셜 링크 클릭 추적
+    setupSocialLinkTracking();
+    // 인기 영상 클릭 추적
+    setupVideoCardTracking();
+    // 쿠팡 광고 박스 클릭 추적
+    setupCoupangAdTracking();
+}
+
+// 소셜 링크 클릭 추적
+function setupSocialLinkTracking() {
+    // YouTube 버튼
+    const youtubeBtn = document.querySelector('.youtube-btn');
+    if (youtubeBtn) {
+        youtubeBtn.addEventListener('click', function() {
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'youtube_button_click', {
+                    'social_network': 'YouTube',
+                    'button_name': '율무인데요 유튜브'
+                });
+            }
+        });
+    }
+
+    // Instagram 버튼
+    const instagramBtn = document.querySelector('.instagram-btn');
+    if (instagramBtn) {
+        instagramBtn.addEventListener('click', function() {
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'instagram_button_click', {
+                    'social_network': 'Instagram',
+                    'button_name': '율무인데요 인스타그램'
+                });
+            }
+        });
+    }
+
+    // TikTok 버튼
+    const tiktokBtn = document.querySelector('.tiktok-btn');
+    if (tiktokBtn) {
+        tiktokBtn.addEventListener('click', function() {
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'tiktok_button_click', {
+                    'social_network': 'TikTok',
+                    'button_name': '율무인데요 TIKTOK'
+                });
+            }
+        });
+    }
+}
+
+// 인기 영상 카드 클릭 추적
+function setupVideoCardTracking() {
+    // 이벤트 위임을 사용하여 동적으로 추가되는 카드도 추적
+    const videoGrid = document.querySelector('.video-grid');
+    if (!videoGrid) {
+        console.warn('video-grid를 찾을 수 없습니다.');
+        return;
+    }
+    
+    videoGrid.addEventListener('click', function(e) {
+        // 클릭된 요소가 video-card 내부에 있는지 확인
+        const videoCard = e.target.closest('.video-card');
+        if (!videoCard) return;
+        
+        // video-grid 내부의 모든 video-card를 찾아 인덱스 확인
+        const allVideoCards = Array.from(videoGrid.querySelectorAll('.video-card'));
+        const index = allVideoCards.indexOf(videoCard);
+        
+        if (index === -1) return;
+        
+        const videoTitle = videoCard.querySelector('.video-title')?.textContent || `인기영상 ${index + 1}`;
+        const videoViews = videoCard.querySelector('.video-views')?.textContent || '알 수 없음';
+        const videoRank = index + 1;
+        
+        // 인기 영상 순위별로 구분된 이벤트 이름 사용
+        let eventName;
+        if (videoRank === 1) {
+            eventName = 'popular_video_1_click';
+        } else if (videoRank === 2) {
+            eventName = 'popular_video_2_click';
+        } else if (videoRank === 3) {
+            eventName = 'popular_video_3_click';
+        } else {
+            eventName = `popular_video_${videoRank}_click`;
+        }
+        
+        if (typeof gtag !== 'undefined') {
+            gtag('event', eventName, {
+                'video_title': videoTitle,
+                'video_rank': videoRank,
+                'video_views': videoViews,
+                'video_category': '인기 영상'
+            });
+            console.log('GA4 이벤트 전송:', eventName, videoTitle);
+        }
+    });
+    
+    // 직접적인 클릭 이벤트도 추가 (기존 방식 유지)
+    const videoCards = document.querySelectorAll('.video-card');
+    videoCards.forEach((card, index) => {
+        card.style.cursor = 'pointer'; // 클릭 가능한 요소임을 표시
+        
+        card.addEventListener('click', function(e) {
+            const videoTitle = card.querySelector('.video-title')?.textContent || `인기영상 ${index + 1}`;
+            const videoViews = card.querySelector('.video-views')?.textContent || '알 수 없음';
+            const videoRank = index + 1;
+            
+            // 인기 영상 순위별로 구분된 이벤트 이름 사용
+            let eventName;
+            if (videoRank === 1) {
+                eventName = 'popular_video_1_click';
+            } else if (videoRank === 2) {
+                eventName = 'popular_video_2_click';
+            } else if (videoRank === 3) {
+                eventName = 'popular_video_3_click';
+            } else {
+                eventName = `popular_video_${videoRank}_click`;
+            }
+            
+            if (typeof gtag !== 'undefined') {
+                gtag('event', eventName, {
+                    'video_title': videoTitle,
+                    'video_rank': videoRank,
+                    'video_views': videoViews,
+                    'video_category': '인기 영상'
+                });
+                console.log('GA4 이벤트 전송:', eventName, videoTitle);
+            }
+        });
+    });
+}
+
+// 쿠팡 광고 박스 클릭 추적
+function setupCoupangAdTracking() {
+    const coupangAds = document.querySelectorAll('.coupang-ad-box');
+    coupangAds.forEach((ad, index) => {
+        const adNumber = index + 1;
+        const adDescription = ad.querySelector('.ad-description')?.textContent?.trim() || `쿠팡 광고 ${adNumber}`;
+        const adLink = ad.getAttribute('href') || '';
+        
+        ad.addEventListener('click', function() {
+            let eventName;
+            if (adNumber === 1) {
+                eventName = 'coupang_ad_1_click';
+            } else if (adNumber === 2) {
+                eventName = 'coupang_ad_2_click';
+            } else if (adNumber === 3) {
+                eventName = 'coupang_ad_3_click';
+            } else {
+                eventName = `coupang_ad_${adNumber}_click`;
+            }
+            
+            if (typeof gtag !== 'undefined') {
+                gtag('event', eventName, {
+                    'ad_number': adNumber,
+                    'ad_description': adDescription,
+                    'ad_link': adLink,
+                    'ad_category': '쿠팡 파트너스'
+                });
+                console.log('GA4 이벤트 전송:', eventName, adDescription);
+            }
+        });
+    });
+}

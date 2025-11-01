@@ -8,7 +8,7 @@ const { createClient } = require('@supabase/supabase-js');
 const crypto = require('crypto');
 
 const port = process.env.PORT || 3000;
-const host = process.env.HOST || '127.0.0.1';
+const host = process.env.HOST || '0.0.0.0';
 
 // Supabase 클라이언트 초기화
 const supabaseUrl = process.env.SUPABASE_URL || 'https://xthcitqhmsjslxayhgvt.supabase.co';
