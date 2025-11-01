@@ -56,9 +56,11 @@ async function fetchYouTubeStats(apiKey, channelHandle) {
 async function fetchInstagramStats(userId, accessToken) {
     try {
         if (!userId || !accessToken) {
+            console.warn('⚠️ Instagram API 설정 누락:', { userId: !!userId, accessToken: !!accessToken });
             return { followers: 0, posts: 0, views: 0 };
         }
 
+        console.log('📸 Instagram API 호출 시작...');
         const response = await axios.get(`https://graph.instagram.com/v18.0/${userId}`, {
             params: {
                 fields: 'followers_count,media_count',
@@ -66,13 +68,22 @@ async function fetchInstagramStats(userId, accessToken) {
             }
         });
 
+        const followers = response.data.followers_count || 0;
+        const posts = response.data.media_count || 0;
+        
+        console.log('✅ Instagram 데이터 수신:', { followers, posts });
+        
         return {
-            followers: response.data.followers_count || 0,
-            posts: response.data.media_count || 0,
+            followers: followers,
+            posts: posts,
             views: 0
         };
     } catch (error) {
-        console.error('Instagram API 오류:', error.message);
+        console.error('❌ Instagram API 오류:', error.message);
+        if (error.response) {
+            console.error('   응답 상태:', error.response.status);
+            console.error('   응답 데이터:', error.response.data);
+        }
         return { followers: 0, posts: 0, views: 0 };
     }
 }
@@ -131,6 +142,12 @@ module.exports = async (req, res) => {
             fetchInstagramStats(INSTAGRAM_USER_ID, INSTAGRAM_ACCESS_TOKEN),
             fetchTikTokStats(TIKTOK_ACCESS_TOKEN)
         ]);
+        
+        console.log('📊 플랫폼별 통계:', {
+            youtube: youtubeStats,
+            instagram: instagramStats,
+            tiktok: tiktokStats
+        });
 
         // 통합 통계 계산
         const totalSubscribers = 

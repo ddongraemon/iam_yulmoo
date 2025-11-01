@@ -369,9 +369,15 @@ async function fetchInstagramData() {
         console.log('📷 Instagram API 데이터 가져오기 시작...');
         
         if (!INSTAGRAM_USER_ID || !INSTAGRAM_ACCESS_TOKEN) {
+            console.warn('⚠️ Instagram 인증 정보 누락:', {
+                userId: !!INSTAGRAM_USER_ID,
+                accessToken: !!INSTAGRAM_ACCESS_TOKEN
+            });
             throw new Error('Instagram 인증 정보가 없습니다.');
         }
 
+        console.log('📸 Instagram API 호출 중...', { userId: INSTAGRAM_USER_ID });
+        
         // 1. 계정 정보 및 통계 가져오기
         const response = await axios.get(`https://graph.instagram.com/v18.0/${INSTAGRAM_USER_ID}`, {
             params: {
@@ -382,6 +388,12 @@ async function fetchInstagramData() {
 
         const followersCount = response.data.followers_count || 0;
         const mediaCount = response.data.media_count || 0;
+        
+        console.log('✅ Instagram API 응답 성공:', {
+            followers: followersCount,
+            posts: mediaCount,
+            username: response.data.username
+        });
 
         // 2. 최근 미디어 가져오기 (조회수 합산용)
         let totalViews = 0;
@@ -415,12 +427,20 @@ async function fetchInstagramData() {
         
         return instagramData;
     } catch (error) {
-        console.error('❌ Instagram API 호출 오류:', error.response?.data || error.message);
+        console.error('❌ Instagram API 호출 오류:', error.message);
+        if (error.response) {
+            console.error('   응답 상태:', error.response.status);
+            console.error('   응답 데이터:', JSON.stringify(error.response.data, null, 2));
+        }
+        if (error.config) {
+            console.error('   요청 URL:', error.config.url);
+        }
         return {
             followersCount: 0,
             mediaCount: 0,
             viewCount: 0,
-            lastUpdate: new Date().toISOString()
+            lastUpdate: new Date().toISOString(),
+            error: error.message
         };
     }
 }
