@@ -1560,7 +1560,6 @@ function setupActionButtons() {
                 console.log('웹 공유 API 시도 중...');
                 navigator.share({
                     title: '율무인데요 - 율무의 일상을 공유하는 유튜브 채널',
-                    text: '매일매일 행복한 율무네 일상을 만나보세요!',
                     url: window.location.href
                 }).then(() => {
                     console.log('웹 공유 API 성공');
@@ -1586,11 +1585,17 @@ function fallbackShare() {
     
     console.log('대체 공유 방법 실행');
     
+    // 모바일 디바이스 확인
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
+    
     // 클립보드 API 사용
     if (navigator.clipboard && window.isSecureContext) {
         navigator.clipboard.writeText(text).then(() => {
             console.log('클립보드 복사 성공');
-            showToast('링크가 클립보드에 복사되었습니다!');
+            // 모바일에서는 모달 표시하지 않음
+            if (!isMobile) {
+                showToast('링크가 클립보드에 복사되었습니다!');
+            }
         }).catch(err => {
             console.log('클립보드 복사 실패:', err);
             // 대체 방법 시도
@@ -1604,6 +1609,9 @@ function fallbackShare() {
 
 // 레거시 복사 방법
 function tryLegacyCopy(text) {
+    // 모바일 디바이스 확인
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
+    
     try {
         // 텍스트 영역 생성
         const textArea = document.createElement('textarea');
@@ -1621,14 +1629,23 @@ function tryLegacyCopy(text) {
         
         if (successful) {
             console.log('레거시 복사 성공');
-            showToast('링크가 클립보드에 복사되었습니다!');
+            // 모바일에서는 모달 표시하지 않음
+            if (!isMobile) {
+                showToast('링크가 클립보드에 복사되었습니다!');
+            }
         } else {
             console.log('레거시 복사 실패');
-            showToast('링크: ' + window.location.href);
+            // 모바일에서는 모달 표시하지 않음
+            if (!isMobile) {
+                showToast('링크: ' + window.location.href);
+            }
         }
     } catch (err) {
         console.log('레거시 복사 오류:', err);
-        showToast('링크: ' + window.location.href);
+        // 모바일에서는 모달 표시하지 않음
+        if (!isMobile) {
+            showToast('링크: ' + window.location.href);
+        }
     }
 }
 
