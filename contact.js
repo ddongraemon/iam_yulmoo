@@ -120,10 +120,16 @@ document.getElementById('contactForm').addEventListener('submit', async (e) => {
         }
     }
 
+    // brandUrl 처리: 값이 있고 프로토콜이 없으면 자동으로 http:// 추가
+    let brandUrl = form.brandUrl.value.trim();
+    if (brandUrl && !brandUrl.match(/^https?:\/\//i)) {
+        brandUrl = 'http://' + brandUrl;
+    }
+
     // 폼 데이터 수집
     const formData = {
         campaignType: form.campaignType.value,
-        brandUrl: form.brandUrl.value.trim(),
+        brandUrl: brandUrl,
         startDate: form.startDate.value,
         compensationType: form.compensationType.value,
         compensationAmount: form.compensationAmount.value,
