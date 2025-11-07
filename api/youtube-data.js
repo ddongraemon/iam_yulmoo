@@ -135,7 +135,27 @@ module.exports = async (req, res) => {
         }
         
         const channelTitle = channelResponse.data.items[0].snippet.title;
+        const channelCustomUrl = channelResponse.data.items[0].snippet.customUrl || '';
         console.log(`📺 채널명: ${channelTitle}`);
+        console.log(`📺 채널 커스텀 URL: ${channelCustomUrl}`);
+
+        // 채널 검증: 율무인데요 채널인지 확인
+        const expectedChannelNames = ['율무인데요', 'Iam_Yulmoo', 'Iam Yulmoo'];
+        const expectedCustomUrls = ['@Iam_Yulmoo', 'Iam_Yulmoo'];
+        const isCorrectChannel = 
+            expectedChannelNames.some(name => channelTitle.includes(name)) ||
+            expectedCustomUrls.some(url => channelCustomUrl.includes(url)) ||
+            channelId === 'UCILbGCfIkc-7lGUinQhBLyg'; // 정확한 채널 ID
+        
+        if (!isCorrectChannel) {
+            console.error(`❌ 경고: 예상하지 못한 채널입니다!`);
+            console.error(`   채널명: ${channelTitle}`);
+            console.error(`   채널 ID: ${channelId}`);
+            console.error(`   커스텀 URL: ${channelCustomUrl}`);
+            // 검증 실패 시에도 계속 진행하되, 경고 로그만 출력
+        } else {
+            console.log(`✅ 채널 검증 성공: 율무인데요 채널 확인됨`);
+        }
 
         const channelData = channelResponse.data.items[0];
         const subscriberCount = parseInt(channelData.statistics.subscriberCount);
@@ -159,8 +179,32 @@ module.exports = async (req, res) => {
             console.warn('⚠️ 인기 영상을 찾을 수 없습니다.');
         } else {
             console.log(`✅ 인기 영상 ${popularVideosResponse.data.items.length}개 찾음`);
+            
+            // 모든 영상이 같은 채널인지 검증
+            const allFromSameChannel = popularVideosResponse.data.items.every(item => {
+                const videoChannelId = item.snippet.channelId;
+                const videoChannelTitle = item.snippet.channelTitle;
+                const isMatch = videoChannelId === channelId;
+                
+                if (!isMatch) {
+                    console.error(`❌ 경고: 다른 채널의 영상 발견!`);
+                    console.error(`   영상: ${item.snippet.title}`);
+                    console.error(`   영상 채널 ID: ${videoChannelId}`);
+                    console.error(`   영상 채널명: ${videoChannelTitle}`);
+                    console.error(`   예상 채널 ID: ${channelId}`);
+                }
+                
+                return isMatch;
+            });
+            
+            if (allFromSameChannel) {
+                console.log(`✅ 모든 인기 영상이 올바른 채널에서 가져옴`);
+            } else {
+                console.error(`❌ 경고: 일부 영상이 다른 채널에서 가져온 것으로 보입니다!`);
+            }
+            
             popularVideosResponse.data.items.forEach((item, index) => {
-                console.log(`  ${index + 1}. ${item.snippet.title} (채널: ${item.snippet.channelTitle})`);
+                console.log(`  ${index + 1}. ${item.snippet.title} (채널: ${item.snippet.channelTitle}, 채널 ID: ${item.snippet.channelId})`);
             });
         }
 
