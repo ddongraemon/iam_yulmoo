@@ -3,24 +3,77 @@ const axios = require('axios');
 // YouTube API 호출 함수
 async function getChannelIdFromHandle(handle, apiKey) {
     try {
+        // 이미 채널 ID 형식인 경우 (UC로 시작하는 경우) 바로 반환
+        if (handle.startsWith('UC') && handle.length === 24) {
+            console.log(`✅ 채널 ID 형식으로 인식: ${handle}`);
+            return handle;
+        }
+        
+        // 핸들 형식인 경우 검색
         const cleanHandle = handle.replace('@', '');
+        
+        // 채널 핸들로 직접 검색 (더 정확함)
+        // 방법 1: forUsername 사용 (더 이상 권장되지 않지만 시도)
+        try {
+            const channelResponse = await axios.get('https://www.googleapis.com/youtube/v3/channels', {
+                params: {
+                    part: 'id',
+                    forUsername: cleanHandle,
+                    key: apiKey
+                }
+            });
+            
+            if (channelResponse.data.items && channelResponse.data.items.length > 0) {
+                const channelId = channelResponse.data.items[0].id;
+                console.log(`✅ 채널 핸들로 찾기 성공: ${handle} -> ${channelId}`);
+                return channelId;
+            }
+        } catch (e) {
+            console.log('forUsername 검색 실패, search API 사용');
+        }
+        
+        // 방법 2: search API 사용 (정확성 향상을 위해 검색어 개선)
         const searchResponse = await axios.get('https://www.googleapis.com/youtube/v3/search', {
             params: {
                 part: 'snippet',
-                q: cleanHandle,
+                q: `@${cleanHandle}`, // @ 기호를 포함하여 더 정확하게 검색
                 type: 'channel',
-                maxResults: 1,
+                maxResults: 5, // 여러 결과를 확인하여 정확한 채널 찾기
                 key: apiKey
             }
         });
         
         if (searchResponse.data.items && searchResponse.data.items.length > 0) {
-            return searchResponse.data.items[0].snippet.channelId;
+            // 검색 결과에서 정확한 채널 찾기 (customUrl 또는 제목으로 확인)
+            for (const item of searchResponse.data.items) {
+                const snippet = item.snippet;
+                const channelId = snippet.channelId;
+                const customUrl = snippet.customUrl;
+                const title = snippet.title;
+                
+                // customUrl이 정확히 일치하거나, 제목이 핸들과 유사한 경우
+                if (customUrl && customUrl.toLowerCase().includes(cleanHandle.toLowerCase())) {
+                    console.log(`✅ 정확한 채널 찾기 성공: ${handle} -> ${channelId} (${title})`);
+                    return channelId;
+                }
+                
+                // 제목이나 설명에서 핸들 확인
+                if (title.toLowerCase().includes(cleanHandle.toLowerCase()) || 
+                    snippet.description.toLowerCase().includes(cleanHandle.toLowerCase())) {
+                    console.log(`✅ 채널 찾기 성공: ${handle} -> ${channelId} (${title})`);
+                    return channelId;
+                }
+            }
+            
+            // 정확한 매칭이 없으면 첫 번째 결과 사용 (경고 로그 추가)
+            const firstResult = searchResponse.data.items[0];
+            console.warn(`⚠️ 정확한 채널 매칭 실패, 첫 번째 결과 사용: ${handle} -> ${firstResult.snippet.channelId} (${firstResult.snippet.title})`);
+            return firstResult.snippet.channelId;
         }
         
         throw new Error(`채널을 찾을 수 없습니다: ${handle}`);
     } catch (error) {
-        console.error('채널 ID 검색 오류:', error.message);
+        console.error('채널 ID 검색 오류:', error.response?.data || error.message);
         throw error;
     }
 }
@@ -61,11 +114,13 @@ module.exports = async (req, res) => {
         }
 
         console.log('📺 YouTube API 데이터 가져오기 시작...');
+        console.log(`📋 입력된 채널 ID/핸들: ${YOUTUBE_CHANNEL_ID}`);
         
         // 채널 ID 찾기
         const channelId = await getChannelIdFromHandle(YOUTUBE_CHANNEL_ID, YOUTUBE_API_KEY);
+        console.log(`✅ 사용할 채널 ID: ${channelId}`);
         
-        // 1. 채널 통계 정보 가져오기
+        // 1. 채널 통계 정보 가져오기 (채널 ID로 직접 조회)
         const channelResponse = await axios.get('https://www.googleapis.com/youtube/v3/channels', {
             params: {
                 part: 'statistics,snippet',
@@ -73,6 +128,14 @@ module.exports = async (req, res) => {
                 key: YOUTUBE_API_KEY
             }
         });
+        
+        // 채널 정보 검증
+        if (!channelResponse.data.items || channelResponse.data.items.length === 0) {
+            throw new Error(`채널을 찾을 수 없습니다. 채널 ID: ${channelId}`);
+        }
+        
+        const channelTitle = channelResponse.data.items[0].snippet.title;
+        console.log(`📺 채널명: ${channelTitle}`);
 
         const channelData = channelResponse.data.items[0];
         const subscriberCount = parseInt(channelData.statistics.subscriberCount);
@@ -80,6 +143,7 @@ module.exports = async (req, res) => {
         const viewCount = parseInt(channelData.statistics.viewCount);
 
         // 2. 인기 영상 3개 가져오기
+        console.log(`🔍 인기 영상 조회 중... (채널 ID: ${channelId})`);
         const popularVideosResponse = await axios.get('https://www.googleapis.com/youtube/v3/search', {
             params: {
                 part: 'snippet',
@@ -90,6 +154,15 @@ module.exports = async (req, res) => {
                 key: YOUTUBE_API_KEY
             }
         });
+        
+        if (!popularVideosResponse.data.items || popularVideosResponse.data.items.length === 0) {
+            console.warn('⚠️ 인기 영상을 찾을 수 없습니다.');
+        } else {
+            console.log(`✅ 인기 영상 ${popularVideosResponse.data.items.length}개 찾음`);
+            popularVideosResponse.data.items.forEach((item, index) => {
+                console.log(`  ${index + 1}. ${item.snippet.title} (채널: ${item.snippet.channelTitle})`);
+            });
+        }
 
         // 3. 최신 영상 3개 가져오기
         const recentVideosResponse = await axios.get('https://www.googleapis.com/youtube/v3/search', {
@@ -165,6 +238,9 @@ module.exports = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
+
+
 
 
 
