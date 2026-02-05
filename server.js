@@ -1,7 +1,7 @@
-require('dotenv').config();
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '.env') });
 const http = require('http');
 const fs = require('fs');
-const path = require('path');
 const axios = require('axios');
 const cron = require('node-cron');
 const { createClient } = require('@supabase/supabase-js');
@@ -1868,6 +1868,291 @@ const server = http.createServer((req, res) => {
         return;
     }
 
+    // ========================================
+    // 팝업 설정 API (Supabase popup_settings)
+    // ========================================
+
+    // 팝업 설정 조회 (메인 페이지용, 공개) — 기간 종료 시 DB에서 enabled 자동 off
+    if (req.url === '/api/popup-settings' && req.method === 'GET') {
+        const today = getTodayDate();
+        supabase
+            .from('popup_settings')
+            .select('enabled, start_date, end_date, image_url, link_url, version')
+            .eq('id', 1)
+            .single()
+            .then(({ data, error }) => {
+                if (error) {
+                    console.error('❌ 팝업 설정 조회 오류:', error);
+                    res.writeHead(200, {
+                        'Content-Type': 'application/json; charset=utf-8',
+                        'Access-Control-Allow-Origin': '*'
+                    });
+                    res.end(JSON.stringify({ enabled: false, start_date: null, end_date: null, image_url: '', link_url: '', version: 0 }));
+                    return;
+                }
+                const enabled = data?.enabled ?? false;
+                const endDate = data?.end_date ?? null;
+                const expired = enabled && endDate && today > endDate;
+                const payload = {
+                    enabled: expired ? false : enabled,
+                    start_date: data?.start_date ?? null,
+                    end_date: endDate,
+                    image_url: data?.image_url ?? '',
+                    link_url: data?.link_url ?? '',
+                    version: data?.version ?? 0
+                };
+                if (expired) {
+                    supabase
+                        .from('popup_settings')
+                        .update({ enabled: false, updated_at: new Date().toISOString() })
+                        .eq('id', 1)
+                        .then(({ error: updateErr }) => {
+                            if (updateErr) console.error('❌ 팝업 기간 만료 자동 off 실패:', updateErr);
+                            res.writeHead(200, {
+                                'Content-Type': 'application/json; charset=utf-8',
+                                'Access-Control-Allow-Origin': '*'
+                            });
+                            res.end(JSON.stringify(payload));
+                        });
+                } else {
+                    res.writeHead(200, {
+                        'Content-Type': 'application/json; charset=utf-8',
+                        'Access-Control-Allow-Origin': '*'
+                    });
+                    res.end(JSON.stringify(payload));
+                }
+            })
+            .catch(err => {
+                console.error('❌ 팝업 설정 조회 예외:', err);
+                res.writeHead(200, {
+                    'Content-Type': 'application/json; charset=utf-8',
+                    'Access-Control-Allow-Origin': '*'
+                });
+                res.end(JSON.stringify({ enabled: false, start_date: null, end_date: null, image_url: '', link_url: '', version: 0 }));
+            });
+        return;
+    }
+
+    // 팝업 설정 저장 (관리자용) — enabled 켤 때 version 갱신으로 24시간 보지않기 초기화
+    if (req.url === '/api/popup-settings' && req.method === 'POST') {
+        let body = '';
+        req.on('data', chunk => { body += chunk.toString(); });
+        req.on('end', async () => {
+            try {
+                const { enabled, start_date, end_date, image_url, link_url } = JSON.parse(body || '{}');
+                const isEnabled = Boolean(enabled);
+                const row = {
+                    id: 1,
+                    enabled: isEnabled,
+                    start_date: start_date || null,
+                    end_date: end_date || null,
+                    image_url: image_url || '',
+                    link_url: link_url || '',
+                    updated_at: new Date().toISOString()
+                };
+                if (isEnabled) row.version = Math.floor(Date.now() / 1000);
+                const { error } = await supabase
+                    .from('popup_settings')
+                    .upsert(row, { onConflict: 'id' });
+
+                if (error) {
+                    console.error('❌ 팝업 설정 저장 오류:', error);
+                    res.writeHead(500, {
+                        'Content-Type': 'application/json; charset=utf-8',
+                        'Access-Control-Allow-Origin': '*'
+                    });
+                    res.end(JSON.stringify({ success: false, message: error.message }));
+                    return;
+                }
+
+                res.writeHead(200, {
+                    'Content-Type': 'application/json; charset=utf-8',
+                    'Access-Control-Allow-Origin': '*'
+                });
+                res.end(JSON.stringify({ success: true, message: '팝업 설정이 저장되었습니다.' }));
+            } catch (err) {
+                console.error('❌ 팝업 설정 저장 예외:', err);
+                res.writeHead(400, {
+                    'Content-Type': 'application/json; charset=utf-8',
+                    'Access-Control-Allow-Origin': '*'
+                });
+                res.end(JSON.stringify({ success: false, message: '잘못된 요청 형식' }));
+            }
+        });
+        return;
+    }
+
+    // 팝업 이미지 업로드: CORS 프리플라이트
+    if (req.method === 'OPTIONS' && (req.url === '/api/upload-popup-image' || req.url.startsWith('/api/upload-popup-image'))) {
+        res.writeHead(204, {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'POST, OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type',
+            'Access-Control-Max-Age': '86400'
+        });
+        res.end();
+        return;
+    }
+
+    // 팝업 이미지 파일 업로드 (Supabase Storage)
+    if ((req.url === '/api/upload-popup-image' || req.url.split('?')[0] === '/api/upload-popup-image') && req.method === 'POST') {
+        let body = '';
+        req.on('data', chunk => { body += chunk.toString(); });
+        req.on('end', async () => {
+            try {
+                const { image: base64Input, filename } = JSON.parse(body || '{}');
+                if (!base64Input) {
+                    res.writeHead(400, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+                    res.end(JSON.stringify({ success: false, message: '이미지 데이터가 없습니다.' }));
+                    return;
+                }
+                const base64 = base64Input.replace(/^data:image\/\w+;base64,/, '');
+                const buf = Buffer.from(base64, 'base64');
+                const extMatch = filename && filename.match(/\.(jpe?g|png|gif|webp)$/i);
+                const ext = extMatch ? extMatch[1].toLowerCase() : 'jpg';
+                const path = 'popup-image.' + (ext === 'jpeg' ? 'jpg' : ext);
+                const contentType = ext === 'png' ? 'image/png' : ext === 'gif' ? 'image/gif' : ext === 'webp' ? 'image/webp' : 'image/jpeg';
+
+                const { data: uploadData, error } = await supabase.storage
+                    .from('popup')
+                    .upload(path, buf, { contentType, upsert: true });
+
+                if (error) {
+                    console.error('❌ 팝업 이미지 업로드 오류:', error);
+                    res.writeHead(500, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+                    res.end(JSON.stringify({ success: false, message: error.message }));
+                    return;
+                }
+                const uploadedPath = (uploadData && uploadData.path) || uploadData || path;
+                const { data: urlData } = supabase.storage.from('popup').getPublicUrl(uploadedPath);
+                res.writeHead(200, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+                res.end(JSON.stringify({ success: true, url: urlData.publicUrl }));
+            } catch (err) {
+                console.error('❌ 팝업 이미지 업로드 예외:', err);
+                res.writeHead(400, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+                res.end(JSON.stringify({ success: false, message: '잘못된 요청 형식' }));
+            }
+        });
+        return;
+    }
+
+    // ========================================
+    // 율무의 꿀템추천 API (honey_items)
+    // ========================================
+
+    if (req.method === 'OPTIONS' && (req.url === '/api/honey-items' || req.url.startsWith('/api/upload-honey-image'))) {
+        res.writeHead(204, { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Methods': 'GET, POST, OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type', 'Access-Control-Max-Age': '86400' });
+        res.end();
+        return;
+    }
+
+    if (req.url === '/api/honey-items' && req.method === 'GET') {
+        supabase
+            .from('honey_items')
+            .select('id, image_url, link_url, tags, description')
+            .order('id', { ascending: true })
+            .then(({ data, error }) => {
+                if (error) {
+                    console.error('❌ honey-items 조회 오류:', error);
+                    res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8', 'Access-Control-Allow-Origin': '*' });
+                    res.end(JSON.stringify([]));
+                    return;
+                }
+                const items = (data || []).map(row => ({
+                    id: row.id,
+                    image_url: row.image_url || '',
+                    link_url: row.link_url || '',
+                    tags: row.tags || '[]',
+                    description: row.description || ''
+                }));
+                res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8', 'Access-Control-Allow-Origin': '*' });
+                res.end(JSON.stringify(items));
+            })
+            .catch(err => {
+                console.error('❌ honey-items 조회 예외:', err);
+                res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8', 'Access-Control-Allow-Origin': '*' });
+                res.end(JSON.stringify([]));
+            });
+        return;
+    }
+
+    if (req.url === '/api/honey-items' && req.method === 'POST') {
+        let body = '';
+        req.on('data', chunk => { body += chunk.toString(); });
+        req.on('end', async () => {
+            try {
+                const items = JSON.parse(body || '[]');
+                if (!Array.isArray(items) || items.length === 0) {
+                    res.writeHead(400, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+                    res.end(JSON.stringify({ success: false, message: '항목 배열이 필요합니다.' }));
+                    return;
+                }
+                for (const item of items) {
+                    if (item.id == null || item.id < 1 || item.id > 6) continue;
+                    await supabase
+                        .from('honey_items')
+                        .upsert({
+                            id: item.id,
+                            image_url: item.image_url || '',
+                            link_url: item.link_url || '',
+                            tags: typeof item.tags === 'string' ? item.tags : JSON.stringify(item.tags || []),
+                            description: item.description || '',
+                            updated_at: new Date().toISOString()
+                        }, { onConflict: 'id' });
+                }
+                res.writeHead(200, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+                res.end(JSON.stringify({ success: true, message: '꿀템추천 설정이 저장되었습니다.' }));
+            } catch (err) {
+                console.error('❌ honey-items 저장 예외:', err);
+                res.writeHead(400, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+                res.end(JSON.stringify({ success: false, message: '잘못된 요청 형식' }));
+            }
+        });
+        return;
+    }
+
+    if ((req.url === '/api/upload-honey-image' || req.url.split('?')[0] === '/api/upload-honey-image') && req.method === 'POST') {
+        let body = '';
+        req.on('data', chunk => { body += chunk.toString(); });
+        req.on('end', async () => {
+            try {
+                const { image: base64Input, filename, itemId } = JSON.parse(body || '{}');
+                const n = parseInt(itemId, 10);
+                if (!base64Input || !(n >= 1 && n <= 6)) {
+                    res.writeHead(400, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+                    res.end(JSON.stringify({ success: false, message: '이미지 데이터와 itemId(1~6)가 필요합니다.' }));
+                    return;
+                }
+                const base64 = base64Input.replace(/^data:image\/\w+;base64,/, '');
+                const buf = Buffer.from(base64, 'base64');
+                const extMatch = filename && filename.match(/\.(jpe?g|png|gif|webp)$/i);
+                const ext = extMatch ? extMatch[1].toLowerCase() : 'jpg';
+                const path = 'honey/item-' + n + '.' + (ext === 'jpeg' ? 'jpg' : ext);
+                const contentType = ext === 'png' ? 'image/png' : ext === 'gif' ? 'image/gif' : ext === 'webp' ? 'image/webp' : 'image/jpeg';
+
+                const { data: uploadData, error } = await supabase.storage
+                    .from('popup')
+                    .upload(path, buf, { contentType, upsert: true });
+
+                if (error) {
+                    console.error('❌ 꿀템 이미지 업로드 오류:', error);
+                    res.writeHead(500, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+                    res.end(JSON.stringify({ success: false, message: error.message }));
+                    return;
+                }
+                const uploadedPath = (uploadData && uploadData.path) || uploadData || path;
+                const { data: urlData } = supabase.storage.from('popup').getPublicUrl(uploadedPath);
+                res.writeHead(200, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+                res.end(JSON.stringify({ success: true, url: urlData.publicUrl }));
+            } catch (err) {
+                console.error('❌ 꿀템 이미지 업로드 예외:', err);
+                res.writeHead(400, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+                res.end(JSON.stringify({ success: false, message: '잘못된 요청 형식' }));
+            }
+        });
+        return;
+    }
+
     // 카카오 액세스 토큰 저장 API (다중 사용자 지원)
     if (req.url === '/api/kakao/save-token' && req.method === 'POST') {
         let body = '';
@@ -1997,6 +2282,52 @@ const server = http.createServer((req, res) => {
         return;
     }
 
+    // 갤러리 이미지 목록 API (로컬 images/gallery 폴더)
+    if (req.url.startsWith('/api/gallery') && req.method === 'GET') {
+        const urlObj = new URL(req.url, 'http://localhost');
+        const yearParam = urlObj.searchParams.get('year') || 'all';
+        const galleryDir = path.join(__dirname, 'images', 'gallery');
+        const imageExts = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];
+        let images = [];
+        try {
+            if (!fs.existsSync(galleryDir)) {
+                res.writeHead(200, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+                res.end(JSON.stringify({ images: [] }));
+                return;
+            }
+            const yearsToRead = yearParam === 'all'
+                ? fs.readdirSync(galleryDir, { withFileTypes: true })
+                    .filter(d => d.isDirectory() && /^\d{4}$/.test(d.name))
+                    .map(d => d.name)
+                    .sort((a, b) => Number(b) - Number(a))
+                : [yearParam];
+            for (const year of yearsToRead) {
+                const yearPath = path.join(galleryDir, year);
+                if (!fs.existsSync(yearPath) || !fs.statSync(yearPath).isDirectory()) continue;
+                const files = fs.readdirSync(yearPath);
+                for (const name of files) {
+                    const ext = path.extname(name).toLowerCase();
+                    if (imageExts.includes(ext)) {
+                        images.push({
+                            image_url: `/images/gallery/${year}/${encodeURIComponent(name)}`,
+                            file_name: name,
+                            year: year
+                        });
+                    }
+                }
+            }
+            images.sort((a, b) => (b.year + b.file_name).localeCompare(a.year + a.file_name));
+        } catch (err) {
+            console.warn('갤러리 목록 읽기 오류:', err.message);
+        }
+        res.writeHead(200, {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+        });
+        res.end(JSON.stringify({ images }));
+        return;
+    }
+
     // 정적 파일 제공
     let filePath = '.' + req.url;
     
@@ -2047,6 +2378,16 @@ server.listen(port, host, async () => {
         console.log(`✅ 카카오 사용자 토큰 로드 완료: ${kakaoUsers.length}명`);
     } else {
         console.log('⚠️ 카카오 사용자 토큰 로드 실패 (새로 시작)');
+    }
+    
+    // 서버 시작 시 소셜 미디어 통계 1회 갱신 (Instagram 등 최신 반영)
+    if (process.env.INSTAGRAM_USER_ID && process.env.INSTAGRAM_ACCESS_TOKEN) {
+        console.log('🔄 소셜 미디어 통계 갱신 중...');
+        fetchAllSocialMediaStats().then(() => {
+            console.log('✅ 소셜 미디어 통계 갱신 완료');
+        }).catch(err => {
+            console.warn('⚠️ 소셜 미디어 통계 갱신 실패:', err.message);
+        });
     }
     
     console.log('Press Ctrl+C to stop the server\n');

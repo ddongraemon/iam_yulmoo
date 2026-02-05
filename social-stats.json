@@ -1,9 +1,9 @@
 {
   "total": {
-    "subscribers": "8.7K",
-    "subscribersRaw": 8659,
-    "videos": "467",
-    "videosRaw": 467,
+    "subscribers": "10.4K",
+    "subscribersRaw": 10422,
+    "videos": "561",
+    "videosRaw": 561,
     "views": "5.9M",
     "viewsRaw": 5869930
   },
@@ -14,8 +14,8 @@
       "views": 5869930
     },
     "instagram": {
-      "followers": 3509,
-      "posts": 202,
+      "followers": 5272,
+      "posts": 296,
       "views": 0
     },
     "tiktok": {
@@ -24,5 +24,5 @@
       "views": 0
     }
   },
-  "lastUpdate": "2025-10-28T11:00:02.450Z"
+  "lastUpdate": "2026-02-05T13:28:45.424Z"
 }

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
@@ -41,8 +41,103 @@
       gtag('js', new Date());
       gtag('config', 'G-QVRVLYSZC2');
     </script>
+    <!-- 팝업 스타일 (PC/모바일 반응형) -->
+    <style>
+        .popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            box-sizing: border-box;
+        }
+        .popup-overlay.show { display: flex; }
+        .popup-box {
+            position: relative;
+            background: #fff;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .popup-close {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 36px;
+            height: 36px;
+            border: none;
+            background: rgba(0,0,0,0.5);
+            color: #fff;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 2;
+            font-size: 1.2rem;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .popup-close:hover { background: rgba(0,0,0,0.7); }
+        .popup-image-wrap {
+            display: block;
+            line-height: 0;
+            flex: 1;
+            min-height: 0;
+        }
+        .popup-image-wrap img {
+            width: 100%;
+            height: auto;
+            max-height: 70vh;
+            object-fit: contain;
+            vertical-align: top;
+        }
+        .popup-footer {
+            padding: 14px 16px;
+            border-top: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .popup-dont-show {
+            font-size: 0.9rem;
+            color: #666;
+            cursor: pointer;
+            user-select: none;
+        }
+        .popup-dont-show input { margin-right: 6px; vertical-align: middle; }
+        @media (max-width: 480px) {
+            .popup-box { max-width: 92vw; max-height: 85vh; }
+            .popup-image-wrap img { max-height: 60vh; }
+            .popup-footer { padding: 12px; }
+        }
+    </style>
 </head>
 <body>
+    <!-- 메인 팝업 (설정 시에만 표시) -->
+    <div class="popup-overlay" id="mainPopup">
+        <div class="popup-box">
+            <button type="button" class="popup-close" id="popupClose" aria-label="닫기">&times;</button>
+            <a href="#" class="popup-image-wrap" id="popupImageLink" target="_blank" rel="noopener noreferrer">
+                <img id="popupImage" src="" alt="팝업" style="display:none;">
+            </a>
+            <div class="popup-footer">
+                <label class="popup-dont-show">
+                    <input type="checkbox" id="popupDontShow24"> 24시간 동안 보지 않기
+                </label>
+            </div>
+        </div>
+    </div>
+
     <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
@@ -236,73 +331,12 @@
         <section class="coupang-section">
             <div class="container">
                 <div class="section-header">
-                    <h2 class="section-title">율무의 꿀템추천</h2>
+                    <h2 class="section-title">[광고] 율무의 꿀템추천</h2>
                     <p class="section-subtitle">직접 율무가 사용해본 찐템 후기!!</p>
                 </div>
                 
-                <div class="coupang-ads-container">
-                    <!-- 광고 1: 매트 -->
-                    <a href="https://link.coupang.com/a/cZMjMv" target="_blank" rel="noopener noreferrer" class="coupang-ad-box">
-                        <div class="ad-image">
-                            <img src="images/ad_image_1.png" alt="관절보호 간보호 필수영양제" class="ad-product-image">
-                        </div>
-                        <div class="ad-content">
-                            <div class="ad-tags">
-                                <span class="ad-tag tag-recommend">관절보호</span>
-                                <span class="ad-tag tag-regret">간보호</span>
-                                <span class="ad-tag tag-satisfied">전연령급여</span>
-                                <span class="ad-tag tag-quality">필수영양</span>
-                            </div>
-                            <div class="ad-description">
-                                전연령 모든 강아지의 관절 보호담당✨
-                            </div>
-                        </div>
-                    </a>
-
-                    <!-- 광고 2: 계단 -->
-                    <a href="https://link.coupang.com/a/cZMlGS" target="_blank" rel="noopener noreferrer" class="coupang-ad-box">
-                        <div class="ad-image">
-                            <img src="images/ad_image_2.png" alt="오리안심 간식" class="ad-product-image">
-                        </div>
-                        <div class="ad-content">
-                            <div class="ad-tags">
-                                <span class="ad-tag tag-size">대용량간식</span>
-                                <span class="ad-tag tag-stable">오리안심</span>
-                                <span class="ad-tag tag-love">
-                                    <i class="fas fa-heart"></i>
-                                    율무최애간식
-                                </span>
-                            </div>
-                            <div class="ad-description">
-                                통대창강아지 율무의 국내산 최애간식🍯
-                            </div>
-                        </div>
-                    </a>
-
-                    <!-- 광고 3: 추가 제품 -->
-                    <a href="https://link.coupang.com/a/cZMmlT" target="_blank" rel="noopener noreferrer" class="coupang-ad-box">
-                        <div class="ad-image">
-                            <img src="images/ad_image_3.png" alt="강아지 잠옷" class="ad-product-image">
-                        </div>
-                        <div class="ad-content">
-                            <div class="ad-tags">
-                                <span class="ad-tag tag-recommend">중대형견</span>
-                                <span class="ad-tag tag-quality">
-                                    <i class="fas fa-star"></i>
-                                    율무시그니쳐옷
-                                </span>
-                                <span class="ad-tag tag-love">강아지잠옷</span>
-                            </div>
-                            <div class="ad-description">
-                                많은 분들이 물어봐주신 율무의 잠옷!!🌙
-                            </div>
-                        </div>
-                    </a>
-                    
-                    <!-- 쿠팡 파트너스 안내 문구 -->
-                    <div class="coupang-disclaimer">
-                        <p>이 포스팅은 쿠팡 파트너스 활동의 일환으로 이에 따른 일정액의 수수료를 제공받습니다</p>
-                    </div>
+                <div class="coupang-ads-container" id="honeyItemsContainer">
+                    <!-- 율무의 꿀템추천 6개: /api/honey-items 로 동적 렌더링 -->
                 </div>
             </div>
         </section>
@@ -443,6 +477,132 @@
         });
     </script>
     
+    <!-- 팝업 로직: 설정 조회, 기간/24시간 보지않기, admin off→on 시 다시 표시 -->
+    <script>
+        (function() {
+            var POPUP_HIDE_KEY = 'popup_hide_until';
+            var POPUP_VERSION_KEY = 'popup_version';
+            var overlay = document.getElementById('mainPopup');
+            var popupImage = document.getElementById('popupImage');
+            var popupImageLink = document.getElementById('popupImageLink');
+            var popupClose = document.getElementById('popupClose');
+            var popupDontShow24 = document.getElementById('popupDontShow24');
+            var currentPopupVersion = null;
+
+            function getTodayKST() {
+                var now = new Date();
+                var kst = new Date(now.getTime() + (9 * 60 * 60 * 1000));
+                var y = kst.getUTCFullYear();
+                var m = String(kst.getUTCMonth() + 1).padStart(2, '0');
+                var d = String(kst.getUTCDate()).padStart(2, '0');
+                return y + '-' + m + '-' + d;
+            }
+
+            function shouldShowPopup(settings) {
+                if (!settings || !settings.enabled || !settings.image_url) return false;
+                var today = getTodayKST();
+                if (settings.start_date && today < settings.start_date) return false;
+                if (settings.end_date && today > settings.end_date) return false;
+                var storedVersion = localStorage.getItem(POPUP_VERSION_KEY);
+                if (settings.version != null && storedVersion !== null && String(settings.version) !== storedVersion) return true;
+                var hideUntil = localStorage.getItem(POPUP_HIDE_KEY);
+                if (hideUntil && Date.now() < parseInt(hideUntil, 10)) return false;
+                return true;
+            }
+
+            function closePopup() {
+                if (popupDontShow24 && popupDontShow24.checked) {
+                    localStorage.setItem(POPUP_HIDE_KEY, String(Date.now() + 24 * 60 * 60 * 1000));
+                    if (currentPopupVersion != null) localStorage.setItem(POPUP_VERSION_KEY, String(currentPopupVersion));
+                }
+                overlay.classList.remove('show');
+            }
+
+            function openPopup(settings) {
+                currentPopupVersion = settings.version != null ? settings.version : null;
+                var imgUrl = settings.image_url;
+                if (imgUrl) imgUrl = imgUrl + (imgUrl.indexOf('?') >= 0 ? '&' : '?') + '_=' + Date.now();
+                popupImage.src = imgUrl;
+                popupImage.style.display = 'block';
+                popupImage.alt = '팝업';
+                popupImageLink.href = (settings.link_url && settings.link_url.trim()) ? settings.link_url : 'javascript:void(0);';
+                if (!(settings.link_url && settings.link_url.trim())) popupImageLink.onclick = function(e) { e.preventDefault(); };
+                overlay.classList.add('show');
+            }
+
+            if (popupClose) popupClose.addEventListener('click', closePopup);
+            overlay.addEventListener('click', function(e) {
+                if (e.target === overlay) closePopup();
+            });
+            var dontShowLabel = document.querySelector('.popup-dont-show');
+            if (dontShowLabel) {
+                dontShowLabel.addEventListener('click', function() {
+                    setTimeout(closePopup, 50);
+                });
+            }
+
+            fetch('/api/popup-settings')
+                .then(function(r) { return r.json(); })
+                .then(function(settings) {
+                    if (settings.version != null && String(settings.version) !== localStorage.getItem(POPUP_VERSION_KEY)) {
+                        localStorage.removeItem(POPUP_HIDE_KEY);
+                        localStorage.setItem(POPUP_VERSION_KEY, String(settings.version));
+                    }
+                    if (shouldShowPopup(settings)) openPopup(settings);
+                })
+                .catch(function() {});
+        })();
+    </script>
+
+    <!-- 율무의 꿀템추천 동적 로드 -->
+    <script>
+        (function() {
+            var container = document.getElementById('honeyItemsContainer');
+            if (!container) return;
+            fetch('/api/honey-items')
+                .then(function(r) { return r.json(); })
+                .then(function(items) {
+                    if (!Array.isArray(items) || items.length === 0) return;
+                    var html = '';
+                    for (var i = 0; i < items.length; i++) {
+                        var item = items[i];
+                        var linkUrl = (item.link_url && item.link_url.trim()) ? item.link_url : '#';
+                        var imgUrl = (item.image_url && item.image_url.trim()) ? item.image_url : '';
+                        if (imgUrl) imgUrl = imgUrl + (imgUrl.indexOf('?') >= 0 ? '&' : '?') + '_=' + Date.now();
+                        var tags = [];
+                        try { tags = typeof item.tags === 'string' ? JSON.parse(item.tags || '[]') : (item.tags || []); } catch (e) {}
+                        var desc = (item.description || '').trim();
+                        var tagClasses = ['tag-recommend', 'tag-quality', 'tag-love', 'tag-size', 'tag-stable', 'tag-satisfied', 'tag-regret'];
+                        var tagsHtml = '';
+                        for (var t = 0; t < tags.length; t++) {
+                            var tagCls = 'ad-tag ' + tagClasses[Math.floor(Math.random() * tagClasses.length)];
+                            tagsHtml += '<span class="' + escapeAttr(tagCls) + '">' + escapeHtml(String(tags[t])) + '</span>';
+                        }
+                        html += '<a href="' + escapeAttr(linkUrl) + '" target="_blank" rel="noopener noreferrer" class="coupang-ad-box">';
+                        html += '<div class="ad-image">';
+                        if (imgUrl) {
+                            html += '<img src="' + escapeAttr(imgUrl) + '" alt="꿀템' + (item.id || (i+1)) + '" class="ad-product-image" onerror="this.style.display=\'none\'; if(this.nextElementSibling) this.nextElementSibling.style.display=\'flex\';">';
+                            html += '<div class="ad-placeholder" style="display:none;"><i class="fas fa-image"></i><span>이미지 추가</span></div>';
+                        } else {
+                            html += '<div class="ad-placeholder"><i class="fas fa-image"></i><span>이미지 추가</span></div>';
+                        }
+                        html += '</div><div class="ad-content"><div class="ad-tags">' + tagsHtml + '</div>';
+                        html += '<div class="ad-description">' + (desc ? escapeHtml(desc) : '') + '</div></div></a>';
+                    }
+                    container.innerHTML = html;
+                })
+                .catch(function() {});
+            function escapeHtml(s) {
+                var div = document.createElement('div');
+                div.textContent = s;
+                return div.innerHTML;
+            }
+            function escapeAttr(s) {
+                return String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#39;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            }
+        })();
+    </script>
+
     <!-- Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </body>

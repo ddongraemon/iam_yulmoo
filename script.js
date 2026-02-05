@@ -1,4 +1,4 @@
-﻿// Modern JavaScript for Yulmoo Channel Website
+// Modern JavaScript for Yulmoo Channel Website
 
 // Configuration
 const CONFIG = {
@@ -1307,75 +1307,22 @@ if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
     setTimeout(setupTouchEffects, 500);
 }
 
-// 갤러리 프리뷰 로드 (최적화된 버전)
+// 갤러리 프리뷰 로드 (로컬 images/gallery 폴더 사용)
 async function loadGalleryPreview() {
     try {
-        // 네트워크 속도와 기기 성능 감지
         const isMobile = window.innerWidth <= 768;
         const isLowEndDevice = navigator.hardwareConcurrency <= 4;
         const networkSpeed = detectNetworkSpeed();
         
         console.log(`📱 갤러리 프리뷰 로딩 시작 - 모바일: ${isMobile}, 저사양: ${isLowEndDevice}, 네트워크: ${networkSpeed}`);
         
-        // Supabase 클라이언트 초기화
-        const SUPABASE_URL = 'https://xthcitqhmsjslxayhgvt.supabase.co';
-        const SUPABASE_ANON_KEY = 'sb_publishable_S3zm1hnfz6r30ntj4aUrkA_neuo-I7B';
-        const { createClient } = supabase;
-        const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        // 로컬 API에서 갤러리 이미지 목록 가져오기
+        const res = await fetch('/api/gallery?year=all');
+        const data = await res.json();
+        const allImages = data.images || [];
         
-        // 네트워크 속도에 따른 병렬 처리 수 제한
-        const maxConcurrent = networkSpeed === 'slow' ? 1 : (networkSpeed === 'medium' ? 2 : 3);
-        
-        // gallery-images 버킷에서 모든 연도 폴더의 이미지들을 가져오기
-        let allImages = [];
-        const years = ['2023', '2024', '2025'];
-        
-        // 병렬 처리로 연도별 폴더 접근
-        const yearPromises = years.map(async (year) => {
-            try {
-                const { data: files, error: listError } = await supabaseClient.storage
-                    .from('gallery-images')
-                    .list(year, {
-                        limit: 30, // 제한을 줄여서 빠른 로딩
-                        sortBy: { column: 'name', order: 'asc' }
-                    });
-                
-                if (!listError && files && files.length > 0) {
-                    return files.map(file => ({
-                        image_url: supabaseClient.storage
-                            .from('gallery-images')
-                            .getPublicUrl(`${year}/${file.name}`).data.publicUrl,
-                        file_name: file.name,
-                        year: year
-                    }));
-                }
-                return [];
-            } catch (folderError) {
-                console.warn(`${year} 폴더 접근 실패:`, folderError);
-                return [];
-            }
-        });
-        
-        // 모든 연도 폴더를 병렬로 처리
-        const yearResults = await Promise.all(yearPromises);
-        allImages = yearResults.flat();
-        
-        // 만약 버킷에서 이미지를 가져오지 못했다면 기존 gallery 테이블에서 가져오기
-        if (allImages.length === 0) {
-            console.log('버킷에서 이미지를 가져오지 못했습니다. gallery 테이블을 사용합니다.');
-            const { data, error } = await supabaseClient
-                .from('gallery')
-                .select('image_url, file_name')
-                .order('created_at', { ascending: false })
-                .limit(20); // 제한을 줄여서 빠른 로딩
-
-            if (!error && data) {
-                allImages = data;
-            }
-        }
-        
-        if (!allImages || allImages.length === 0) {
-            console.log('갤러리에 이미지가 없습니다.');
+        if (!allImages.length) {
+            console.log('갤러리에 이미지가 없습니다. images/gallery/2023, 2024, 2025 폴더에 이미지를 넣어주세요.');
             return;
         }
         
@@ -1465,13 +1412,16 @@ function preloadGalleryPreviewImage(url) {
     img.decoding = 'async';
 }
 
-// 갤러리 프리뷰용 이미지 최적화 URL 생성 (네트워크 속도 고려)
+// 갤러리 프리뷰용 이미지 최적화 URL 생성 (로컬 경로는 그대로 반환)
 function getOptimizedGalleryPreviewUrl(src, isMobile) {
+    if (typeof src === 'string' && src.startsWith('/')) {
+        return src;
+    }
     try {
         const isLowEndDevice = navigator.hardwareConcurrency <= 4;
         const networkSpeed = detectNetworkSpeed();
         
-        const url = new URL(src);
+        const url = new URL(src, window.location.origin);
         
         if (isMobile) {
             if (networkSpeed === 'slow' || isLowEndDevice) {

@@ -28,3 +28,6 @@ CREATE INDEX IF NOT EXISTS idx_kakao_users_updated_at ON kakao_users(updated_at)
 
 
 
+
+
+

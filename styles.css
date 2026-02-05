@@ -1,4 +1,4 @@
-﻿/* videos-section 모든 패딩 10으로 강제 조정 - 최고 우선순위 */
+/* videos-section 모든 패딩 10으로 강제 조정 - 최고 우선순위 */
 html body .videos-section,
 html body section.videos-section,
 .videos-section,
@@ -3810,14 +3810,17 @@ body {
     pointer-events: none;
 }
 
+/* 가로 2칸 세로 3줄, 한 칸 넓이 기존과 동일 600px (넓은 화면에서) */
 .coupang-ads-container {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(280px, 600px));
     gap: 20px;
-    max-width: 600px;
+    width: 100%;
+    max-width: 1220px;
     margin: 0 auto;
     position: relative;
     z-index: 1;
+    box-sizing: border-box;
 }
 
 .coupang-ad-box {
@@ -3911,49 +3914,49 @@ body {
 .tag-recommend {
     background: #FFF3E0;
     color: #E65100;
-    border: 1px solid #FFCC02;
+    border: 2px solid #FFCC02;
 }
 
 .tag-regret {
     background: #FFF8E1;
     color: #F57F17;
-    border: 1px solid #FFE082;
+    border: 2px solid #FFE082;
 }
 
 .tag-satisfied {
     background: #E8F5E8;
     color: #2E7D32;
-    border: 1px solid #C8E6C9;
+    border: 2px solid #C8E6C9;
 }
 
 .tag-size {
     background: #FCE4EC;
     color: #C2185B;
-    border: 1px solid #F8BBD9;
+    border: 2px solid #F8BBD9;
 }
 
 .tag-stable {
     background: #F3E5F5;
     color: #7B1FA2;
-    border: 1px solid #E1BEE7;
+    border: 2px solid #E1BEE7;
 }
 
 .tag-dog {
     background: #FFFFFF;
     color: #424242;
-    border: 1px solid #E0E0E0;
+    border: 2px solid #E0E0E0;
 }
 
 .tag-quality {
     background: #E3F2FD;
     color: #1565C0;
-    border: 1px solid #BBDEFB;
+    border: 2px solid #BBDEFB;
 }
 
 .tag-love {
     background: #FFEBEE;
     color: #D32F2F;
-    border: 1px solid #FFCDD2;
+    border: 2px solid #FFCDD2;
 }
 
 /* 쿠팡 파트너스 안내 문구 */
@@ -3975,6 +3978,12 @@ body {
     color: #424242;
     line-height: 1.5;
     font-weight: 500;
+    min-height: 1.5em;
+    letter-spacing: 0.01em;
+}
+.ad-content .ad-description:empty::before {
+    content: '\00a0';
+    display: inline-block;
 }
 
 /* 반응형 디자인 */
@@ -3983,22 +3992,35 @@ body {
         padding: 40px 0;
     }
     
-    .coupang-ads-container {
-        gap: 12px;
-        padding: 10px 8px 0 8px;
-        margin-top: 8px;
-        align-items: center;
+    .coupang-section .container {
+        padding-left: 16px;
+        padding-right: 16px;
+        box-sizing: border-box;
     }
     
-    /* 모바일에서도 가로형(길쭉한) 레이아웃 유지 */
+    .coupang-ads-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 0 0 0;
+        margin-top: 8px;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+    
+    /* 모바일: 박스 가운데 정렬(100vw 대신 100% 사용해 스크롤바 영향 제거) */
     .coupang-ad-box {
         flex-direction: row;
         align-items: center;
-        width: calc(100vw - 32px);
+        width: 100%;
         max-width: 378px;
+        margin: 0 auto;
         height: 95px;
-        min-height: 95px; /* 기본 min-height:120px 무시 */
+        min-height: 95px;
         max-height: 95px;
+        box-sizing: border-box;
     }
     
     .ad-image {
@@ -4067,14 +4089,21 @@ body {
         padding: 30px 0;
     }
     
+    .coupang-section .container {
+        padding-left: 16px;
+        padding-right: 16px;
+        box-sizing: border-box;
+    }
+    
     .coupang-ads-container {
-        padding: 0 8px;
+        padding: 0;
         align-items: center;
     }
     
     .coupang-ad-box {
-        width: calc(100vw - 32px);
+        width: 100%;
         max-width: 378px;
+        margin: 0 auto;
         height: 95px;
         min-height: 95px; /* 기본 min-height:120px 무시 */
         max-height: 95px;

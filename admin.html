@@ -412,87 +412,7 @@
             <i class="fas fa-sync-alt"></i> 데이터 새로고침
         </button>
         
-        <div class="admin-grid">
-            <!-- 서버 상태 카드 -->
-            <div class="admin-card">
-                <div class="card-header">
-                    <i class="fas fa-server card-icon"></i>
-                    <h3 class="card-title">서버 상태</h3>
-                </div>
-                <div class="status-item">
-                    <span class="status-label">서버 상태</span>
-                    <div class="status-value">
-                        <span class="status-badge status-normal" id="serverStatusText">정상</span>
-                    </div>
-                </div>
-                <div class="status-item">
-                    <span class="status-label">업타임</span>
-                    <span class="status-value" id="serverUptime">-</span>
-                </div>
-                <div class="status-item">
-                    <span class="status-label">메모리 사용률</span>
-                    <span class="status-value" id="memoryUsage">-</span>
-                </div>
-                <div class="status-item" id="serverIssuesItem" style="display: none;">
-                    <span class="status-label">이슈</span>
-                    <span class="status-value" id="serverIssues">-</span>
-                </div>
-            </div>
-            
-            <!-- API 연결 상태 카드 -->
-            <div class="admin-card">
-                <div class="card-header">
-                    <i class="fas fa-plug card-icon"></i>
-                    <h3 class="card-title">API 연결 상태</h3>
-                </div>
-                <div class="status-item">
-                    <span class="status-label">YouTube API</span>
-                    <div class="status-value">
-                        <span class="status-badge status-normal" id="youtubeStatusText">정상</span>
-                    </div>
-                </div>
-                <div class="status-item">
-                    <span class="status-label">Instagram API</span>
-                    <div class="status-value">
-                        <span class="status-badge status-normal" id="instagramStatusText">정상</span>
-                    </div>
-                </div>
-                <div class="status-item">
-                    <span class="status-label">TikTok API</span>
-                    <div class="status-value">
-                        <span class="status-badge status-normal" id="tiktokStatusText">정상</span>
-                    </div>
-                </div>
-                <div class="status-item">
-                    <span class="status-label">Supabase</span>
-                    <div class="status-value">
-                        <span class="status-badge status-normal" id="supabaseStatusText">정상</span>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- API 동기화 시간 카드 -->
-            <div class="admin-card">
-                <div class="card-header">
-                    <i class="fas fa-clock card-icon"></i>
-                    <h3 class="card-title">마지막 동기화</h3>
-                </div>
-                <div class="status-item">
-                    <span class="status-label">YouTube</span>
-                    <span class="status-value" id="youtubeLastSync">-</span>
-                </div>
-                <div class="status-item">
-                    <span class="status-label">Instagram</span>
-                    <span class="status-value" id="instagramLastSync">-</span>
-                </div>
-                <div class="status-item">
-                    <span class="status-label">TikTok</span>
-                    <span class="status-value" id="tiktokLastSync">-</span>
-                </div>
-            </div>
-        </div>
-        
-        <!-- 방문자 통계 그래프 -->
+        <!-- 일일 방문자 통계 -->
         <div class="admin-card">
             <div class="card-header">
                 <i class="fas fa-chart-line card-icon"></i>
@@ -509,37 +429,96 @@
                 <canvas id="visitorChart"></canvas>
             </div>
         </div>
-        
-        <!-- 카카오톡 알림 관리 -->
-        <div class="notification-section">
+
+        <!-- 팝업 관리 -->
+        <div class="admin-card">
             <div class="card-header">
-                <i class="fas fa-bell card-icon"></i>
-                <h3 class="card-title">카카오톡 알림 관리</h3>
+                <i class="fas fa-window-maximize card-icon"></i>
+                <h3 class="card-title">메인 페이지 팝업 관리</h3>
             </div>
-            <div class="notification-controls">
-                <a href="kakao-login.html" class="notification-btn" style="text-decoration: none; display: inline-block;">
-                    <i class="fas fa-sign-in-alt"></i> 카카오 로그인
-                </a>
-                <button class="notification-btn" onclick="sendDailyNotification()">
-                    <i class="fas fa-paper-plane"></i> 일일 알림 발송
-                </button>
-                <button class="notification-btn test" onclick="sendTestNotification()">
-                    <i class="fas fa-vial"></i> 테스트 알림
-                </button>
-                <button class="notification-btn" onclick="toggleScheduler()">
-                    <i class="fas fa-calendar-alt"></i> 스케줄러 토글
-                </button>
+            <p style="color:#666; font-size:0.9rem; margin-bottom:16px;">index.html 접속 시 표시되는 팝업을 설정합니다. 노출 기간은 한국시간(KST) 기준입니다.</p>
+            <div class="form-group">
+                <label style="display:flex; align-items:center; gap:10px; cursor:pointer;">
+                    <input type="checkbox" id="popupEnabled" style="width:18px; height:18px;">
+                    <span>팝업 사용 (ON)</span>
+                </label>
             </div>
-            <div class="status-item">
-                <span class="status-label">스케줄러 상태</span>
-                <div class="status-value">
-                    <span class="status-badge status-normal" id="schedulerStatusText">활성화</span>
+            <div class="form-group">
+                <label>노출 기간 (한국시간)</label>
+                <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                    <input type="date" id="popupStartDate" style="padding:8px 12px; border:1px solid #ddd; border-radius:8px;">
+                    <span>~</span>
+                    <input type="date" id="popupEndDate" style="padding:8px 12px; border:1px solid #ddd; border-radius:8px;">
                 </div>
+                <small style="color:#888;">비워두면 기간 제한 없이 표시됩니다.</small>
             </div>
-            <div class="status-item">
-                <span class="status-label">다음 알림 예정</span>
-                <span class="status-value" id="nextNotification">매일 21:00</span>
+            <div class="form-group">
+                <label>팝업 이미지</label>
+                <div style="margin-bottom:10px;">
+                    <input type="file" id="popupImageFile" accept="image/jpeg,image/png,image/gif,image/webp" style="display:none;">
+                    <button type="button" class="refresh-btn" id="popupUploadBtn" style="margin-right:8px;">
+                        <i class="fas fa-upload"></i> 파일 선택 후 업로드
+                    </button>
+                    <span id="popupUploadStatus" style="font-size:0.9rem; color:#666;"></span>
+                </div>
+                <div id="popupImagePreviewWrap" style="margin-top:8px; display:none;">
+                    <img id="popupImagePreview" src="" alt="미리보기" style="max-width:280px; max-height:160px; object-fit:contain; border:1px solid #ddd; border-radius:8px;">
+                </div>
+                <input type="hidden" id="popupImageUrl">
+                <small style="color:#888;">권장 이미지 크기: <strong>1000×800px</strong> (가로×세로). JPG/PNG/GIF/WEBP.</small>
             </div>
+            <div class="form-group">
+                <label>이미지 클릭 시 연결 링크 (선택)</label>
+                <input type="url" id="popupLinkUrl" placeholder="https://..." style="width:100%; padding:10px 12px; border:1px solid #ddd; border-radius:8px; box-sizing:border-box;">
+            </div>
+            <button type="button" class="refresh-btn" id="popupSaveBtn" style="margin-top:8px;">
+                <i class="fas fa-save"></i> 팝업 설정 저장
+            </button>
+            <p id="popupSaveMessage" style="margin-top:10px; font-size:0.9rem; color:#666;"></p>
+        </div>
+
+        <!-- 율무의 꿀템추천 관리 (6개) -->
+        <div class="admin-card">
+            <div class="card-header">
+                <i class="fas fa-gift card-icon"></i>
+                <h3 class="card-title">[광고] 율무의 꿀템추천 (6개)</h3>
+            </div>
+            <p style="color:#666; font-size:0.9rem; margin-bottom:16px;">index.html 꿀템추천 섹션의 이미지, 태그, 설명, 링크를 관리합니다. 태그는 쉼표로 구분해 입력하세요.</p>
+            <div id="honeyItemsAdminWrap">
+                <template id="honeyItemTpl">
+                    <div class="honey-item-block" data-id="">
+                        <div style="display:flex; align-items:flex-start; gap:12px; margin-bottom:16px; padding:12px; border:1px solid #eee; border-radius:8px;">
+                            <div style="flex:0 0 100px;">
+                                <strong class="honey-item-title">꿀템 1</strong>
+                                <div style="margin-top:8px;">
+                                    <input type="file" class="honey-file" accept="image/jpeg,image/png,image/gif,image/webp" style="display:none;">
+                                    <button type="button" class="refresh-btn honey-upload-btn" style="font-size:0.85rem; padding:6px 10px;">이미지 업로드</button>
+                                </div>
+                                <img class="honey-preview" src="" alt="" style="max-width:90px; max-height:60px; object-fit:contain; margin-top:6px; display:none; border:1px solid #ddd; border-radius:4px;">
+                            </div>
+                            <div style="flex:1; min-width:0;">
+                                <input type="hidden" class="honey-image-url">
+                                <div class="form-group" style="margin-bottom:8px;">
+                                    <label style="font-size:0.85rem;">링크 URL</label>
+                                    <input type="url" class="honey-link form-control" placeholder="https://..." style="width:100%; padding:8px; border:1px solid #ddd; border-radius:6px; box-sizing:border-box;">
+                                </div>
+                                <div class="form-group" style="margin-bottom:8px;">
+                                    <label style="font-size:0.85rem;">태그 (쉼표 구분)</label>
+                                    <input type="text" class="honey-tags form-control" placeholder="태그1, 태그2, 태그3" style="width:100%; padding:8px; border:1px solid #ddd; border-radius:6px; box-sizing:border-box;">
+                                </div>
+                                <div class="form-group" style="margin-bottom:0;">
+                                    <label style="font-size:0.85rem;">설명</label>
+                                    <input type="text" class="honey-desc form-control" placeholder="제품 설명" style="width:100%; padding:8px; border:1px solid #ddd; border-radius:6px; box-sizing:border-box;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+            </div>
+            <button type="button" class="refresh-btn" id="honeyItemsSaveBtn" style="margin-top:12px;">
+                <i class="fas fa-save"></i> 꿀템추천 저장
+            </button>
+            <p id="honeyItemsSaveMessage" style="margin-top:8px; font-size:0.9rem; color:#666;"></p>
         </div>
         
         <div class="last-updated">
@@ -643,143 +622,16 @@
                 const data = await response.json();
                 console.log('📊 받은 데이터:', data);
                 
-                // 서버 상태 업데이트
-                console.log('🔄 서버 상태 업데이트 중...');
-                updateServerStatus(data.server);
-                
-                // API 상태 업데이트
-                console.log('🔄 API 상태 업데이트 중...');
-                updateAPIStatus(data.apis);
-                
-                // 동기화 시간 업데이트
-                console.log('🔄 동기화 시간 업데이트 중...');
-                updateSyncTimes(data.syncTimes);
-                
-                // 방문자 차트 업데이트
-                console.log('🔄 방문자 차트 업데이트 중...');
                 updateVisitorChart(data.visitorStats);
-                
-                // 총 방문자 수 업데이트
-                console.log('🔄 총 방문자 수 업데이트 중...');
                 updateTotalVisitors(data.totalVisitors);
+                updateLastUpdated();
                 
-                // 스케줄러 상태 업데이트
-                console.log('🔄 스케줄러 상태 업데이트 중...');
-                updateSchedulerStatus(data.scheduler);
-                
-                console.log('✅ 모든 데이터 업데이트 완료');
+                console.log('✅ 방문자 통계 업데이트 완료');
                 
             } catch (error) {
                 console.error('❌ 데이터 새로고침 실패:', error);
-                showError('데이터를 불러오는데 실패했습니다.');
+                alert('데이터를 불러오는데 실패했습니다.');
             }
-        }
-        
-        // 서버 상태 업데이트
-        function updateServerStatus(serverData) {
-            console.log('🔍 서버 상태 데이터:', serverData);
-            
-            const statusText = document.getElementById('serverStatusText');
-            const uptime = document.getElementById('serverUptime');
-            const memory = document.getElementById('memoryUsage');
-            const issuesItem = document.getElementById('serverIssuesItem');
-            const issues = document.getElementById('serverIssues');
-            
-            // Vercel 환경 감지
-            const isVercel = isVercelEnvironment();
-            
-            // 요소 존재 확인
-            console.log('🔍 HTML 요소 확인:');
-            console.log('  - statusText:', statusText);
-            console.log('  - uptime:', uptime);
-            console.log('  - memory:', memory);
-            console.log('  - issuesItem:', issuesItem);
-            console.log('  - issues:', issues);
-            
-            if (!statusText || !uptime || !memory || !issuesItem || !issues) {
-                console.error('❌ HTML 요소를 찾을 수 없습니다!');
-                return;
-            }
-            
-            // 상태에 따른 배지 설정 (Vercel 환경 표시)
-            if (serverData.status === 'normal') {
-                statusText.className = 'status-badge status-normal';
-                statusText.textContent = isVercel ? '정상 (Vercel)' : '정상';
-            } else if (serverData.status === 'warning') {
-                statusText.className = 'status-badge status-warning';
-                statusText.textContent = isVercel ? '주의 (Vercel)' : '주의';
-            } else {
-                statusText.className = 'status-badge status-error';
-                statusText.textContent = isVercel ? '비정상 (Vercel)' : '비정상';
-            }
-            
-            // 업타임과 메모리 정보 표시
-            console.log('🔄 업타임 설정 전:', uptime.textContent);
-            uptime.innerHTML = serverData.uptimeFormatted || '-';
-            uptime.style.color = '#333';
-            uptime.style.visibility = 'visible';
-            uptime.style.opacity = '1';
-            console.log('🔄 업타임 설정 후:', uptime.textContent);
-            
-            console.log('🔄 메모리 설정 전:', memory.textContent);
-            memory.innerHTML = serverData.memoryFormatted || '-';
-            memory.style.color = '#333';
-            memory.style.visibility = 'visible';
-            memory.style.opacity = '1';
-            console.log('🔄 메모리 설정 후:', memory.textContent);
-            
-            console.log('📊 업타임 데이터:', serverData.uptimeFormatted);
-            console.log('💾 메모리 데이터:', serverData.memoryFormatted);
-            console.log('⚠️ 이슈 데이터:', serverData.issues);
-            
-            // 이슈가 있으면 표시
-            console.log('🔄 이슈 처리 시작');
-            console.log('  - 이슈 데이터 존재:', !!serverData.issues);
-            console.log('  - 이슈 배열 길이:', serverData.issues ? serverData.issues.length : 0);
-            console.log('  - 이슈 내용:', serverData.issues);
-            
-            if (serverData.issues && serverData.issues.length > 0) {
-                console.log('🔄 이슈 표시 설정');
-                issuesItem.style.display = 'flex';
-                issues.innerHTML = serverData.issues.join(', ');
-                issues.style.color = '#333';
-                issues.style.visibility = 'visible';
-                issues.style.opacity = '1';
-                console.log('  - 이슈 요소 표시:', issuesItem.style.display);
-                console.log('  - 이슈 텍스트:', issues.textContent);
-            } else {
-                console.log('🔄 이슈 숨김 설정');
-                issuesItem.style.display = 'none';
-            }
-            
-            console.log('✅ 서버 상태 업데이트 완료');
-        }
-        
-        // API 상태 업데이트
-        function updateAPIStatus(apiData) {
-            const apis = ['youtube', 'instagram', 'tiktok', 'supabase'];
-            
-            apis.forEach(api => {
-                const statusText = document.getElementById(`${api}StatusText`);
-                
-                if (apiData[api] && apiData[api].status === 'normal') {
-                    statusText.className = 'status-badge status-normal';
-                    statusText.textContent = '정상';
-                } else {
-                    statusText.className = 'status-badge status-error';
-                    statusText.textContent = '비정상';
-                }
-            });
-        }
-        
-        // 동기화 시간 업데이트
-        function updateSyncTimes(syncData) {
-            const apis = ['youtube', 'instagram', 'tiktok'];
-            
-            apis.forEach(api => {
-                const element = document.getElementById(`${api}LastSync`);
-                element.textContent = syncData[api] || '-';
-            });
         }
         
         // 방문자 차트 업데이트
@@ -823,91 +675,6 @@
             }
         }
         
-        // 스케줄러 상태 업데이트
-        function updateSchedulerStatus(schedulerData) {
-            const statusText = document.getElementById('schedulerStatusText');
-            const nextNotification = document.getElementById('nextNotification');
-            
-            if (schedulerData && schedulerData.active) {
-                statusText.className = 'status-badge status-normal';
-                statusText.textContent = '활성화';
-                nextNotification.textContent = schedulerData.nextRun || '매일 21:00';
-            } else {
-                statusText.className = 'status-badge status-inactive';
-                statusText.textContent = '비활성화';
-                nextNotification.textContent = '-';
-            }
-        }
-        
-        // 일일 알림 발송
-        async function sendDailyNotification() {
-            try {
-                const response = await fetch('/api/admin/send-notification', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ type: 'daily' })
-                });
-                
-                const result = await response.json();
-                
-                if (result.success) {
-                    showSuccess('일일 알림이 성공적으로 발송되었습니다.');
-                } else {
-                    showError('알림 발송에 실패했습니다: ' + result.message);
-                }
-            } catch (error) {
-                console.error('알림 발송 실패:', error);
-                showError('알림 발송에 실패했습니다.');
-            }
-        }
-        
-        // 테스트 알림 발송
-        async function sendTestNotification() {
-            try {
-                const response = await fetch('/api/admin/send-notification', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ type: 'test' })
-                });
-                
-                const result = await response.json();
-                
-                if (result.success) {
-                    showSuccess('테스트 알림이 성공적으로 발송되었습니다.');
-                } else {
-                    showError('테스트 알림 발송에 실패했습니다: ' + result.message);
-                }
-            } catch (error) {
-                console.error('테스트 알림 발송 실패:', error);
-                showError('테스트 알림 발송에 실패했습니다.');
-            }
-        }
-        
-        // 스케줄러 토글
-        async function toggleScheduler() {
-            try {
-                const response = await fetch('/api/admin/toggle-scheduler', {
-                    method: 'POST'
-                });
-                
-                const result = await response.json();
-                
-                if (result.success) {
-                    showSuccess('스케줄러 상태가 변경되었습니다.');
-                    refreshData();
-                } else {
-                    showError('스케줄러 토글에 실패했습니다: ' + result.message);
-                }
-            } catch (error) {
-                console.error('스케줄러 토글 실패:', error);
-                showError('스케줄러 토글에 실패했습니다.');
-            }
-        }
-        
         // 마지막 업데이트 시간
         function updateLastUpdated() {
             const now = new Date();
@@ -915,16 +682,258 @@
             document.getElementById('lastUpdated').textContent = timeString;
         }
         
-        // 성공 메시지 표시
-        function showSuccess(message) {
-            alert('✅ ' + message);
+        // 팝업 설정 로드
+        async function loadPopupSettings() {
+            try {
+                const res = await fetch('/api/popup-settings');
+                const data = await res.json();
+                document.getElementById('popupEnabled').checked = !!data.enabled;
+                document.getElementById('popupStartDate').value = data.start_date || '';
+                document.getElementById('popupEndDate').value = data.end_date || '';
+                document.getElementById('popupImageUrl').value = data.image_url || '';
+                document.getElementById('popupLinkUrl').value = data.link_url || '';
+                document.getElementById('popupSaveMessage').textContent = '';
+                updatePopupPreview(data.image_url);
+            } catch (e) {
+                document.getElementById('popupSaveMessage').textContent = '팝업 설정을 불러오지 못했습니다.';
+            }
         }
-        
-        // 에러 메시지 표시
-        function showError(message) {
-            alert('❌ ' + message);
+
+        function updatePopupPreview(url, bustCache) {
+            var wrap = document.getElementById('popupImagePreviewWrap');
+            var img = document.getElementById('popupImagePreview');
+            if (url && url.trim()) {
+                var src = url;
+                if (bustCache) src = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_=' + Date.now();
+                img.src = src;
+                wrap.style.display = 'block';
+            } else {
+                img.src = '';
+                wrap.style.display = 'none';
+            }
         }
-        
+
+        // 팝업 이미지 파일 업로드
+        document.getElementById('popupUploadBtn').addEventListener('click', function() {
+            document.getElementById('popupImageFile').click();
+        });
+        document.getElementById('popupImageFile').addEventListener('change', function() {
+            var file = this.files[0];
+            var statusEl = document.getElementById('popupUploadStatus');
+            if (!file || !file.type.match(/^image\/(jpeg|png|gif|webp)$/i)) {
+                statusEl.textContent = '이미지 파일만 선택해 주세요.';
+                return;
+            }
+            var maxSize = 3 * 1024 * 1024;
+            if (file.size > maxSize) {
+                statusEl.textContent = '이미지가 너무 큽니다. 3MB 이하로 줄이거나 압축해 주세요.';
+                this.value = '';
+                return;
+            }
+            statusEl.textContent = '업로드 중...';
+            var reader = new FileReader();
+            reader.onload = function() {
+                fetch('/api/upload-popup-image', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ image: reader.result, filename: file.name })
+                })
+                .then(function(r) {
+                    return r.text().then(function(text) {
+                        if (r.status === 404 || (r.headers.get('content-type') || '').indexOf('text/html') !== -1) {
+                            var err = new Error(r.status === 404
+                                ? '업로드 API를 찾을 수 없습니다(404). 로컬: node server.js 실행 중인지 확인. 배포: api/upload-popup-image.js 포함 여부 확인.'
+                                : '서버가 HTML을 반환했습니다. API 주소를 확인해 주세요.');
+                            err.status = r.status;
+                            throw err;
+                        }
+                        var data;
+                        try { data = JSON.parse(text); } catch (e) {
+                            throw new Error('서버 응답이 JSON이 아닙니다. (404일 수 있음)');
+                        }
+                        if (!r.ok) {
+                            throw new Error(data.message || '서버 오류 ' + r.status);
+                        }
+                        return data;
+                    });
+                })
+                .then(function(result) {
+                    if (result.success && result.url) {
+                        document.getElementById('popupImageUrl').value = result.url;
+                        updatePopupPreview(result.url, true);
+                        statusEl.textContent = '업로드 완료. 아래 "팝업 설정 저장"을 눌러 주세요.';
+                    } else {
+                        statusEl.textContent = result.message || '업로드 실패';
+                    }
+                })
+                .catch(function(err) {
+                    var msg = '업로드 요청 실패';
+                    if (err && err.message) {
+                        if (err.message.indexOf('Failed to fetch') !== -1 || err.message.indexOf('NetworkError') !== -1) {
+                            msg = '서버에 연결할 수 없습니다. 로컬이라면 서버가 켜져 있는지, 주소가 맞는지 확인해 주세요.';
+                        } else {
+                            msg = err.message;
+                        }
+                    }
+                    if (err && err.data && err.data.message) msg = err.data.message;
+                    statusEl.textContent = msg;
+                });
+            };
+            reader.readAsDataURL(file);
+            this.value = '';
+        });
+
+        // 팝업 설정 저장
+        document.getElementById('popupSaveBtn').addEventListener('click', async function() {
+            const payload = {
+                enabled: document.getElementById('popupEnabled').checked,
+                start_date: document.getElementById('popupStartDate').value || null,
+                end_date: document.getElementById('popupEndDate').value || null,
+                image_url: (document.getElementById('popupImageUrl').value || '').trim(),
+                link_url: (document.getElementById('popupLinkUrl').value || '').trim()
+            };
+            const msgEl = document.getElementById('popupSaveMessage');
+            try {
+                const res = await fetch('/api/popup-settings', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const result = await res.json();
+                msgEl.textContent = result.success ? '저장되었습니다.' : (result.message || '저장 실패');
+                msgEl.style.color = result.success ? '#2e7d32' : '#c62828';
+            } catch (e) {
+                msgEl.textContent = '저장 요청 중 오류가 났습니다.';
+                msgEl.style.color = '#c62828';
+            }
+        });
+
+        // 율무의 꿀템추천: 6개 블록 생성 + 로드/업로드/저장
+        (function() {
+            var wrap = document.getElementById('honeyItemsAdminWrap');
+            var tpl = document.getElementById('honeyItemTpl');
+            if (!wrap || !tpl) return;
+            for (var i = 1; i <= 6; i++) {
+                var frag = tpl.content.cloneNode(true);
+                var block = frag.querySelector('.honey-item-block');
+                block.setAttribute('data-id', i);
+                frag.querySelector('.honey-item-title').textContent = '꿀템 ' + i;
+                wrap.appendChild(frag);
+            }
+            wrap.querySelectorAll('.honey-item-block').forEach(function(block) {
+                var id = block.getAttribute('data-id');
+                var fileInput = block.querySelector('.honey-file');
+                var uploadBtn = block.querySelector('.honey-upload-btn');
+                var imageUrlEl = block.querySelector('.honey-image-url');
+                var previewEl = block.querySelector('.honey-preview');
+                uploadBtn.addEventListener('click', function() { fileInput.click(); });
+                fileInput.addEventListener('change', function() {
+                    var file = this.files[0];
+                    if (!file || !file.type.match(/^image\/(jpeg|png|gif|webp)$/i)) return;
+                    if (file.size > 3 * 1024 * 1024) { alert('이미지는 3MB 이하로 올려 주세요.'); this.value = ''; return; }
+                    uploadBtn.disabled = true;
+                    uploadBtn.textContent = '업로드 중...';
+                    var reader = new FileReader();
+                    reader.onload = function() {
+                        fetch('/api/upload-honey-image', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ image: reader.result, filename: file.name, itemId: parseInt(id, 10) })
+                        }).then(function(r) {
+                            return r.text().then(function(text) {
+                                var data;
+                                try { data = text ? JSON.parse(text) : {}; } catch (e) { return { _ok: r.ok, _status: r.status, _text: text }; }
+                                data._ok = r.ok;
+                                data._status = r.status;
+                                return data;
+                            });
+                        }).then(function(result) {
+                            uploadBtn.disabled = false;
+                            uploadBtn.textContent = '이미지 업로드';
+                            if (result._ok && result.success && result.url) {
+                                imageUrlEl.value = result.url;
+                                previewEl.src = result.url + (result.url.indexOf('?') >= 0 ? '&' : '?') + '_=' + Date.now();
+                                previewEl.style.display = 'block';
+                            } else if (!result._ok && result.message) {
+                                alert('꿀템 ' + id + ' 이미지 업로드 실패: ' + result.message);
+                            } else if (result._status === 404) {
+                                alert('업로드 API를 찾을 수 없습니다(404). 로컬: node server.js 실행 여부 확인.');
+                            }
+                        }).catch(function(err) {
+                            uploadBtn.disabled = false;
+                            uploadBtn.textContent = '이미지 업로드';
+                            alert('꿀템 ' + id + ' 업로드 요청 실패. 서버 연결을 확인해 주세요.');
+                        });
+                    };
+                    reader.readAsDataURL(file);
+                    this.value = '';
+                });
+            });
+            function loadHoneyItems() {
+                fetch('/api/honey-items').then(function(r) { return r.json(); }).then(function(items) {
+                    if (!Array.isArray(items)) return;
+                    items.forEach(function(item) {
+                        var block = wrap.querySelector('.honey-item-block[data-id="' + item.id + '"]');
+                        if (!block) return;
+                        block.querySelector('.honey-image-url').value = item.image_url || '';
+                        block.querySelector('.honey-link').value = item.link_url || '';
+                        var tags = [];
+                        try { tags = typeof item.tags === 'string' ? JSON.parse(item.tags || '[]') : (item.tags || []); } catch (e) {}
+                        block.querySelector('.honey-tags').value = tags.join(', ');
+                        block.querySelector('.honey-desc').value = item.description || '';
+                        var preview = block.querySelector('.honey-preview');
+                        if (item.image_url) {
+                            preview.src = item.image_url + (item.image_url.indexOf('?') >= 0 ? '&' : '?') + '_=' + Date.now();
+                            preview.style.display = 'block';
+                        } else preview.style.display = 'none';
+                    });
+                }).catch(function() {});
+            }
+            window.loadHoneyItems = loadHoneyItems;
+            document.getElementById('honeyItemsSaveBtn').addEventListener('click', function() {
+                var items = [];
+                wrap.querySelectorAll('.honey-item-block').forEach(function(block) {
+                    var id = parseInt(block.getAttribute('data-id'), 10);
+                    var tagsStr = (block.querySelector('.honey-tags').value || '').trim();
+                    var tagsArr = tagsStr ? tagsStr.split(',').map(function(s) { return s.trim(); }).filter(Boolean) : [];
+                    items.push({
+                        id: id,
+                        image_url: (block.querySelector('.honey-image-url').value || '').trim(),
+                        link_url: (block.querySelector('.honey-link').value || '').trim(),
+                        tags: JSON.stringify(tagsArr),
+                        description: (block.querySelector('.honey-desc').value || '').trim()
+                    });
+                });
+                var msgEl = document.getElementById('honeyItemsSaveMessage');
+                msgEl.textContent = '저장 중...';
+                msgEl.style.color = '#666';
+                fetch('/api/honey-items', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(items)
+                }).then(function(r) {
+                    return r.text().then(function(text) {
+                        var data;
+                        try { data = text ? JSON.parse(text) : {}; } catch (e) { return { _ok: r.ok, _status: r.status, _text: text }; }
+                        data._ok = r.ok;
+                        data._status = r.status;
+                        return data;
+                    });
+                }).then(function(result) {
+                    if (result._ok && result.success) {
+                        msgEl.textContent = '저장되었습니다.';
+                        msgEl.style.color = '#2e7d32';
+                    } else {
+                        msgEl.textContent = (result.message || '저장 실패') + (result._status === 500 ? ' (Supabase에 honey_items 테이블이 있는지 확인해 주세요.)' : '');
+                        msgEl.style.color = '#c62828';
+                    }
+                }).catch(function(err) {
+                    msgEl.textContent = '저장 요청 중 오류가 났습니다. (서버 연결 또는 honey_items 테이블 확인)';
+                    msgEl.style.color = '#c62828';
+                });
+            });
+        })();
+
         // 5분마다 자동 새로고침
         setInterval(refreshData, 5 * 60 * 1000);
         
@@ -998,6 +1007,8 @@
             // 관리자 페이지 데이터 로드
             console.log('🚀 Admin 페이지 로드 완료, 초기 데이터 로드 시작');
             setTimeout(refreshData, 1000);
+            loadPopupSettings();
+            loadHoneyItems();
         }
         
         // 로그인 폼 제출 처리
