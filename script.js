@@ -797,8 +797,9 @@ async function loadYouTubeData() {
         }
         
         if (youtubeData) {
-            // 인기 영상 섹션 렌더링 (최신 영상 섹션은 제거됨)
-            renderPopularVideos(youtubeData.popularVideos);
+            // 인기 영상 섹션 렌더링 (최신 영상 섹션은 제거됨) — 상위 3개만 표시
+            const popularList = Array.isArray(youtubeData.popularVideos) ? youtubeData.popularVideos.slice(0, 3) : [];
+            renderPopularVideos(popularList);
             
             // 비디오 카드 재설정
             setupVideoCards();
@@ -879,9 +880,10 @@ function updateHeroStats(totalStats) {
     }
 }
 
-// 인기 영상 렌더링
+// 인기 영상 렌더링 (최대 3개만 표시)
 function renderPopularVideos(videos) {
-    if (!videos || videos.length === 0) return;
+    const limited = Array.isArray(videos) ? videos.slice(0, 3) : [];
+    if (limited.length === 0) return;
     
     const videoSection = document.querySelector('.video-section:not(.recent-videos)');
     if (!videoSection) {
@@ -897,7 +899,7 @@ function renderPopularVideos(videos) {
     
     videoGrid.innerHTML = ''; // 기존 내용 삭제
     
-    videos.forEach((video, index) => {
+    limited.forEach((video, index) => {
         const videoCard = createVideoCard(video, index + 1);
         videoGrid.appendChild(videoCard);
     });
@@ -905,13 +907,13 @@ function renderPopularVideos(videos) {
     // 모바일과 태블릿에서 슬라이드 인디케이터 추가
     if (window.innerWidth <= 1198) {
         setTimeout(() => {
-            addSlideIndicators(videoSection, videoGrid, videos.length);
+            addSlideIndicators(videoSection, videoGrid, limited.length);
             // 드래그 기능 추가
             enableDragScroll(videoGrid);
         }, 100);
     }
     
-    console.log('인기 영상 렌더링 완료:', videos.length, '개');
+    console.log('인기 영상 렌더링 완료:', limited.length, '개');
 }
 
 // 최신 영상 렌더링
