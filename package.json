@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node server.js",
-    "build": "echo 'Build completed'",
+    "build": "node scripts/build-gallery-list.js && echo 'Build completed'",
     "lint": "echo 'Linting completed'"
   },
   "keywords": [

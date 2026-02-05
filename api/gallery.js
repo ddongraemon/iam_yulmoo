@@ -1,12 +1,10 @@
 // Vercel: GET /api/gallery?year=2026|2025|2024|2023|all
-// images/gallery 폴더의 연도별 이미지 목록 반환
+// 빌드 시 생성된 gallery-data.json 목록 반환 (이미지 폴더는 번들하지 않음)
 const path = require('path');
 const fs = require('fs');
 
-const IMAGE_EXTS = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];
-
-function getGalleryDir() {
-    return path.join(process.cwd(), 'images', 'gallery');
+function getDataPath() {
+    return path.join(process.cwd(), 'api', 'gallery-data.json');
 }
 
 module.exports = async (req, res) => {
@@ -19,41 +17,23 @@ module.exports = async (req, res) => {
     }
 
     const yearParam = (req.query && req.query.year) || 'all';
-    const galleryDir = getGalleryDir();
-    const images = [];
 
     try {
-        if (!fs.existsSync(galleryDir)) {
+        const dataPath = getDataPath();
+        if (!fs.existsSync(dataPath)) {
             return res.status(200).json({ images: [] });
         }
+        const raw = fs.readFileSync(dataPath, 'utf8');
+        const data = JSON.parse(raw);
+        let images = Array.isArray(data.images) ? data.images : [];
 
-        const yearsToRead = yearParam === 'all'
-            ? fs.readdirSync(galleryDir, { withFileTypes: true })
-                .filter(d => d.isDirectory() && /^\d{4}$/.test(d.name))
-                .map(d => d.name)
-                .sort((a, b) => Number(b) - Number(a))
-            : [yearParam];
-
-        for (const year of yearsToRead) {
-            const yearPath = path.join(galleryDir, year);
-            if (!fs.existsSync(yearPath) || !fs.statSync(yearPath).isDirectory()) continue;
-            const files = fs.readdirSync(yearPath);
-            for (const name of files) {
-                const ext = path.extname(name).toLowerCase();
-                if (IMAGE_EXTS.includes(ext)) {
-                    images.push({
-                        image_url: `/images/gallery/${year}/${encodeURIComponent(name)}`,
-                        file_name: name,
-                        year: year
-                    });
-                }
-            }
+        if (yearParam !== 'all') {
+            images = images.filter((item) => item.year === yearParam);
         }
 
-        images.sort((a, b) => (b.year + b.file_name).localeCompare(a.year + a.file_name));
+        return res.status(200).json({ images });
     } catch (err) {
         console.warn('gallery API error:', err.message);
+        return res.status(200).json({ images: [] });
     }
-
-    return res.status(200).json({ images });
 };

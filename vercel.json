@@ -1,7 +1,7 @@
 {
   "functions": {
     "api/gallery.js": {
-      "includeFiles": "images/gallery/**"
+      "includeFiles": "api/gallery-data.json"
     }
   }
 }
